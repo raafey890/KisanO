@@ -15,10 +15,7 @@ import { forwardRef, memo, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { motion, useReducedMotion } from 'framer-motion';
 
-import {
-  TOAST_DEFAULTS,
 
-} from './toastVariants';
 import {
   TOAST_DEFAULTS,
   TOAST_CLOSE_BUTTON_SIZES,

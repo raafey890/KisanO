@@ -22,24 +22,47 @@ import {
   getButtonClasses,
   resolveDefaultProps,
 } from './buttonUtils';
+
 /* ---------------------------------- */
-/* Motion Presets */
+/* Motion Presets - Declared Locally */
 /* ---------------------------------- */
 const MOTION_DURATION = Object.freeze({
   fast: 0.15,
   normal: 0.25,
   slow: 0.35,
-  duration: MOTION_DURATION.normal
 });
+
+const CONTAINER_MOTION = {
+  initial: { opacity: 0, scale: 0.98 },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: MOTION_DURATION.normal,
+      ease: [0.23, 1, 0.32, 1],
+    },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.98,
+    transition: {
+      duration: MOTION_DURATION.fast,
+      ease: 'easeIn',
+    },
+  },
+};
+
 const ERROR_SHAKE = {
   x: [0, -3, 3, -2, 2, 0],
   transition: { duration: MOTION_DURATION.slow, ease: 'easeInOut' },
 };
+
 const FOCUS_LIFT = {
   y: -0.5,
   scale: 1.005,
   transition: { duration: MOTION_DURATION.fast, ease: [0.23, 1, 0.32, 1] },
 };
+
 /* ---------------------------------- */
 /* Helpers */
 /* ---------------------------------- */
@@ -49,6 +72,7 @@ function resolveStatus({ error, success, warning }) {
   if (success) return 'success';
   return 'none';
 }
+
 function mergeEventHandlers(internalHandler, externalHandler) {
   if (!externalHandler) return internalHandler;
   return (event) => {
@@ -56,6 +80,7 @@ function mergeEventHandlers(internalHandler, externalHandler) {
     if (externalHandler) externalHandler(event);
   };
 }
+
 /* ---------------------------------- */
 /* Component */
 /* ---------------------------------- */
@@ -63,120 +88,144 @@ const ButtonContainer = memo(
   forwardRef(function ButtonContainer(
     {
       children,
-variant = 'primary',
-size = 'md',
-shape = 'default',
-error = false,
-success = false,
-warning = false,
-loading = false,
-disabled = false,
-readOnly = false,
+      variant = 'primary',
+      size = 'md',
+      shape = 'default',
+      error = false,
+      success = false,
+      warning = false,
+      loading = false,
+      disabled = false,
+      readOnly = false,
+      fullWidth = false,
+      withMargin = false,
+      animate = true,
+      className = '',
+      id,
+      onClick,
+      onFocus,
+      onBlur,
+      onMouseEnter,
+      onMouseLeave,
+      onKeyDown,
+      ...rest
     },
     ref,
   ) {
     const prefersReducedMotion = useReducedMotion();
     const [isFocused, setIsFocused] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+
     const status = useMemo(
       () => resolveStatus({ error, success, warning }),
       [error, success, warning],
     );
+
     const isInteractive = !disabled && !readOnly;
+
     const resolvedProps = useMemo(
-  () =>
-    resolveDefaultProps({
-      variant,
-      size,
-      shape,
-      isDisabled: disabled,
-      isLoading: loading,
-      isHovered,
-      isFocused,
-      className: '',
-      baseClass: 'btn',
-    }),
-  [variant, size, shape, disabled, loading, isHovered, isFocused],
-);
+      () =>
+        resolveDefaultProps({
+          variant,
+          size,
+          shape,
+          isDisabled: disabled,
+          isLoading: loading,
+          isHovered,
+          isFocused,
+          className: '',
+          baseClass: 'btn',
+        }),
+      [variant, size, shape, disabled, loading, isHovered, isFocused],
+    );
 
-const buttonClasses = useMemo(
-  () =>
-    mergeClasses(
-      getButtonClasses({
-        isDisabled: disabled,
-        isLoading: loading,
-        isHovered,
-        isFocused,
-        variant: resolvedProps.variant,
-        size: resolvedProps.size,
-        shape: resolvedProps.shape,
-        className: resolvedProps.className,
-        baseClass: resolvedProps.baseClass,
-      }),
-      className,
-    ),
-  [disabled, loading, isHovered, isFocused, resolvedProps, className],
-);
-    
+    const buttonClasses = useMemo(
+      () =>
+        mergeClasses(
+          getButtonClasses({
+            isDisabled: disabled,
+            isLoading: loading,
+            isHovered,
+            isFocused,
+            variant: resolvedProps.variant,
+            size: resolvedProps.size,
+            shape: resolvedProps.shape,
+            className: resolvedProps.className,
+            baseClass: resolvedProps.baseClass,
+          }),
+          className,
+        ),
+      [disabled, loading, isHovered, isFocused, resolvedProps, className],
+    );
+
     const containerClasses = useMemo(
-  () =>
-    mergeClasses(
-      'group relative inline-flex items-center justify-center',
-      'focus:outline-none',
-      'transition-all duration-200 ease-in-out',
-      fullWidth && 'w-full',
-      withMargin && 'mb-4',
-      buttonClasses,
-    ),
-  [buttonClasses, fullWidth, withMargin],
-);
+      () =>
+        mergeClasses(
+          'group relative inline-flex items-center justify-center',
+          'focus:outline-none',
+          'transition-all duration-200 ease-in-out',
+          fullWidth && 'w-full',
+          withMargin && 'mb-4',
+          buttonClasses,
+        ),
+      [buttonClasses, fullWidth, withMargin],
+    );
+
     const ariaProps = useMemo(() => {
-  const attrs = {
-    role: 'button',
-    tabIndex: disabled ? -1 : 0,
-    'aria-disabled': disabled || undefined,
-  };
+      const attrs = {
+        role: 'button',
+        tabIndex: disabled ? -1 : 0,
+        'aria-disabled': disabled || undefined,
+      };
 
-  if (loading) {
-    attrs['aria-busy'] = true;
-  }
+      if (loading) {
+        attrs['aria-busy'] = true;
+      }
 
-  if (status === 'error') {
-    attrs['aria-invalid'] = true;
-  }
+      if (status === 'error') {
+        attrs['aria-invalid'] = true;
+      }
 
-  if (readOnly) {
-    attrs['aria-readonly'] = true;
-  }
+      if (readOnly) {
+        attrs['aria-readonly'] = true;
+      }
 
-  return attrs;
-}, [disabled, loading, readOnly, status]);
+      return attrs;
+    }, [disabled, loading, readOnly, status]);
+
     const motionProps = useMemo(() => {
       const shouldAnimate = animate && !prefersReducedMotion;
       const hasErrorShake = status === 'error' && !prefersReducedMotion;
-      const baseAnimate = hasErrorShake 
+      const baseAnimate = hasErrorShake
         ? { ...CONTAINER_MOTION.animate, ...ERROR_SHAKE }
-        : (isFocused && isInteractive && !prefersReducedMotion 
-            ? { ...CONTAINER_MOTION.animate, ...FOCUS_LIFT } 
-            : CONTAINER_MOTION.animate);
+        : isFocused && isInteractive && !prefersReducedMotion
+          ? { ...CONTAINER_MOTION.animate, ...FOCUS_LIFT }
+          : CONTAINER_MOTION.animate;
+
       if (shouldAnimate) {
         return {
           initial: CONTAINER_MOTION.initial,
           animate: baseAnimate,
           transition: CONTAINER_MOTION.transition,
-          whileHover: isInteractive && !prefersReducedMotion 
-            ? { scale: 1.02, y: -0.5 } 
+          whileHover: isInteractive && !prefersReducedMotion
+            ? { scale: 1.02, y: -0.5 }
             : undefined,
         };
       }
       return {
         initial: false,
-        animate: hasErrorShake ? ERROR_SHAKE : (isFocused && isInteractive ? FOCUS_LIFT : undefined),
+        animate: hasErrorShake
+          ? ERROR_SHAKE
+          : isFocused && isInteractive
+            ? FOCUS_LIFT
+            : undefined,
       };
     }, [animate, prefersReducedMotion, status, isFocused, isInteractive]);
+
     const handleFocus = useCallback(() => {
       if (!disabled) setIsFocused(true);
     }, [disabled]);
+
     const handleBlur = useCallback(
       (event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) {
@@ -185,22 +234,35 @@ const buttonClasses = useMemo(
       },
       [],
     );
+
     const handleMouseEnter = useCallback(() => {
       if (isInteractive) setIsHovered(true);
     }, [isInteractive]);
+
     const handleMouseLeave = useCallback(() => {
       setIsHovered(false);
     }, []);
+
     const mergedHandlers = useMemo(() => {
-      const { onFocus, onBlur, onMouseEnter, onMouseLeave, ...otherRest } = rest;
       return {
+        onClick,
         onFocus: mergeEventHandlers(handleFocus, onFocus),
         onBlur: mergeEventHandlers(handleBlur, onBlur),
         onMouseEnter: mergeEventHandlers(handleMouseEnter, onMouseEnter),
         onMouseLeave: mergeEventHandlers(handleMouseLeave, onMouseLeave),
-        ...otherRest,
+        onKeyDown,
+        ...rest,
       };
-    }, [rest, handleFocus, handleBlur, handleMouseEnter, handleMouseLeave]);
+    }, [
+      rest,
+      onClick,
+      onKeyDown,
+      handleFocus,
+      handleBlur,
+      handleMouseEnter,
+      handleMouseLeave,
+    ]);
+
     return (
       <motion.button
         ref={ref}
@@ -222,12 +284,22 @@ const buttonClasses = useMemo(
   }),
 );
 
-Object.freeze(ERROR_SHAKE);
-Object.freeze(FOCUS_LIFT);
-Object.freeze(MOTION_DURATION);
 ButtonContainer.displayName = 'ButtonContainer';
+
 ButtonContainer.propTypes = {
   children: PropTypes.node,
+  variant: PropTypes.oneOf([
+    'primary',
+    'secondary',
+    'outline',
+    'ghost',
+    'gradient',
+    'success',
+    'danger',
+    'warning',
+  ]),
+  size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
+  shape: PropTypes.oneOf(['default', 'rounded', 'pill', 'square']),
   error: PropTypes.bool,
   success: PropTypes.bool,
   warning: PropTypes.bool,
@@ -239,5 +311,12 @@ ButtonContainer.propTypes = {
   animate: PropTypes.bool,
   className: PropTypes.string,
   id: PropTypes.string,
+  onClick: PropTypes.func,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
+  onKeyDown: PropTypes.func,
 };
+
 export default ButtonContainer;

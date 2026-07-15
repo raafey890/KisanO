@@ -25,30 +25,52 @@ import {
   INPUT_READONLY_STATE,
 } from './inputVariants';
 import { mergeClasses, getContainerClasses } from './inputUtils';
+
 /* ---------------------------------- */
-/* Motion Presets */
+/* Motion Presets - Declared Locally */
 /* ---------------------------------- */
-/** Entrance animation for the whole field. */
+
 const MOTION_DURATION = Object.freeze({
   fast: 0.15,
   normal: 0.25,
   slow: 0.35,
-  duration: MOTION_DURATION.normal
 });
-/** Subtle error shake, triggered whenever the error status becomes active. */
+
+const CONTAINER_MOTION = {
+  initial: { opacity: 0, scale: 0.98 },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: MOTION_DURATION.normal,
+      ease: [0.23, 1, 0.32, 1],
+    },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.98,
+    transition: {
+      duration: MOTION_DURATION.fast,
+      ease: 'easeIn',
+    },
+  },
+};
+
 const ERROR_SHAKE = {
   x: [0, -3, 3, -2, 2, 0],
   transition: { duration: MOTION_DURATION.slow, ease: 'easeInOut' },
 };
-/** Micro-interaction lift + scale on focus for interactive fields. */
+
 const FOCUS_LIFT = {
   y: -0.5,
   scale: 1.005,
   transition: { duration: MOTION_DURATION.fast, ease: [0.23, 1, 0.32, 1] },
 };
+
 /* ---------------------------------- */
 /* Helpers */
 /* ---------------------------------- */
+
 /**
  * Resolves the active validation status from individual boolean flags.
  * Error takes precedence over warning, which takes precedence over success.
@@ -62,6 +84,7 @@ function resolveStatus({ error, success, warning }) {
   if (success) return 'success';
   return 'none';
 }
+
 /**
  * Merges two event handler functions into one that calls both.
  * @param {Function} internalHandler - The component's internal handler.
@@ -75,18 +98,20 @@ function mergeEventHandlers(internalHandler, externalHandler) {
     if (externalHandler) externalHandler(event);
   };
 }
+
 /* ---------------------------------- */
 /* Component */
 /* ---------------------------------- */
+
 /**
  * InputContainer — state-aware, animated wrapper for KisanO input fields.
  *
  * @component
  * @example
  * <InputContainer error={Boolean(errorMessage)} disabled={isSubmitting}>
- * <InputLabel htmlFor="email">Email</InputLabel>
- * <Input id="email" type="email" />
- * <InputHelperText>{errorMessage}</InputHelperText>
+ *   <InputLabel htmlFor="email">Email</InputLabel>
+ *   <Input id="email" type="email" />
+ *   <InputHelperText>{errorMessage}</InputHelperText>
  * </InputContainer>
  *
  * @param {Object} props - Component props.
@@ -127,15 +152,20 @@ const InputContainer = memo(
     const prefersReducedMotion = useReducedMotion();
     const [isFocused, setIsFocused] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+
     const status = useMemo(
       () => resolveStatus({ error, success, warning }),
       [error, success, warning],
     );
+
     const isInteractive = !disabled && !readOnly;
+
     /* -------- Event handlers (merged with user-provided handlers) -------- */
+
     const handleFocus = useCallback(() => {
       if (!disabled) setIsFocused(true);
     }, [disabled]);
+
     const handleBlur = useCallback(
       (event) => {
         // Only clear focus when it leaves the container entirely.
@@ -145,12 +175,15 @@ const InputContainer = memo(
       },
       [],
     );
+
     const handleMouseEnter = useCallback(() => {
       if (isInteractive) setIsHovered(true);
     }, [isInteractive]);
+
     const handleMouseLeave = useCallback(() => {
       setIsHovered(false);
     }, []);
+
     // Merge internal handlers with any user-provided ones from `rest`.
     const mergedHandlers = useMemo(() => {
       const { onFocus, onBlur, onMouseEnter, onMouseLeave, ...otherRest } = rest;
@@ -162,7 +195,9 @@ const InputContainer = memo(
         ...otherRest,
       };
     }, [rest, handleFocus, handleBlur, handleMouseEnter, handleMouseLeave]);
+
     /* -------- Class composition -------- */
+
     const containerClasses = useMemo(
       () =>
         mergeClasses(
@@ -178,46 +213,63 @@ const InputContainer = memo(
         ),
       [fullWidth, withMargin, disabled, readOnly, loading, className],
     );
+
     /* -------- ARIA attributes -------- */
+
     const ariaProps = useMemo(() => {
       /** @type {Record<string, boolean | string>} */
-      const attrs = { 
+      const attrs = {
         role: 'group',
-        'tabIndex': disabled ? -1 : 0,
-        'aria-disabled': disabled,
-        
+        tabIndex: disabled ? -1 : 0,
+        'aria-disabled': disabled || undefined,
       };
-      if (status === 'error') Object.assign(attrs, INPUT_ERROR_STATE.aria);
-      if (loading) Object.assign(attrs, INPUT_LOADING_STATE.aria);
-      if (readOnly) Object.assign(attrs, INPUT_READONLY_STATE.aria);
+
+      if (status === 'error') {
+        Object.assign(attrs, INPUT_ERROR_STATE.aria);
+      }
+      if (loading) {
+        Object.assign(attrs, INPUT_LOADING_STATE.aria);
+      }
+      if (readOnly) {
+        Object.assign(attrs, INPUT_READONLY_STATE.aria);
+      }
+
       return attrs;
     }, [status, loading, readOnly, disabled]);
+
     /* -------- Motion configuration -------- */
+
     const motionProps = useMemo(() => {
       const shouldAnimate = animate && !prefersReducedMotion;
       const hasErrorShake = status === 'error' && !prefersReducedMotion;
-      
-      const baseAnimate = hasErrorShake 
+
+      const baseAnimate = hasErrorShake
         ? { ...CONTAINER_MOTION.animate, ...ERROR_SHAKE }
-        : (isFocused && isInteractive && !prefersReducedMotion 
-            ? { ...CONTAINER_MOTION.animate, ...FOCUS_LIFT } 
-            : CONTAINER_MOTION.animate);
+        : isFocused && isInteractive && !prefersReducedMotion
+          ? { ...CONTAINER_MOTION.animate, ...FOCUS_LIFT }
+          : CONTAINER_MOTION.animate;
 
       if (shouldAnimate) {
         return {
           initial: CONTAINER_MOTION.initial,
           animate: baseAnimate,
           transition: CONTAINER_MOTION.transition,
-          whileHover: isInteractive && !prefersReducedMotion 
-            ? { scale: 1.002, y: -0.5 } 
+          whileHover: isInteractive && !prefersReducedMotion
+            ? { scale: 1.002, y: -0.5 }
             : undefined,
         };
       }
+
       return {
         initial: false,
-        animate: hasErrorShake ? ERROR_SHAKE : (isFocused && isInteractive ? FOCUS_LIFT : undefined),
+        animate: hasErrorShake
+          ? ERROR_SHAKE
+          : isFocused && isInteractive
+            ? FOCUS_LIFT
+            : undefined,
       };
     }, [animate, prefersReducedMotion, status, isFocused, isInteractive]);
+
     return (
       <motion.div
         ref={ref}
@@ -238,11 +290,9 @@ const InputContainer = memo(
     );
   }),
 );
-Object.freeze(CONTAINER_MOTION);
-Object.freeze(ERROR_SHAKE);
-Object.freeze(FOCUS_LIFT);
-Object.freeze(MOTION_DURATION);
+
 InputContainer.displayName = 'InputContainer';
+
 InputContainer.propTypes = {
   /** Field parts (label, input, icons, helper text) rendered inside the container. */
   children: PropTypes.node,
@@ -269,4 +319,5 @@ InputContainer.propTypes = {
   /** Optional id for the container element. */
   id: PropTypes.string,
 };
+
 export default InputContainer;

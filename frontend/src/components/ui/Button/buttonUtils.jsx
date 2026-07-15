@@ -31,9 +31,11 @@ import {
  */
 function mergeClasses(...classNames) {
   return classNames
-    .filter(className => className && className.trim() !== '')
-    .join(' ')
-    .trim();
+    .flat(Infinity)
+    .filter(Boolean)
+    .map((item) => String(item).trim())
+    .filter((item) => item.length > 0)
+    .join(" ");
 }
 
 /**

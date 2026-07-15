@@ -1,257 +1,328 @@
 /**
- * KisanO Design System — Button Package
- * Button
- *
- * The main Button component that orchestrates all sub-components:
- * ButtonContainer, ButtonContent, ButtonIcon, ButtonLoader, and design tokens.
- *
- * Single Responsibility: This component orchestrates the complete button
- * functionality without implementing any sub-component logic.
- *
- * @module components/ui/Button/Button
+ * KisanO Design System - Button Component
+ * 
+ * Production-ready Button component that composes all sub-components
+ * following KisanO Design System principles.
+ * 
+ * @author KisanO Design System Team
+ * @version 1.0.0
+ * @file Button.jsx
+ * @since 2024-07-07
  */
-import { forwardRef, memo, useCallback, useMemo } from 'react';
+
+import React, { forwardRef, memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { AnimatePresence } from 'framer-motion';
-import { mergeClasses, isIconOnlyButton } from './buttonUtils';
+
+// Import sub-components
 import ButtonContainer from './ButtonContainer';
 import ButtonContent from './ButtonContent';
 import ButtonIcon from './ButtonIcon';
 import ButtonLoader from './ButtonLoader';
-import { getShadowClasses } from './buttonVariants';
-/* ---------------------------------- */
-/*Ripple effect component*/
-const RippleEffect = memo(({ color = 'currentColor', isDark }) => {
-  const baseColors = isDark 
-    ? 'bg-white/30 backdrop-blur-sm' 
-    : 'bg-black/10 backdrop-blur-sm';
+
+// Import utilities
+import {
+  isValidVariant,
+  isValidSize,
+  isValidShape,
+  isIconOnlyButton,
+  getButtonState,
+  getAccessibilityHelpers,
+  mergeClasses,
+} from './buttonUtils';
+
+/**
+ * Button Component - KisanO Design System
+ * 
+ * The main Button component that composes all sub-components
+ * for a complete, accessible, and customizable button experience.
+ * 
+ * @param {Object} props
+ * @param {string} props.variant - Button variant (primary, secondary, outline, ghost, gradient, success, danger, warning)
+ * @param {string} props.size - Button size (xs, sm, md, lg, xl)
+ * @param {string} props.shape - Button shape (default, rounded, pill, square)
+ * @param {React.ReactNode} props.children - Button text/content
+ * @param {React.ReactNode} props.leftIcon - Icon on the left side
+ * @param {React.ReactNode} props.rightIcon - Icon on the right side
+ * @param {string} props.iconPosition - Icon position (left, right)
+ * @param {boolean} props.loading - Loading state
+ * @param {string} props.loadingText - Text to show during loading
+ * @param {string} props.loaderType - Loader type (spinner, dots, pulse, circle)
+ * @param {boolean} props.disabled - Disabled state
+ * @param {boolean} props.readOnly - Read-only state
+ * @param {boolean} props.error - Error state
+ * @param {boolean} props.success - Success state
+ * @param {boolean} props.warning - Warning state
+ * @param {boolean} props.fullWidth - Full width button
+ * @param {boolean} props.animate - Enable animations
+ * @param {string} props.className - Additional CSS classes
+ * @param {string} props.id - HTML id attribute
+ * @param {function} props.onClick - Click handler
+ * @param {function} props.onFocus - Focus handler
+ * @param {function} props.onBlur - Blur handler
+ * @param {function} props.onMouseEnter - Mouse enter handler
+ * @param {function} props.onMouseLeave - Mouse leave handler
+ * @param {function} props.onKeyDown - Key down handler
+ * @param {string} props.type - Button type (button, submit, reset)
+ * @param {string} props.ariaLabel - ARIA label for accessibility
+ * @param {Object} props.ariaDescribedBy - ARIA described by
+ * @param {Object} props.ariaExpanded - ARIA expanded state
+ * @param {Object} props.ariaControls - ARIA controls
+ * @param {Object} props.ariaHaspopup - ARIA has popup
+ * @param {Object} props.ariaPressed - ARIA pressed state
+ * @param {Object} props.dataAttributes - Data attributes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Rendered Button component
+ */
+const Button = forwardRef(function Button(
+  {
+    // Variant and styling
+    variant = 'primary',
+    size = 'md',
+    shape = 'default',
+    
+    // Content
+    children,
+    leftIcon,
+    rightIcon,
+    iconPosition = 'left',
+    
+    // States
+    loading = false,
+    loadingText,
+    loaderType = 'spinner',
+    disabled = false,
+    readOnly = false,
+    error = false,
+    success = false,
+    warning = false,
+    
+    // Layout
+    fullWidth = false,
+    animate = true,
+    
+    // Customization
+    className = '',
+    id,
+    
+    // Events
+    onClick,
+    onFocus,
+    onBlur,
+    onMouseEnter,
+    onMouseLeave,
+    onKeyDown,
+    
+    // HTML attributes
+    type = 'button',
+    
+    // Accessibility
+    ariaLabel,
+    ariaDescribedBy,
+    ariaExpanded,
+    ariaControls,
+    ariaHaspopup,
+    ariaPressed,
+    
+    // Additional data attributes
+    dataAttributes = {},
+    
+    // All other props
+    ...rest
+  },
+  ref
+) {
+  // Validate props
+  const validVariant = isValidVariant(variant) ? variant : 'primary';
+  const validSize = isValidSize(size) ? size : 'md';
+  const validShape = isValidShape(shape) ? shape : 'default';
+  
+  // Determine if icon-only button
+  const hasIcon = !!(leftIcon || rightIcon);
+  const isIconOnly = isIconOnlyButton({ 
+    hasIcon, 
+    text: children ? String(children).trim() : '' 
+  });
+  
+  // Get button state
+  const buttonState = getButtonState({
+    isDisabled: disabled,
+    isLoading: loading,
+    isHovered: false,
+    isFocused: false,
+    hasIcon,
+    text: children ? String(children).trim() : '',
+  });
+  
+  // Get accessibility helpers
+  const accessHelpers = getAccessibilityHelpers({
+    ...buttonState,
+    text: children ? String(children).trim() : '',
+    isIconOnly,
+  });
+  
+  // Determine button text to display
+  const displayText = loading && loadingText ? loadingText : children;
+  
+  // Determine if we should show loader
+  const showLoader = loading && !isIconOnly;
+  
+  // Determine if we should show content
+  const showContent = !loading || !isIconOnly;
+  
+  // Merge data attributes
+  const mergedDataAttributes = {
+    'data-variant': validVariant,
+    'data-size': validSize,
+    'data-shape': validShape,
+    'data-loading': loading || undefined,
+    'data-disabled': disabled || undefined,
+    'data-readonly': readOnly || undefined,
+    'data-error': error || undefined,
+    'data-success': success || undefined,
+    'data-warning': warning || undefined,
+    'data-icon-only': isIconOnly || undefined,
+    ...dataAttributes,
+  };
+  
+  // Build ARIA attributes
+  const ariaAttributes = {
+    'aria-label': ariaLabel || accessHelpers.getAriaLabel(),
+    'aria-describedby': ariaDescribedBy,
+    'aria-expanded': ariaExpanded,
+    'aria-controls': ariaControls,
+    'aria-haspopup': ariaHaspopup,
+    'aria-pressed': ariaPressed,
+  };
+  
+  // Filter out undefined ARIA attributes
+  const filteredAriaAttributes = Object.fromEntries(
+    Object.entries(ariaAttributes).filter(([_, value]) => value !== undefined)
+  );
+  
+  // Merge all props for container
+  const containerProps = {
+    variant: validVariant,
+    size: validSize,
+    shape: validShape,
+    error,
+    success,
+    warning,
+    loading,
+    disabled,
+    readOnly,
+    fullWidth,
+    animate,
+    className,
+    id,
+    ref,
+    onClick,
+    onFocus,
+    onBlur,
+    onMouseEnter,
+    onMouseLeave,
+    onKeyDown,
+    ...filteredAriaAttributes,
+    ...mergedDataAttributes,
+    ...rest,
+  };
   
   return (
-    <span
-      className={`absolute inset-0 rounded-inherit pointer-events-none ${baseColors}`}
-      style={{
-        animation: 'ripple 0.6s ease-out',
-      }}
-    />
+    <ButtonContainer {...containerProps}>
+      {showLoader && (
+        <ButtonLoader
+          loading={loading}
+          type={loaderType}
+          size={validSize}
+          text={loadingText}
+          className="mr-2"
+        />
+      )}
+      
+      {showContent && (
+        <ButtonContent
+          leftIcon={leftIcon}
+          rightIcon={rightIcon}
+          iconPosition={iconPosition}
+          loading={loading}
+        >
+          {displayText}
+        </ButtonContent>
+      )}
+    </ButtonContainer>
   );
 });
-/* ---------------------------------- */
-/*Helpers */
-const isInteractive = ({ disabled, loading }) => !disabled && !loading;
-const getRippleColor = (variant, disabled, isDark) => {
-  if (disabled) return 'bg-gray-400/20';
-  const variantColors = {
-    primary: 'bg-white/30',
-    secondary: 'bg-gray-900/20',
-    outline: 'bg-gray-900/20',
-    ghost: 'bg-gray-900/10',
-    gradient: 'bg-white/30',
-    success: 'bg-white/30',
-    warning: 'bg-white/30',
-    danger: 'bg-white/30',
-  };
-  return variantColors[variant] || variantColors.primary;
-};
-/* ---------------------------------- */
-/*Motion variants*/
-const BUTTON_VARIANTS = {
-  rest: {
-    scale: 1,
-    y: 0,
-    transition: { duration: 0.15, ease: [0.23, 1, 0.32, 1] },
-  },
-  hover: {
-    scale: 1.02,
-    y: -2,
-    transition: { duration: 0.2, ease: [0.23, 1, 0.32, 1] },
-  },
-  tap: {
-    scale: 0.96,
-    y: 0,
-    transition: { duration: 0.1, ease: [0.23, 1, 0.32, 1] },
-  },
-  focus: {
-    boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.5)',
-    transition: { duration: 0.15, ease: [0.23, 1, 0.32, 1] },
-  },
-  disabled: {
-    scale: 1,
-    opacity: 0.6,
-    transition: { duration: 0.15, ease: [0.23, 1, 0.32, 1] },
-  },
-  loading: {
-    scale: 1,
-    transition: { duration: 0.15, ease: [0.23, 1, 0.32, 1] },
-  },
-};
-/* ---------------------------------- */
-/*CSS keyframes for ripple animation */
-const RippleStyles = () => (
-  <style jsx global>{`
-    @keyframes ripple {
-      to {
-        transform: scale(4);
-        opacity: 0;
-      }
-    }
-    .button-ripple {
-      position: relative;
-      overflow: hidden;
-    }
-    .button-ripple::after {
-      content: '';
-      position: absolute;
-      border-radius: inherit;
-      pointer-events: none;
-      animation: ripple 0.6s ease-out;
-    }
-  `}</style>
-);
-/* ---------------------------------- */
-/*Component */
-const Button = memo(
-  forwardRef(function Button(
-    {
-      children,
-      variant = 'primary',
-      size = 'md',
-      shape = 'default',
-      shadow,
-      leftIcon,
-      rightIcon,
-      loading = false,
-      loadingText = 'Loading...',
-      disabled = false,
-      fullWidth = false,
-      type = 'button',
-      onClick,
-      className,
-      iconOnly = false,
-      ...rest
-    },
-    forwardedRef
-  ) {
-    const isInteractiveButton = useMemo(() => isInteractive({ disabled, loading }), [disabled, loading]);
-    const iconOnlyState = useMemo(() => isIconOnlyButton({ 
-      hasIcon: !!(leftIcon || rightIcon), 
-      text: children ? String(children).trim() : '' 
-    }), [leftIcon, rightIcon, children]);
-    const resolvedIconOnly = useMemo(() => iconOnly || iconOnlyState, [iconOnly, iconOnlyState]);
-    const rippleColor = useMemo(() => getRippleColor(variant, disabled, variant === 'primary'), [variant, disabled]);
-    const variantStyles = useMemo(() => getVariantStyles(variant), [variant]);
-    const sizeStyles = useMemo(() => getSizeStyles(size), [size]);
-    const shapeStyles = useMemo(() => getShapeStyles(shape), [shape]);
-    const shadowClasses = useMemo(
-  () => (shadow ? getShadowClasses(shadow) : ''),
-  [shadow]
-);
-    const isDarkVariant = useMemo(() => ['primary', 'secondary', 'ghost', 'danger'].includes(variant), [variant]);
-    const isDisabledOrLoading = useMemo(() => disabled || loading, [disabled, loading]);
-    const containerClasses = useMemo(() => mergeClasses(
-      'relative inline-flex items-center justify-center',
-      'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500',
-      resolvedIconOnly ? 'p-0' : `${sizeStyles.padding} ${shapeStyles}`,
-      fullWidth && 'w-full',
-      shadowClasses,
-      className
-    ), [resolvedIconOnly, sizeStyles, shapeStyles, fullWidth, shadowClasses, className]);
-    const handleClick = useCallback((event) => {
-      if (!isInteractiveButton) {
-        event.preventDefault();
-        return;
-      }
-      onClick?.(event);
-    }, [isInteractiveButton, onClick]);
-    const rippleStyles = useMemo(() => ({
-      background: rippleColor,
-      borderRadius: shapeStyles,
-    }), [rippleColor, shapeStyles]);
-    return (
-      <>
-        <RippleStyles />
-        <ButtonContainer
-          ref={forwardedRef}
-          variant={variant}
-          size={size}
-          shape={shape}
-          shadow={shadow}
-          disabled={disabled}
-          fullWidth={fullWidth}
-          className={containerClasses}
-          onClick={handleClick}
-          {...rest}
-        >
-          <AnimatePresence mode="sync">
-            {loading ? (
-              <ButtonLoader
-                loading={loading}
-                type="spinner"
-                size={size}
-                text={loadingText}
-                className="flex-1"
-                disabled={disabled}
-              />
-            ) : (
-              <>
-                {leftIcon && (
-                  <ButtonIcon
-                    icon={leftIcon}
-                    position="left"
-                    size={size}
-                    loading={loading}
-                    disabled={disabled}
-                  />
-                )}
-                <ButtonContent
-                  children={children}
-                  leftIcon={leftIcon}
-                  rightIcon={rightIcon}
-                  iconPosition={resolvedIconOnly ? 'left' : 'right'}
-                  loading={loading}
-                  className={mergeClasses(
-                    resolvedIconOnly && 'sr-only',
-                    !resolvedIconOnly && 'relative z-10 text-inherit'
-                  )}
-                />
-                {rightIcon && (
-                  <ButtonIcon
-                    icon={rightIcon}
-                    position="right"
-                    size={size}
-                    loading={loading}
-                    disabled={disabled}
-                  />
-                )}
-              </>
-            )}
-          </AnimatePresence>
-          {isInteractiveButton && (
-  <RippleEffect
-    color={rippleColor}
-    isDark={isDarkVariant}
-  />
-)}
-        </ButtonContainer>
-      </>
-    );
-  }),
-);
+
 Button.displayName = 'Button';
+
 Button.propTypes = {
-  children: PropTypes.node,
-  variant: PropTypes.oneOf(['primary', 'secondary', 'outline', 'ghost', 'gradient', 'success', 'warning', 'danger']),
+  // Variant and styling
+  variant: PropTypes.oneOf(['primary', 'secondary', 'outline', 'ghost', 'gradient', 'success', 'danger', 'warning']),
   size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
   shape: PropTypes.oneOf(['default', 'rounded', 'pill', 'square']),
-  shadow: PropTypes.oneOf(['none', 'sm', 'md', 'lg', 'xl', '2xl']),
+  
+  // Content
+  children: PropTypes.node,
   leftIcon: PropTypes.node,
   rightIcon: PropTypes.node,
+  iconPosition: PropTypes.oneOf(['left', 'right']),
+  
+  // States
   loading: PropTypes.bool,
   loadingText: PropTypes.string,
+  loaderType: PropTypes.oneOf(['spinner', 'dots', 'pulse', 'circle']),
   disabled: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  error: PropTypes.bool,
+  success: PropTypes.bool,
+  warning: PropTypes.bool,
+  
+  // Layout
   fullWidth: PropTypes.bool,
-  type: PropTypes.oneOf(['button', 'submit', 'reset']),
-  onClick: PropTypes.func,
+  animate: PropTypes.bool,
+  
+  // Customization
   className: PropTypes.string,
-  iconOnly: PropTypes.bool,
+  id: PropTypes.string,
+  
+  // Events
+  onClick: PropTypes.func,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  
+  // HTML attributes
+  type: PropTypes.oneOf(['button', 'submit', 'reset']),
+  
+  // Accessibility
+  ariaLabel: PropTypes.string,
+  ariaDescribedBy: PropTypes.string,
+  ariaExpanded: PropTypes.bool,
+  ariaControls: PropTypes.string,
+  ariaHaspopup: PropTypes.oneOf(['true', 'false', 'menu', 'listbox', 'tree', 'grid', 'dialog']),
+  ariaPressed: PropTypes.oneOf(['true', 'false', 'mixed']),
+  
+  // Additional data attributes
+  dataAttributes: PropTypes.object,
 };
+
+Button.defaultProps = {
+  variant: 'primary',
+  size: 'md',
+  shape: 'default',
+  iconPosition: 'left',
+  loading: false,
+  loaderType: 'spinner',
+  disabled: false,
+  readOnly: false,
+  error: false,
+  success: false,
+  warning: false,
+  fullWidth: false,
+  animate: true,
+  className: '',
+  type: 'button',
+};
+
 export default Button;

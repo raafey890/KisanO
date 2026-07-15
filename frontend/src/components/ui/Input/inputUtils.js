@@ -9,11 +9,11 @@
  * @module inputUtils
  */
 import {
+  INPUT_COLORS,
   INPUT_VARIANTS,
   INPUT_SIZES,
   INPUT_SHAPES,
   INPUT_RADIUS,
-  INPUT_COLORS,
   INPUT_TYPOGRAPHY,
   INPUT_PADDING,
   INPUT_MARGINS,
@@ -31,9 +31,11 @@ import {
   INPUT_SHADOWS,
   INPUT_DEFAULTS,
 } from './inputVariants';
+
 /* ---------------------------------- */
 /* Class Composition */
 /* ---------------------------------- */
+
 /**
  * Merges an arbitrary list of class values into a single class string.
  * - Falsy values (null, undefined, false, '') are ignored.
@@ -58,9 +60,11 @@ export function mergeClasses(...classes) {
     .filter((token) => token && !seen.has(token) && seen.add(token))
     .join(' ');
 }
+
 /* ---------------------------------- */
 /* Token Resolvers */
 /* ---------------------------------- */
+
 /**
  * Resolves the variant classes for a given variant key.
  * Falls back to the design-system default variant when the key is unknown.
@@ -71,6 +75,7 @@ export function mergeClasses(...classes) {
 export function getVariant(variant) {
   return INPUT_VARIANTS[variant] ?? INPUT_VARIANTS[INPUT_DEFAULTS.variant];
 }
+
 /**
  * Resolves the size classes for a given size key.
  * Falls back to the design-system default size when the key is unknown.
@@ -81,6 +86,7 @@ export function getVariant(variant) {
 export function getSize(size) {
   return INPUT_SIZES[size] ?? INPUT_SIZES[INPUT_DEFAULTS.size];
 }
+
 /**
  * Resolves the shape classes for a given shape key.
  * Falls back to the design-system default shape when the key is unknown.
@@ -91,6 +97,7 @@ export function getSize(size) {
 export function getShape(shape) {
   return INPUT_SHAPES[shape] ?? INPUT_SHAPES[INPUT_DEFAULTS.shape];
 }
+
 /**
  * Resolves the border-radius classes for a given radius key.
  * Falls back to the design-system default radius when the key is unknown.
@@ -101,9 +108,11 @@ export function getShape(shape) {
 export function getRadius(radius) {
   return INPUT_RADIUS[radius] ?? INPUT_RADIUS[INPUT_DEFAULTS.radius];
 }
+
 /* ---------------------------------- */
 /* Padding */
 /* ---------------------------------- */
+
 /**
  * Computes the padding classes for the input element, accounting for the
  * presence of leading/trailing icons at the given size.
@@ -126,9 +135,11 @@ export function getInputPadding({
     hasRightIcon && INPUT_PADDING.withRightIcon[resolvedSize],
   );
 }
+
 /* ---------------------------------- */
 /* Status Classes */
 /* ---------------------------------- */
+
 /**
  * Returns the input classes applied when the field is in an error state.
  * Includes error border, text, placeholder, and error-focused ring.
@@ -138,6 +149,7 @@ export function getInputPadding({
 export function getErrorClasses() {
   return mergeClasses(INPUT_ERROR_STATE.input, INPUT_FOCUS_RING.error);
 }
+
 /**
  * Returns the input classes applied when the field is in a success state.
  * Includes success border, text, and success-focused ring.
@@ -147,6 +159,7 @@ export function getErrorClasses() {
 export function getSuccessClasses() {
   return mergeClasses(INPUT_SUCCESS_STATE.input, INPUT_FOCUS_RING.success);
 }
+
 /**
  * Returns the input classes applied when the field is in a warning state.
  * Includes warning border, text, and warning-focused ring.
@@ -156,6 +169,7 @@ export function getSuccessClasses() {
 export function getWarningClasses() {
   return mergeClasses(INPUT_WARNING_STATE.input, INPUT_FOCUS_RING.warning);
 }
+
 /**
  * Returns the input classes applied while an async operation is in flight.
  * Adds right padding for spinner and changes cursor.
@@ -165,6 +179,7 @@ export function getWarningClasses() {
 export function getLoadingClasses() {
   return INPUT_LOADING_STATE.input;
 }
+
 /**
  * Returns the input classes applied when the field is disabled.
  * Includes gray background, muted text, and disabled cursor.
@@ -174,6 +189,7 @@ export function getLoadingClasses() {
 export function getDisabledClasses() {
   return INPUT_DISABLED_STATE.input;
 }
+
 /**
  * Returns the input classes applied when the field is read-only.
  * Provides a static appearance with no focus interactions.
@@ -183,9 +199,11 @@ export function getDisabledClasses() {
 export function getReadOnlyClasses() {
   return INPUT_READONLY_STATE.input;
 }
+
 /* ---------------------------------- */
 /* Composite Class Builders */
 /* ---------------------------------- */
+
 /**
  * Resolves the status-specific classes for the current field status.
  * Pure lookup used internally by {@link getInputClasses}.
@@ -195,12 +213,13 @@ export function getReadOnlyClasses() {
  */
 function getStatusClasses(status) {
   const statusMap = Object.freeze({
-  error: getErrorClasses(),
-  success: getSuccessClasses(),
-  warning: getWarningClasses(),
-});
+    error: getErrorClasses(),
+    success: getSuccessClasses(),
+    warning: getWarningClasses(),
+  });
   return statusMap[status] ?? INPUT_FOCUS_RING.default;
 }
+
 /**
  * Builds the complete class string for the `<input>` element from the
  * provided options. This is the single source of truth for input styling.
@@ -245,6 +264,7 @@ export function getInputClasses({
   const resolvedRadius = radius ? getRadius(radius) : getShape(shape);
   const paddingClasses = getInputPadding({ size, hasLeftIcon, hasRightIcon });
   const statusClasses = getStatusClasses(status);
+  
   return mergeClasses(
     getVariant(variant),
     getSize(size),
@@ -264,6 +284,7 @@ export function getInputClasses({
     className,
   );
 }
+
 /**
  * Builds the class string for the field container (label + input + helper).
  *
@@ -286,6 +307,7 @@ export function getContainerClasses({
     className,
   );
 }
+
 /**
  * Builds the class string for the field label.
  *
@@ -308,6 +330,7 @@ export function getLabelClasses({
     className,
   );
 }
+
 /**
  * Builds the class string for the helper text rendered below the input.
  * When a validation status is active, status typography takes precedence.
@@ -329,6 +352,7 @@ export function getHelperTextClasses({ status = 'none', className = '' } = {}) {
     className,
   );
 }
+
 /**
  * Builds the class string for leading/trailing input icons.
  *
@@ -358,9 +382,11 @@ export function getIconClasses({
     className,
   );
 }
+
 /* ---------------------------------- */
 /* Character Counter */
 /* ---------------------------------- */
+
 /**
  * Resolves the text color class for a character counter based on how close
  * the current length is to the maximum.
@@ -374,16 +400,19 @@ export function getIconClasses({
  * @returns {string} Tailwind text color class for the counter.
  */
 export function getCharacterCounterColor(currentLength, maxLength) {
-  if (!Number.isFinite(maxLength) || maxLength <= 0)
+  if (!Number.isFinite(maxLength) || maxLength <= 0) {
     return INPUT_TYPOGRAPHY.helperText;
+  }
   const ratio = currentLength / maxLength;
   if (ratio >= 1) return INPUT_ERROR_STATE.text;
   if (ratio >= 0.9) return INPUT_WARNING_STATE.text;
   return INPUT_TYPOGRAPHY.helperText;
 }
+
 /* ---------------------------------- */
 /* Value Predicates */
 /* ---------------------------------- */
+
 /**
  * Determines whether an input value is considered non-empty.
  * Numbers (including 0) count as a value; strings are trimmed first.
@@ -396,6 +425,7 @@ export function hasValue(value) {
   if (typeof value === 'number') return true;
   return String(value).trim().length > 0;
 }
+
 /**
  * Determines whether an input value is empty.
  * Logical inverse of {@link hasValue}.
@@ -406,17 +436,16 @@ export function hasValue(value) {
 export function isInputEmpty(value) {
   return !hasValue(value);
 }
+
 /* ---------------------------------- */
 /* Re-exported Token Accessors */
 /* ---------------------------------- */
+
 /**
  * Frozen snapshot of the brand color palette for programmatic consumers
  * (e.g. inline styles, charts, canvas). Prefer CSS classes for DOM styling.
  *
  * @type {Readonly<Record<string, string>>}
- */
-/**
- * Frozen snapshot of the brand color palette.
  */
 export const inputColorTokens = Object.freeze({
   ...INPUT_COLORS,
