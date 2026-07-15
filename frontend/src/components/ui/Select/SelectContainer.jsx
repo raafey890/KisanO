@@ -12,7 +12,7 @@
  * @module components/ui/Select/SelectContainer
  */
 
-import { forwardRef, memo, useMemo, useCallback, useEffect, useRef, useState } from 'react';
+import  React,{ forwardRef, memo, useMemo, useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
