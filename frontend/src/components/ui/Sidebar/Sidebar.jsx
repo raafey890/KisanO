@@ -76,11 +76,15 @@ const Sidebar = memo(
     const [internalOpen, setInternalOpen] = useState(defaultOpen);
 
     // Determine if controlled or uncontrolled
-    const isCollapsedControlled = controlledCollapsed !== undefined;
-    const collapsed = isCollapsedControlled ? controlledCollapsed : internalCollapsed;
+   const isCollapsedControlled = controlledCollapsed !== undefined;
+    const collapsedValue = isCollapsedControlled
+  ? controlledCollapsed
+  : internalCollapsed;
 
     const isOpenControlled = controlledOpen !== undefined;
-    const open = isOpenControlled ? controlledOpen : internalOpen;
+    const openValue = isOpenControlled
+  ? controlledOpen
+  : internalOpen;
 
     // Store callbacks in refs to prevent dependency loops
     const onCollapseChangeRef = useRef(onCollapseChange);
@@ -96,7 +100,7 @@ const Sidebar = memo(
     const handleCollapseChange = useCallback(() => {
       if (isCollapsedControlled) {
         // If controlled, call the callback with the new value
-        const newValue = !controlledCollapsed;
+        const newValue = !collapsedValue;
         onCollapseChangeRef.current?.(newValue);
       } else {
         // If uncontrolled, use functional update
@@ -106,11 +110,13 @@ const Sidebar = memo(
           return newValue;
         });
       }
-    }, [isCollapsedControlled, controlledCollapsed]);
+    }, [isCollapsedControlled, collapsedValue]);
+
+    
 
     const handleOpenChange = useCallback(() => {
       if (isOpenControlled) {
-        const newValue = !controlledOpen;
+        const newValue = !openValue;
         onOpenChangeRef.current?.(newValue);
       } else {
         setInternalOpen((prev) => {
@@ -119,7 +125,7 @@ const Sidebar = memo(
           return newValue;
         });
       }
-    }, [isOpenControlled, controlledOpen]);
+    }, [isOpenControlled, openValue]);
 
     // ✅ Fixed: handleToggle now has NO dependencies that change
     const handleToggle = useCallback(() => {
@@ -139,10 +145,10 @@ const Sidebar = memo(
           width,
           shadow,
           position,
-          collapsed,
-          open,
+          collapsed: collapsedValue,
+          open: openValue,
         }),
-      [variant, size, width, shadow, position, collapsed, open],
+      [variant, size, width, shadow, position, collapsedValue, openValue],
     );
 
     // Determine if sidebar is open (for rendering)
