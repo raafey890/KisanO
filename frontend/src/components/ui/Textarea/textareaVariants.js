@@ -250,10 +250,18 @@ export function getTextareaSize(size) {
  * @param {string} radius - The radius key.
  * @returns {string} The radius class.
  */
-export function getTextareaRadius(radius) {
+export function getRadiusClasses(radius) {
   return TEXTAREA_RADIUS[radius] || TEXTAREA_RADIUS[TEXTAREA_DEFAULTS.radius];
 }
-
+/**
+ * Gets the radius class for a textarea.
+ *
+ * @param {string} radius - Radius key.
+ * @returns {string} Radius classes.
+ */
+export function getTextareaRadius(radius) {
+  return getRadiusClasses(radius);
+}
 /**
  * Gets the shadow class for a textarea.
  * @param {string} shadow - The shadow key.

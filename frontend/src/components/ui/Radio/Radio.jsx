@@ -19,6 +19,7 @@ import {
   RADIO_DEFAULTS,
 } from './radioVariants';
 import {
+  mergeClasses,
   resolveDefaultProps,
   isInteractiveRadio,
 } from './radioUtils';
@@ -118,11 +119,11 @@ const Radio = memo(
           size,
           radius,
           shadow,
-          checked,
+          checked: isControlled ? checked : false,
           disabled,
           required,
         }),
-      [variant, size, radius, shadow, checked, disabled, required],
+      [variant, size, radius, shadow, checked, disabled, required, isControlled],
     );
 
     // Determine if interactive.
@@ -213,8 +214,8 @@ const Radio = memo(
           id={inputId}
           name={name}
           value={value}
-          checked={checked}
-          defaultChecked={defaultChecked}
+          checked={isControlled ? checked : undefined}
+          defaultChecked={!isControlled ? defaultChecked : undefined}
           onChange={handleChange}
           onBlur={onBlur}
           onFocus={onFocus}

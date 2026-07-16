@@ -15,7 +15,7 @@
 import { forwardRef, memo, useMemo, useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-
+import { Children } from "react";
 import {
   DATE_PICKER_DEFAULTS,
   getDatePickerAnimation,
@@ -174,7 +174,7 @@ const DatePickerContainer = memo(
     }, [prefersReducedMotion, resolved.animation]);
 
     // Clone children with necessary props.
-    const childrenArray = React.Children.toArray(children);
+    const childrenArray = Children.toArray(children);
     const inputChild = childrenArray.find(
       (child) => child.type?.displayName === 'DatePickerInput',
     );

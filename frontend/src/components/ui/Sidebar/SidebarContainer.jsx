@@ -30,7 +30,6 @@ import {
 /* Component-specific tokens          */
 /* ---------------------------------- */
 
-/** Motion variants for container animation. */
 const CONTAINER_MOTION = {
   initial: { opacity: 0, x: -20 },
   animate: { opacity: 1, x: 0 },
@@ -38,7 +37,6 @@ const CONTAINER_MOTION = {
   transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
 };
 
-/** Motion variants for overlay animation. */
 const OVERLAY_MOTION = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
@@ -50,16 +48,6 @@ const OVERLAY_MOTION = {
 /* Component                          */
 /* ---------------------------------- */
 
-/**
- * SidebarContainer – the main sidebar wrapper with layout and styling.
- *
- * @component
- * @example
- * <SidebarContainer variant="default" size="md" position="left">
- *   <SidebarHeader>Logo</SidebarHeader>
- *   <SidebarContent>Items</SidebarContent>
- * </SidebarContainer>
- */
 const SidebarContainer = memo(
   forwardRef(function SidebarContainer(
     {
@@ -83,7 +71,15 @@ const SidebarContainer = memo(
   ) {
     const prefersReducedMotion = useReducedMotion();
 
-    // Resolve defaults.
+    // Filter out custom props before spreading to DOM element
+    const { 
+      onOpenChange, 
+      onCollapseChange, 
+      onClose,
+      onToggle,
+      ...validDomProps 
+    } = rest;
+
     const resolved = useMemo(
       () =>
         resolveDefaultProps({
@@ -98,7 +94,6 @@ const SidebarContainer = memo(
       [variant, size, width, shadow, position, collapsed, open],
     );
 
-    // Sidebar classes.
     const sidebarClasses = useMemo(
       () =>
         getSidebarClasses({
@@ -123,7 +118,6 @@ const SidebarContainer = memo(
       ],
     );
 
-    // Container classes.
     const containerClasses = useMemo(
       () =>
         getSidebarContainerClasses({
@@ -134,7 +128,6 @@ const SidebarContainer = memo(
       [resolved.open, resolved.position],
     );
 
-    // Responsive overrides.
     const responsiveClasses = useMemo(
       () => (responsive ? resolveResponsiveClasses(responsive) : ''),
       [responsive],
@@ -145,7 +138,6 @@ const SidebarContainer = memo(
       [sidebarClasses, responsiveClasses],
     );
 
-    // Motion props - respect reduced motion.
     const motionProps = useMemo(() => {
       if (prefersReducedMotion) {
         return { initial: false, animate: true, exit: false };
@@ -153,7 +145,6 @@ const SidebarContainer = memo(
       return CONTAINER_MOTION;
     }, [prefersReducedMotion]);
 
-    // Overlay motion props.
     const overlayMotionProps = useMemo(() => {
       if (prefersReducedMotion) {
         return { initial: false, animate: true, exit: false };
@@ -161,7 +152,6 @@ const SidebarContainer = memo(
       return OVERLAY_MOTION;
     }, [prefersReducedMotion]);
 
-    // Accessibility attributes.
     const ariaProps = useMemo(
       () => ({
         role,
@@ -175,21 +165,18 @@ const SidebarContainer = memo(
       [role, ariaLabel, resolved.open, resolved.collapsed, resolved.position],
     );
 
-    // Handle overlay click.
     const handleOverlayClick = (event) => {
       if (event.target === event.currentTarget) {
         onOverlayClick?.();
       }
     };
 
-    // If sidebar is not open, don't render (for mobile).
     if (!resolved.open) {
       return null;
     }
 
     return (
       <>
-        {/* Overlay for mobile */}
         {overlay && !resolved.collapsed && (
           <motion.div
             className={mergeClasses(
@@ -201,13 +188,12 @@ const SidebarContainer = memo(
           />
         )}
 
-        {/* Sidebar */}
         <motion.aside
           ref={ref}
           className={finalClasses}
           {...motionProps}
           {...ariaProps}
-          {...rest}
+          {...validDomProps}
         >
           {children}
         </motion.aside>
@@ -219,27 +205,16 @@ const SidebarContainer = memo(
 SidebarContainer.displayName = 'SidebarContainer';
 
 SidebarContainer.propTypes = {
-  /** Sidebar content (Header, Content, Footer, etc.). */
   children: PropTypes.node,
-  /** Visual variant. */
   variant: PropTypes.oneOf(['default', 'dark', 'primary', 'transparent', 'glass', 'gradient']),
-  /** Size preset. */
   size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
-  /** Width preset. */
   width: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl', 'full', 'collapsed']),
-  /** Shadow level. */
   shadow: PropTypes.oneOf(['none', 'sm', 'md', 'lg', 'xl', '2xl']),
-  /** Position. */
   position: PropTypes.oneOf(['left', 'right']),
-  /** Collapsed state. */
   collapsed: PropTypes.bool,
-  /** Open state. */
   open: PropTypes.bool,
-  /** Whether to show overlay. */
   overlay: PropTypes.bool,
-  /** Callback when overlay is clicked. */
   onOverlayClick: PropTypes.func,
-  /** Responsive overrides. */
   responsive: PropTypes.shape({
     xs: PropTypes.string,
     sm: PropTypes.string,
@@ -247,11 +222,8 @@ SidebarContainer.propTypes = {
     lg: PropTypes.string,
     xl: PropTypes.string,
   }),
-  /** Additional CSS classes. */
   className: PropTypes.string,
-  /** ARIA role. */
   role: PropTypes.string,
-  /** Accessible label. */
   'aria-label': PropTypes.string,
 };
 

@@ -71,7 +71,8 @@ const DropdownContainer = memo(
     },
     ref,
   ) {
-    
+
+    const prefersReducedMotion = useReducedMotion();
     const containerRef = useRef(null);
     const [internalOpen, setInternalOpen] = useState(defaultOpen);
 

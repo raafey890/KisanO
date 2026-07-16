@@ -409,6 +409,35 @@ export function getAccessibilityHelpers({
   };
 }
 
+/**
+ * Determines whether the DatePicker should respond to the Escape key.
+ *
+ * @param {Object} options
+ * @param {boolean} options.closeOnEscape
+ * @param {boolean} options.disabled
+ * @param {boolean} options.loading
+ * @returns {boolean}
+ */
+export function shouldCloseOnEscape({
+  closeOnEscape = true,
+  disabled = false,
+  loading = false,
+} = {}) {
+  return closeOnEscape && !disabled && !loading;
+}
+
+/**
+ * Determines whether the DatePicker should close
+ * when clicking outside.
+ */
+export function shouldCloseOnOutsideClick({
+  closeOnOutsideClick = true,
+  disabled = false,
+  loading = false,
+} = {}) {
+  return closeOnOutsideClick && !disabled && !loading;
+}
+
 /* ---------------------------------- */
 /* Re-exported Utilities              */
 /* ---------------------------------- */

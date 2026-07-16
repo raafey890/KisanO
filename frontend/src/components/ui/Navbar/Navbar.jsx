@@ -6,13 +6,10 @@
  * Provides a convenient API for rendering responsive navigation with
  * brand, menu items, search, user profile, and mobile menu support.
  *
- * Single Responsibility: Orchestrate Navbar subcomponents.
- * Does not contain business logic, helper functions, or duplicate styling.
- *
  * @module components/ui/Navbar/Navbar
  */
 
-import { forwardRef, memo, useMemo, useState, useCallback, useEffect } from 'react';
+import { forwardRef, memo, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -36,35 +33,13 @@ import NavbarLoader from './NavbarLoader';
 /* Component                          */
 /* ---------------------------------- */
 
-/**
- * Navbar – the main navigation component.
- *
- * @component
- * @example
- * <Navbar
- *   brand={<NavbarBrand>Logo</NavbarBrand>}
- *   menu={<NavbarMenu>Items</NavbarMenu>}
- *   right={<NavbarProfile />}
- * />
- *
- * @example
- * <Navbar
- *   brand="My App"
- *   items={[
- *     { label: 'Home', href: '/' },
- *     { label: 'About', href: '/about' },
- *   ]}
- *   sticky
- *   dark
- * />
- */
 const Navbar = memo(
   forwardRef(function Navbar(
     {
       children,
       brand,
       menu,
-      right,
+      right: rightProp,
       search,
       profile,
       toggle,
@@ -86,7 +61,6 @@ const Navbar = memo(
       collapsed = false,
       responsive,
       className = '',
-      containerClassName = '',
       menuClassName = '',
       brandProps,
       menuProps,
@@ -103,14 +77,22 @@ const Navbar = memo(
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
 
-    // Handle toggle.
-    const handleToggle = useCallback(() => {
-      const newOpen = !isOpen;
-      setIsOpen(newOpen);
-      onToggle?.(newOpen);
-    }, [isOpen, onToggle]);
+    // Store onToggle in ref to prevent re-render loops
+    const onToggleRef = useRef(onToggle);
+    useEffect(() => {
+      onToggleRef.current = onToggle;
+    }, [onToggle]);
 
-    // Handle scroll detection.
+    // ✅ Fixed: handleToggle uses functional update to avoid dependencies
+    const handleToggle = useCallback(() => {
+      setIsOpen((prevOpen) => {
+        const newOpen = !prevOpen;
+        onToggleRef.current?.(newOpen);
+        return newOpen;
+      });
+    }, []);
+
+    // Handle scroll detection
     useEffect(() => {
       const handleScroll = () => {
         setIsScrolled(window.scrollY > 10);
@@ -120,7 +102,7 @@ const Navbar = memo(
       return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Resolve defaults.
+    // Resolve defaults
     const resolved = useMemo(
       () =>
         resolveDefaultProps({
@@ -135,17 +117,15 @@ const Navbar = memo(
       [variant, size, shadow, position, backdrop, collapsed, transparent],
     );
 
-    // Determine if dark mode is active.
     const isDark = dark || resolved.variant === 'dark' || resolved.variant === 'primary';
 
-    // Determine effective position.
     const effectivePosition = useMemo(() => {
       if (sticky) return 'sticky';
       if (fixed) return 'fixed';
       return resolved.position;
     }, [sticky, fixed, resolved.position]);
 
-    // Container props.
+    // Container props
     const containerPropsMerged = useMemo(
       () => ({
         variant: resolved.variant,
@@ -159,7 +139,6 @@ const Navbar = memo(
         dark: isDark,
         className,
         ...containerProps,
-        ...rest,
       }),
       [
         resolved.variant,
@@ -174,22 +153,18 @@ const Navbar = memo(
         isDark,
         className,
         containerProps,
-        rest,
       ],
     );
 
-    // Brand props.
     const brandPropsMerged = useMemo(
       () => ({
         size: resolved.size,
         disabled: resolved.collapsed,
-        className: '',
         ...brandProps,
       }),
       [resolved.size, resolved.collapsed, brandProps],
     );
 
-    // Menu props.
     const menuPropsMerged = useMemo(
       () => ({
         size: resolved.size,
@@ -201,20 +176,17 @@ const Navbar = memo(
       [resolved.size, isOpen, resolved.collapsed, menuClassName, menuProps],
     );
 
-    // Toggle props.
     const togglePropsMerged = useMemo(
       () => ({
         size: resolved.size,
         open: isOpen,
         disabled: resolved.collapsed || loading,
         onClick: handleToggle,
-        className: '',
         ...toggleProps,
       }),
-      [resolved.size, isOpen, resolved.collapsed, loading, handleToggle, toggleProps],
+      [resolved.size, isOpen, resolved.collapsed, loading, toggleProps],
     );
 
-    // Loader props.
     const loaderPropsMerged = useMemo(
       () => ({
         size: resolved.size,
@@ -226,15 +198,12 @@ const Navbar = memo(
       [resolved.size, resolved.collapsed, loaderProps],
     );
 
-    // Render brand content.
     const renderBrand = useMemo(() => {
       if (brand) return brand;
       if (logo || brandText) {
         return (
           <NavbarBrand href={logoHref} {...brandPropsMerged}>
-            {logo && (
-              <img src={logo} alt={logoAlt} className="h-8 w-auto" />
-            )}
+            {logo && <img src={logo} alt={logoAlt} className="h-8 w-auto" />}
             {brandText}
           </NavbarBrand>
         );
@@ -242,7 +211,6 @@ const Navbar = memo(
       return null;
     }, [brand, logo, logoAlt, logoHref, brandText, brandPropsMerged]);
 
-    // Render menu items.
     const renderMenuItems = useMemo(() => {
       if (menu) return menu;
       if (items.length > 0) {
@@ -272,9 +240,8 @@ const Navbar = memo(
       return null;
     }, [menu, items, menuPropsMerged]);
 
-    // Render right side content.
     const renderRight = useMemo(() => {
-      if (right) return right;
+      if (rightProp) return rightProp;
       return (
         <div className="flex items-center gap-2">
           {search && <NavbarSearch {...searchProps} />}
@@ -282,40 +249,23 @@ const Navbar = memo(
           {toggle && <NavbarToggle {...togglePropsMerged} />}
         </div>
       );
-    }, [right, search, searchProps, profile, profileProps, toggle, togglePropsMerged]);
+    }, [rightProp, search, searchProps, profile, profileProps, toggle, togglePropsMerged]);
 
-    // Show loader.
     const showLoader = loading;
 
     return (
-      <NavbarContainer ref={ref} {...containerPropsMerged}>
+      <NavbarContainer ref={ref} {...containerPropsMerged} {...rest}>
         <div className="flex items-center justify-between w-full">
-          {/* Left: Brand */}
-          <div className="flex items-center gap-4">
-            {renderBrand}
-          </div>
-
-          {/* Center: Menu (desktop) */}
+          <div className="flex items-center gap-4">{renderBrand}</div>
           {!resolved.collapsed && renderMenuItems}
-
-          {/* Right: Search, Profile, Toggle */}
           <div className="flex items-center gap-2">
-            {showLoader ? (
-              <NavbarLoader {...loaderPropsMerged} />
-            ) : (
-              renderRight
-            )}
+            {showLoader ? <NavbarLoader {...loaderPropsMerged} /> : renderRight}
           </div>
         </div>
 
-        {/* Mobile menu */}
         {resolved.collapsed && isOpen && (
           <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-            {showLoader ? (
-              <NavbarLoader {...loaderPropsMerged} />
-            ) : (
-              renderMenuItems
-            )}
+            {showLoader ? <NavbarLoader {...loaderPropsMerged} /> : renderMenuItems}
           </div>
         )}
 
@@ -328,21 +278,13 @@ const Navbar = memo(
 Navbar.displayName = 'Navbar';
 
 Navbar.propTypes = {
-  /** Navbar children. */
   children: PropTypes.node,
-  /** Brand element. */
   brand: PropTypes.node,
-  /** Menu element. */
   menu: PropTypes.node,
-  /** Right side content. */
   right: PropTypes.node,
-  /** Search element. */
   search: PropTypes.node,
-  /** Profile element. */
   profile: PropTypes.node,
-  /** Toggle element. */
   toggle: PropTypes.node,
-  /** Menu items array. */
   items: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.node,
@@ -353,37 +295,21 @@ Navbar.propTypes = {
       onClick: PropTypes.func,
     }),
   ),
-  /** Logo image src. */
   logo: PropTypes.string,
-  /** Logo alt text. */
   logoAlt: PropTypes.string,
-  /** Logo href. */
   logoHref: PropTypes.string,
-  /** Brand text. */
   brandText: PropTypes.node,
-  /** Visual variant. */
   variant: PropTypes.oneOf(['default', 'dark', 'primary', 'transparent', 'glass', 'gradient']),
-  /** Size preset. */
   size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
-  /** Shadow level. */
   shadow: PropTypes.oneOf(['none', 'sm', 'md', 'lg', 'xl', '2xl']),
-  /** Position. */
   position: PropTypes.oneOf(['static', 'fixed', 'sticky', 'absolute']),
-  /** Backdrop effect. */
   backdrop: PropTypes.oneOf(['none', 'sm', 'md', 'lg', 'xl']),
-  /** Sticky mode. */
   sticky: PropTypes.bool,
-  /** Fixed mode. */
   fixed: PropTypes.bool,
-  /** Transparent mode. */
   transparent: PropTypes.bool,
-  /** Dark mode. */
   dark: PropTypes.bool,
-  /** Loading state. */
   loading: PropTypes.bool,
-  /** Collapsed state (mobile menu). */
   collapsed: PropTypes.bool,
-  /** Responsive overrides. */
   responsive: PropTypes.shape({
     xs: PropTypes.string,
     sm: PropTypes.string,
@@ -391,27 +317,15 @@ Navbar.propTypes = {
     lg: PropTypes.string,
     xl: PropTypes.string,
   }),
-  /** Additional CSS classes for the container. */
   className: PropTypes.string,
-  /** Additional CSS classes for the container wrapper. */
-  containerClassName: PropTypes.string,
-  /** Additional CSS classes for the menu. */
   menuClassName: PropTypes.string,
-  /** Additional props for NavbarBrand. */
   brandProps: PropTypes.object,
-  /** Additional props for NavbarMenu. */
   menuProps: PropTypes.object,
-  /** Additional props for NavbarToggle. */
   toggleProps: PropTypes.object,
-  /** Additional props for NavbarSearch. */
   searchProps: PropTypes.object,
-  /** Additional props for NavbarProfile. */
   profileProps: PropTypes.object,
-  /** Additional props for NavbarContainer. */
   containerProps: PropTypes.object,
-  /** Additional props for NavbarLoader. */
   loaderProps: PropTypes.object,
-  /** Callback when toggle is clicked. */
   onToggle: PropTypes.func,
 };
 

@@ -6,13 +6,10 @@
  * Provides a convenient API for rendering collapsible navigation with
  * header, content, footer, and nested navigation support.
  *
- * Single Responsibility: Orchestrate Sidebar subcomponents.
- * Does not contain business logic, helper functions, or duplicate styling.
- *
  * @module components/ui/Sidebar/Sidebar
  */
 
-import { forwardRef, memo, useMemo, useState, useCallback, useEffect } from 'react';
+import { forwardRef, memo, useMemo, useState, useCallback, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -37,28 +34,6 @@ import SidebarLoader from './SidebarLoader';
 /* Component                          */
 /* ---------------------------------- */
 
-/**
- * Sidebar – the main navigation sidebar component.
- *
- * @component
- * @example
- * <Sidebar
- *   header={<SidebarHeader>Logo</SidebarHeader>}
- *   items={[
- *     { label: 'Dashboard', icon: <DashboardIcon />, href: '/' },
- *     { label: 'Users', icon: <UsersIcon />, href: '/users' },
- *   ]}
- *   footer={<SidebarFooter>Profile</SidebarFooter>}
- * />
- *
- * @example
- * <Sidebar
- *   collapsible
- *   defaultCollapsed={false}
- *   items={items}
- *   position="left"
- * />
- */
 const Sidebar = memo(
   forwardRef(function Sidebar(
     {
@@ -96,49 +71,66 @@ const Sidebar = memo(
     },
     ref,
   ) {
-    // Internal state for uncontrolled mode.
+    // Internal state for uncontrolled mode
     const [internalCollapsed, setInternalCollapsed] = useState(defaultCollapsed);
     const [internalOpen, setInternalOpen] = useState(defaultOpen);
 
-    // Determine if controlled or uncontrolled.
+    // Determine if controlled or uncontrolled
     const isCollapsedControlled = controlledCollapsed !== undefined;
     const collapsed = isCollapsedControlled ? controlledCollapsed : internalCollapsed;
 
     const isOpenControlled = controlledOpen !== undefined;
     const open = isOpenControlled ? controlledOpen : internalOpen;
 
-    // Handle collapse change.
-    const handleCollapseChange = useCallback(
-      (newCollapsed) => {
-        if (!isCollapsedControlled) {
-          setInternalCollapsed(newCollapsed);
-        }
-        onCollapseChange?.(newCollapsed);
-      },
-      [isCollapsedControlled, onCollapseChange],
-    );
+    // Store callbacks in refs to prevent dependency loops
+    const onCollapseChangeRef = useRef(onCollapseChange);
+    const onOpenChangeRef = useRef(onOpenChange);
+    
+    useEffect(() => {
+      onCollapseChangeRef.current = onCollapseChange;
+      onOpenChangeRef.current = onOpenChange;
+    }, [onCollapseChange, onOpenChange]);
 
-    // Handle open change.
-    const handleOpenChange = useCallback(
-      (newOpen) => {
-        if (!isOpenControlled) {
-          setInternalOpen(newOpen);
-        }
-        onOpenChange?.(newOpen);
-      },
-      [isOpenControlled, onOpenChange],
-    );
+    // ✅ Fixed: Use functional updates for state setters
+    // This avoids needing 'collapsed' and 'open' in dependencies
+    const handleCollapseChange = useCallback(() => {
+      if (isCollapsedControlled) {
+        // If controlled, call the callback with the new value
+        const newValue = !controlledCollapsed;
+        onCollapseChangeRef.current?.(newValue);
+      } else {
+        // If uncontrolled, use functional update
+        setInternalCollapsed((prev) => {
+          const newValue = !prev;
+          onCollapseChangeRef.current?.(newValue);
+          return newValue;
+        });
+      }
+    }, [isCollapsedControlled, controlledCollapsed]);
 
-    // Handle toggle.
+    const handleOpenChange = useCallback(() => {
+      if (isOpenControlled) {
+        const newValue = !controlledOpen;
+        onOpenChangeRef.current?.(newValue);
+      } else {
+        setInternalOpen((prev) => {
+          const newValue = !prev;
+          onOpenChangeRef.current?.(newValue);
+          return newValue;
+        });
+      }
+    }, [isOpenControlled, controlledOpen]);
+
+    // ✅ Fixed: handleToggle now has NO dependencies that change
     const handleToggle = useCallback(() => {
       if (collapsible) {
-        handleCollapseChange(!collapsed);
+        handleCollapseChange();
       } else {
-        handleOpenChange(!open);
+        handleOpenChange();
       }
-    }, [collapsible, collapsed, open, handleCollapseChange, handleOpenChange]);
+    }, [collapsible, handleCollapseChange, handleOpenChange]);
 
-    // Resolve defaults.
+    // Resolve defaults
     const resolved = useMemo(
       () =>
         resolveDefaultProps({
@@ -153,10 +145,13 @@ const Sidebar = memo(
       [variant, size, width, shadow, position, collapsed, open],
     );
 
-    // Determine effective collapsed state.
+    // Determine if sidebar is open (for rendering)
+    const isOpen = resolved.open;
+
+    // Determine if sidebar is collapsed (for width)
     const isCollapsed = resolved.collapsed && collapsible;
 
-    // Container props.
+    // Container props
     const containerPropsMerged = useMemo(
       () => ({
         variant: resolved.variant,
@@ -165,10 +160,10 @@ const Sidebar = memo(
         shadow: resolved.shadow,
         position: resolved.position,
         collapsed: isCollapsed,
-        open: resolved.open,
+        open: isOpen,
         className,
         ...containerProps,
-        ...rest,
+        // ✅ Don't spread rest here - it contains callback props that cause loops
       }),
       [
         resolved.variant,
@@ -177,14 +172,13 @@ const Sidebar = memo(
         resolved.shadow,
         resolved.position,
         isCollapsed,
-        resolved.open,
+        isOpen,
         className,
         containerProps,
-        rest,
       ],
     );
 
-    // Header props.
+    // Header props
     const headerPropsMerged = useMemo(
       () => ({
         size: resolved.size,
@@ -195,7 +189,7 @@ const Sidebar = memo(
       [resolved.size, isCollapsed, headerProps],
     );
 
-    // Content props.
+    // Content props
     const contentPropsMerged = useMemo(
       () => ({
         size: resolved.size,
@@ -206,7 +200,7 @@ const Sidebar = memo(
       [resolved.size, isCollapsed, contentProps],
     );
 
-    // Footer props.
+    // Footer props
     const footerPropsMerged = useMemo(
       () => ({
         size: resolved.size,
@@ -217,7 +211,7 @@ const Sidebar = memo(
       [resolved.size, isCollapsed, footerProps],
     );
 
-    // Toggle props.
+    // Toggle props
     const togglePropsMerged = useMemo(
       () => ({
         size: resolved.size,
@@ -227,10 +221,10 @@ const Sidebar = memo(
         className: '',
         ...toggleProps,
       }),
-      [resolved.size, isCollapsed, loading, handleToggle, toggleProps],
+      [resolved.size, isCollapsed, loading, toggleProps],
     );
 
-    // Loader props.
+    // Loader props
     const loaderPropsMerged = useMemo(
       () => ({
         size: resolved.size,
@@ -243,13 +237,13 @@ const Sidebar = memo(
       [resolved.size, loading, loaderProps],
     );
 
-    // Render header.
+    // Render header
     const renderHeader = useMemo(() => {
       if (header) return header;
       return <SidebarHeader {...headerPropsMerged} />;
     }, [header, headerPropsMerged]);
 
-    // Render content.
+    // Render content
     const renderContent = useMemo(() => {
       if (content) return content;
       if (groups.length > 0 || items.length > 0) {
@@ -299,23 +293,22 @@ const Sidebar = memo(
       return null;
     }, [content, groups, items, isCollapsed, contentPropsMerged, groupProps, itemProps]);
 
-    // Render footer.
+    // Render footer
     const renderFooter = useMemo(() => {
       if (footer) return footer;
       return <SidebarFooter {...footerPropsMerged} />;
     }, [footer, footerPropsMerged]);
 
-    // Render toggle.
+    // Render toggle
     const renderToggle = useMemo(() => {
       if (toggle) return toggle;
       return <SidebarToggle {...togglePropsMerged} />;
     }, [toggle, togglePropsMerged]);
 
-    // Show loader.
     const showLoader = loading;
 
     return (
-      <SidebarContainer ref={ref} {...containerPropsMerged}>
+      <SidebarContainer ref={ref} {...containerPropsMerged} {...rest}>
         {/* Header */}
         {renderHeader}
 
@@ -341,15 +334,10 @@ const Sidebar = memo(
 Sidebar.displayName = 'Sidebar';
 
 Sidebar.propTypes = {
-  /** Sidebar children. */
   children: PropTypes.node,
-  /** Header element. */
   header: PropTypes.node,
-  /** Content element. */
   content: PropTypes.node,
-  /** Footer element. */
   footer: PropTypes.node,
-  /** Menu items array. */
   items: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.node,
@@ -361,7 +349,6 @@ Sidebar.propTypes = {
       onClick: PropTypes.func,
     }),
   ),
-  /** Menu groups array. */
   groups: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.node,
@@ -369,35 +356,20 @@ Sidebar.propTypes = {
       items: PropTypes.array,
     }),
   ),
-  /** Toggle element. */
   toggle: PropTypes.node,
-  /** Visual variant. */
   variant: PropTypes.oneOf(['default', 'dark', 'primary', 'transparent', 'glass', 'gradient']),
-  /** Size preset. */
   size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
-  /** Width preset. */
   width: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl', 'full', 'collapsed']),
-  /** Shadow level. */
   shadow: PropTypes.oneOf(['none', 'sm', 'md', 'lg', 'xl', '2xl']),
-  /** Position. */
   position: PropTypes.oneOf(['left', 'right']),
-  /** Whether sidebar is collapsible. */
   collapsible: PropTypes.bool,
-  /** Controlled collapsed state. */
   collapsed: PropTypes.bool,
-  /** Default collapsed state for uncontrolled mode. */
   defaultCollapsed: PropTypes.bool,
-  /** Callback when collapse state changes. */
   onCollapseChange: PropTypes.func,
-  /** Controlled open state. */
   open: PropTypes.bool,
-  /** Default open state for uncontrolled mode. */
   defaultOpen: PropTypes.bool,
-  /** Callback when open state changes. */
   onOpenChange: PropTypes.func,
-  /** Loading state. */
   loading: PropTypes.bool,
-  /** Responsive overrides. */
   responsive: PropTypes.shape({
     xs: PropTypes.string,
     sm: PropTypes.string,
@@ -405,23 +377,14 @@ Sidebar.propTypes = {
     lg: PropTypes.string,
     xl: PropTypes.string,
   }),
-  /** Additional CSS classes for the container. */
   className: PropTypes.string,
-  /** Additional props for SidebarHeader. */
   headerProps: PropTypes.object,
-  /** Additional props for SidebarContent. */
   contentProps: PropTypes.object,
-  /** Additional props for SidebarFooter. */
   footerProps: PropTypes.object,
-  /** Additional props for SidebarItem. */
   itemProps: PropTypes.object,
-  /** Additional props for SidebarGroup. */
   groupProps: PropTypes.object,
-  /** Additional props for SidebarToggle. */
   toggleProps: PropTypes.object,
-  /** Additional props for SidebarContainer. */
   containerProps: PropTypes.object,
-  /** Additional props for SidebarLoader. */
   loaderProps: PropTypes.object,
 };
 

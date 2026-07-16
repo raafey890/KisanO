@@ -145,7 +145,7 @@ const Tooltip = memo(
     // Trigger props.
     const triggerPropsMerged = useMemo(
       () => ({
-        onOpenChange: handleOpenChange,
+        
         trigger,
         delay: resolved.delay,
         closeDelay: resolved.closeDelay,

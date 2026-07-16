@@ -23,6 +23,12 @@ import {
   resolveResponsiveClasses,
   resolveDefaultProps,
   isInteractiveTextarea,
+  getTextareaRadius,
+  getTextareaShadow,
+  getTextareaVariant,
+  getTextareaSize,
+  getTextareaState,
+  getTextareaResize,
 } from './textareaUtils';
 
 import TextareaContainer from './TextareaContainer';
@@ -313,8 +319,8 @@ const Textarea = memo(
           <textarea
             id={inputId}
             name={name}
-            value={value}
-            defaultValue={defaultValue}
+            value={isControlled ? value : undefined}
+            defaultValue={!isControlled ? defaultValue : undefined}
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}

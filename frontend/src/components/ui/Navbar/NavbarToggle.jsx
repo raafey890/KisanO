@@ -158,7 +158,7 @@ const NavbarToggle = memo(
       };
     }, [prefersReducedMotion]);
 
-    // Accessibility attributes.
+    // Accessibility attributes - FIXED: removed onOpenChange
     const ariaProps = useMemo(
       () => ({
         type: 'button',

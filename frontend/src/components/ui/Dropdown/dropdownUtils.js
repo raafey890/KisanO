@@ -204,7 +204,8 @@ export function getDropdownContainerClasses(className = '') {
  */
 export function getDropdownTriggerClasses({
   variant = DROPDOWN_DEFAULTS.variant,
-  size = DROPDOWN_DEFAULTS.size,
+size = DROPDOWN_DEFAULTS.size,
+radius = DROPDOWN_DEFAULTS.radius,
   className = '',
   disabled = false,
   loading = false,

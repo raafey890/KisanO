@@ -159,7 +159,7 @@ export function getTextareaClasses({
     variantConfig.text,
     variantConfig.border,
     variantConfig.placeholder,
-    getTextareaRadius(radius),
+    getRadiusClasses(radius),
     getTextareaShadow(shadow),
     getTextareaResize(resize),
     stateConfig.background,

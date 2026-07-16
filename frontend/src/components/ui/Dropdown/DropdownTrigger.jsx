@@ -11,7 +11,17 @@
  * @module components/ui/Dropdown/DropdownTrigger
  */
 
-import { forwardRef, memo, useCallback, useRef, useEffect, useMemo, cloneElement } from 'react';
+import {
+  cloneElement,
+  isValidElement,
+  forwardRef,
+  memo,
+  useMemo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { motion, useReducedMotion } from 'framer-motion';
 
@@ -69,7 +79,8 @@ const DropdownTrigger = memo(
       onOpen,
       onClose,
       variant = DROPDOWN_DEFAULTS.variant,
-      size = DROPDOWN_DEFAULTS.size,
+size = DROPDOWN_DEFAULTS.size,
+radius = DROPDOWN_DEFAULTS.radius,
       disabled = false,
       loading = false,
       interactive = true,
@@ -95,6 +106,7 @@ const DropdownTrigger = memo(
         getDropdownTriggerClasses({
           variant,
           size,
+          radius,
           className,
           disabled,
           loading,
@@ -260,9 +272,9 @@ const DropdownTrigger = memo(
     };
 
     // If child is a React element, clone it with the props.
-    if (React.isValidElement(child)) {
-      return cloneElement(child, childProps);
-    }
+    if (isValidElement(child)) {
+  return cloneElement(child, childProps);
+}
 
     // Otherwise, wrap the child in a motion.div.
     return (

@@ -30,7 +30,6 @@ import {
 /* Component-specific tokens          */
 /* ---------------------------------- */
 
-/** Motion variants for container animation. */
 const CONTAINER_MOTION = {
   initial: { opacity: 0, y: -8 },
   animate: { opacity: 1, y: 0 },
@@ -41,16 +40,6 @@ const CONTAINER_MOTION = {
 /* Component                          */
 /* ---------------------------------- */
 
-/**
- * NavbarContainer – the main navbar wrapper with layout and styling.
- *
- * @component
- * @example
- * <NavbarContainer variant="default" size="md">
- *   <NavbarBrand>Logo</NavbarBrand>
- *   <NavbarMenu>Items</NavbarMenu>
- * </NavbarContainer>
- */
 const NavbarContainer = memo(
   forwardRef(function NavbarContainer(
     {
@@ -74,7 +63,14 @@ const NavbarContainer = memo(
   ) {
     const prefersReducedMotion = useReducedMotion();
 
-    // Resolve defaults.
+    // Filter out custom props before spreading to DOM element
+    const { 
+      onOpenChange, 
+      onClose,
+      onToggle,
+      ...validDomProps 
+    } = rest;
+
     const resolved = useMemo(
       () =>
         resolveDefaultProps({
@@ -89,7 +85,6 @@ const NavbarContainer = memo(
       [variant, size, shadow, position, backdrop, collapsed, transparent],
     );
 
-    // Navbar classes.
     const navbarClasses = useMemo(
       () =>
         getNavbarClasses({
@@ -114,13 +109,11 @@ const NavbarContainer = memo(
       ],
     );
 
-    // Container classes.
     const containerClasses = useMemo(
       () => getNavbarContainerClasses({ className: '' }),
       [],
     );
 
-    // Responsive overrides.
     const responsiveClasses = useMemo(
       () => (responsive ? resolveResponsiveClasses(responsive) : ''),
       [responsive],
@@ -131,7 +124,6 @@ const NavbarContainer = memo(
       [navbarClasses, responsiveClasses],
     );
 
-    // Motion props - respect reduced motion.
     const motionProps = useMemo(() => {
       if (prefersReducedMotion) {
         return { initial: false, animate: true };
@@ -139,7 +131,6 @@ const NavbarContainer = memo(
       return CONTAINER_MOTION;
     }, [prefersReducedMotion]);
 
-    // Accessibility attributes.
     const ariaProps = useMemo(
       () => ({
         role,
@@ -159,7 +150,7 @@ const NavbarContainer = memo(
         className={finalClasses}
         {...motionProps}
         {...ariaProps}
-        {...rest}
+        {...validDomProps}
       >
         <div className={containerClasses}>
           {children}
@@ -172,27 +163,16 @@ const NavbarContainer = memo(
 NavbarContainer.displayName = 'NavbarContainer';
 
 NavbarContainer.propTypes = {
-  /** Navbar content (Brand, Menu, etc.). */
   children: PropTypes.node,
-  /** Visual variant. */
   variant: PropTypes.oneOf(['default', 'dark', 'primary', 'transparent', 'glass', 'gradient']),
-  /** Size preset. */
   size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
-  /** Shadow level. */
   shadow: PropTypes.oneOf(['none', 'sm', 'md', 'lg', 'xl', '2xl']),
-  /** Position. */
   position: PropTypes.oneOf(['static', 'fixed', 'sticky', 'absolute']),
-  /** Backdrop effect. */
   backdrop: PropTypes.oneOf(['none', 'sm', 'md', 'lg', 'xl']),
-  /** Collapsed state (mobile menu). */
   collapsed: PropTypes.bool,
-  /** Transparent mode. */
   transparent: PropTypes.bool,
-  /** Whether the menu is open. */
   isOpen: PropTypes.bool,
-  /** Dark mode. */
   dark: PropTypes.bool,
-  /** Responsive overrides. */
   responsive: PropTypes.shape({
     xs: PropTypes.string,
     sm: PropTypes.string,
@@ -200,11 +180,8 @@ NavbarContainer.propTypes = {
     lg: PropTypes.string,
     xl: PropTypes.string,
   }),
-  /** Additional CSS classes. */
   className: PropTypes.string,
-  /** ARIA role. */
   role: PropTypes.string,
-  /** Accessible label. */
   'aria-label': PropTypes.string,
 };
 
