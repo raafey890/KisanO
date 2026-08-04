@@ -76,15 +76,11 @@ const Sidebar = memo(
     const [internalOpen, setInternalOpen] = useState(defaultOpen);
 
     // Determine if controlled or uncontrolled
-   const isCollapsedControlled = controlledCollapsed !== undefined;
-    const collapsedValue = isCollapsedControlled
-  ? controlledCollapsed
-  : internalCollapsed;
+    const isCollapsedControlled = controlledCollapsed !== undefined;
+    const collapsedValue = isCollapsedControlled ? controlledCollapsed : internalCollapsed;
 
     const isOpenControlled = controlledOpen !== undefined;
-    const openValue = isOpenControlled
-  ? controlledOpen
-  : internalOpen;
+    const openValue = isOpenControlled ? controlledOpen : internalOpen;
 
     // Store callbacks in refs to prevent dependency loops
     const onCollapseChangeRef = useRef(onCollapseChange);
@@ -96,14 +92,11 @@ const Sidebar = memo(
     }, [onCollapseChange, onOpenChange]);
 
     // ✅ Fixed: Use functional updates for state setters
-    // This avoids needing 'collapsed' and 'open' in dependencies
     const handleCollapseChange = useCallback(() => {
       if (isCollapsedControlled) {
-        // If controlled, call the callback with the new value
         const newValue = !collapsedValue;
         onCollapseChangeRef.current?.(newValue);
       } else {
-        // If uncontrolled, use functional update
         setInternalCollapsed((prev) => {
           const newValue = !prev;
           onCollapseChangeRef.current?.(newValue);
@@ -111,8 +104,6 @@ const Sidebar = memo(
         });
       }
     }, [isCollapsedControlled, collapsedValue]);
-
-    
 
     const handleOpenChange = useCallback(() => {
       if (isOpenControlled) {
@@ -157,6 +148,15 @@ const Sidebar = memo(
     // Determine if sidebar is collapsed (for width)
     const isCollapsed = resolved.collapsed && collapsible;
 
+    // ✅ Filter out custom props from rest
+    const { 
+      onOpenChange: _onOpenChange,
+      onCollapseChange: _onCollapseChange,
+      onClose: _onClose,
+      onToggle: _onToggle,
+      ...validDomProps 
+    } = rest;
+
     // Container props
     const containerPropsMerged = useMemo(
       () => ({
@@ -169,7 +169,7 @@ const Sidebar = memo(
         open: isOpen,
         className,
         ...containerProps,
-        // ✅ Don't spread rest here - it contains callback props that cause loops
+        ...validDomProps, // ✅ Only valid DOM props
       }),
       [
         resolved.variant,
@@ -181,6 +181,7 @@ const Sidebar = memo(
         isOpen,
         className,
         containerProps,
+        validDomProps,
       ],
     );
 
@@ -314,7 +315,7 @@ const Sidebar = memo(
     const showLoader = loading;
 
     return (
-      <SidebarContainer ref={ref} {...containerPropsMerged} {...rest}>
+      <SidebarContainer ref={ref} {...containerPropsMerged}>
         {/* Header */}
         {renderHeader}
 

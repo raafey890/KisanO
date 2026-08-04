@@ -180,7 +180,7 @@ export const SPINNER_DEFAULTS = Object.freeze({
   speed: 'normal',
   animation: 'spin',
   disabled: false,
-  loading: true,
+  loading: false,
 });
 
 /* ---------------------------------- */

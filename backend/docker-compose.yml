@@ -1,0 +1,109 @@
+version: '3.8'
+
+services:
+  # ======================================
+  # Databases & Cache
+  # ======================================
+  mongodb:
+    image: mongo:6.0
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - internal-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  redis:
+    image: redis:7.0-alpine
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - redis_data:/data
+    networks:
+      - internal-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ======================================
+  # Core Applications
+  # ======================================
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    networks:
+      - backend-network
+      - internal-network
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/app/scripts/healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    # Override CMD to run the worker instead of the API
+    command: ["python", "-m", "modules.jobs.worker_runner"]
+    networks:
+      - internal-network
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    # Override CMD to run the scheduler
+    command: ["python", "-m", "modules.jobs.scheduler_runner"]
+    networks:
+      - internal-network
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  mongodb_data:
+  redis_data:
+
+networks:
+  backend-network:
+    driver: bridge
+  internal-network:
+    driver: bridge
+    internal: true # No internet access from outside

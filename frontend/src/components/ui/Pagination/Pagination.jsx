@@ -235,7 +235,7 @@ const Pagination = memo(
           <PaginationButton
             key="first"
             label={firstLabel}
-            ariaLabel="First page"
+            aria-label="First page"
             active={clampedPage === 1}
             disabled={isPrevDisabled}
             loading={resolved.loading}
@@ -254,7 +254,7 @@ const Pagination = memo(
           <PaginationButton
             key="prev"
             label={previousLabel}
-            ariaLabel="Previous page"
+            aria-label="Previous page"
             active={false}
             disabled={isPrevDisabled}
             loading={resolved.loading}
@@ -287,7 +287,7 @@ const Pagination = memo(
             <PaginationButton
               key={page}
               label={page}
-              ariaLabel={ariaLabel}
+              aria-label={ariaLabel}
               active={isActive}
               disabled={isDisabled}
               loading={resolved.loading}
@@ -307,7 +307,7 @@ const Pagination = memo(
           <PaginationButton
             key="next"
             label={nextLabel}
-            ariaLabel="Next page"
+            aria-label="Next page"
             active={false}
             disabled={isNextDisabled}
             loading={resolved.loading}
@@ -326,7 +326,7 @@ const Pagination = memo(
           <PaginationButton
             key="last"
             label={lastLabel}
-            ariaLabel="Last page"
+            aria-label="Last page"
             active={clampedPage === total}
             disabled={isNextDisabled}
             loading={resolved.loading}

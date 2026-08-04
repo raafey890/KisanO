@@ -38,7 +38,7 @@ const CARD_MOTION = {
 
 /** Hover motion variants. */
 const HOVER_MOTION = {
-  hover: { scale: 1.02, y: -4 },
+  hover: { scale: 1.02 },
   tap: { scale: 0.98 },
   transition: { duration: 0.15, ease: [0.4, 0, 0.2, 1] },
 };

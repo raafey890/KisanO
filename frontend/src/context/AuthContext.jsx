@@ -1,37 +1,37 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
     const [user, setUser] = useState(null);
+    const [token, setToken] = useState(localStorage.getItem("token") || "");
 
-    const [token, setToken] = useState(
-        localStorage.getItem("token") || ""
-    );
+    useEffect(() => {
+        const savedUser = localStorage.getItem("user");
+        if (savedUser && token) {
+            try {
+                setUser(JSON.parse(savedUser));
+            } catch (e) {
+                logout();
+            }
+        }
+    }, [token]);
 
     const login = (userData, jwtToken) => {
-
         setUser(userData);
-
         setToken(jwtToken);
-
         localStorage.setItem("token", jwtToken);
-
+        localStorage.setItem("user", JSON.stringify(userData));
     };
 
     const logout = () => {
-
         setUser(null);
-
         setToken("");
-
         localStorage.removeItem("token");
-
+        localStorage.removeItem("user");
     };
 
     return (
-
         <AuthContext.Provider
             value={{
                 user,
@@ -40,13 +40,9 @@ export const AuthProvider = ({ children }) => {
                 logout
             }}
         >
-
             {children}
-
         </AuthContext.Provider>
-
     );
-
 };
 
 export const useAuth = () => useContext(AuthContext);

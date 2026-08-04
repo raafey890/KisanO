@@ -1,0 +1,18 @@
+FROM python:3.11-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=off
+
+WORKDIR /app
+
+# Install dependencies (no wheels for dev to speed up build)
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+# In dev, we mount the volume directly so we don't COPY . /app
+# We also run as root in dev to avoid permission issues with bind mounts on host machines.
+
+EXPOSE 8000
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mongodb:
+    ports:
+      - "27017:27017" # Expose for local GUI tools (Compass, Robo3T)
+
+  redis:
+    ports:
+      - "6379:6379" # Expose for local GUI tools (RedisInsight)
+
+  backend:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app # Bind mount local code for live reloading
+    # No healthcheck for dev to speed up startup loop
+    healthcheck:
+      disable: true
+
+  worker:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+    healthcheck:
+      disable: true
+
+  scheduler:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+    healthcheck:
+      disable: true

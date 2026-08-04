@@ -305,7 +305,6 @@ const TooltipContainer = memo(
 
     // Handle mouse leave.
     const handleMouseLeave = useCallback(() => {
-      setIsHovered(false);
       closeTooltip();
     }, [closeTooltip]);
 

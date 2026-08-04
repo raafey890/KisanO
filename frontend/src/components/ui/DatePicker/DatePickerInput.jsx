@@ -67,6 +67,7 @@ const DatePickerInput = memo(
       showClear = false,
       onClear,
       onClick,
+      onOpenChange,
       responsive,
       className = '',
       role = 'combobox',
@@ -118,8 +119,9 @@ const DatePickerInput = memo(
       (event) => {
         if (disabled || loading) return;
         onClick?.(event);
+        onOpenChange?.(!open);
       },
-      [disabled, loading, onClick],
+      [disabled, loading, onClick, onOpenChange, open],
     );
 
     // Motion props - respect reduced motion.
@@ -274,6 +276,8 @@ DatePickerInput.propTypes = {
   onClear: PropTypes.func,
   /** Callback when input is clicked. */
   onClick: PropTypes.func,
+  /** Callback when open state changes. */
+  onOpenChange: PropTypes.func,
   /** Responsive overrides. */
   responsive: PropTypes.shape({
     xs: PropTypes.string,

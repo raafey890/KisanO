@@ -66,7 +66,7 @@ const TableContainer = memo(
       responsiveClasses,
       className = '',
       role = 'table',
-      'aria-label': ariaLabel,
+      'aria-label': ariaLabel='Table',
       ...rest
     },
     ref,

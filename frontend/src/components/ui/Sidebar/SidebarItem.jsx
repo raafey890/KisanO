@@ -27,7 +27,6 @@ import {
 /* Component-specific tokens          */
 /* ---------------------------------- */
 
-/** Badge color mapping. */
 const BADGE_COLORS = {
   default: 'bg-gray-500',
   primary: 'bg-blue-500',
@@ -37,36 +36,10 @@ const BADGE_COLORS = {
   info: 'bg-cyan-500',
 };
 
-/** Motion variants (if used with Framer Motion). */
-const ITEM_MOTION = {
-  hover: { scale: 1.02 },
-  tap: { scale: 0.98 },
-  transition: { duration: 0.15, ease: [0.4, 0, 0.2, 1] },
-};
-
 /* ---------------------------------- */
 /* Component                          */
 /* ---------------------------------- */
 
-/**
- * SidebarItem – a single sidebar navigation item.
- *
- * @component
- * @example
- * <SidebarItem
- *   label="Dashboard"
- *   icon={<DashboardIcon />}
- *   href="/"
- *   active
- * />
- *
- * @example
- * <SidebarItem
- *   label="Notifications"
- *   icon={<BellIcon />}
- *   badge={{ count: 5, color: 'error' }}
- * />
- */
 const SidebarItem = memo(
   forwardRef(function SidebarItem(
     {
@@ -89,7 +62,7 @@ const SidebarItem = memo(
     },
     ref,
   ) {
-    // Item classes.
+    // Item classes - ✅ NO hover state, pure CSS
     const itemClasses = useMemo(
       () =>
         getSidebarItemClasses({
@@ -102,7 +75,7 @@ const SidebarItem = memo(
       [size, className, active, disabled, collapsed],
     );
 
-    // Responsive overrides.
+    // Responsive overrides
     const responsiveClasses = useMemo(
       () => (responsive ? resolveResponsiveClasses(responsive) : ''),
       [responsive],
@@ -113,7 +86,7 @@ const SidebarItem = memo(
       [itemClasses, responsiveClasses],
     );
 
-    // Handle click.
+    // Handle click
     const handleClick = useCallback(
       (event) => {
         if (disabled) return;
@@ -122,13 +95,17 @@ const SidebarItem = memo(
       [disabled, onClick],
     );
 
-    // Badge color.
+    // Badge color
     const badgeColor = useMemo(() => {
       if (!badge) return '';
       return BADGE_COLORS[badge.color] || BADGE_COLORS.default;
     }, [badge]);
 
-    // Render content.
+    // ✅ NO useState for hover
+    // ✅ NO onMouseEnter/onMouseLeave
+    // ✅ Pure CSS hover effects
+
+    // Content
     const content = (
       <>
         {icon && (
@@ -176,7 +153,6 @@ const SidebarItem = memo(
       </>
     );
 
-    // If href is provided, render as link.
     if (href) {
       return (
         <a
@@ -193,7 +169,6 @@ const SidebarItem = memo(
       );
     }
 
-    // Otherwise, render as button.
     return (
       <button
         ref={ref}
@@ -214,32 +189,20 @@ const SidebarItem = memo(
 SidebarItem.displayName = 'SidebarItem';
 
 SidebarItem.propTypes = {
-  /** Item content (alternative to label). */
   children: PropTypes.node,
-  /** Item label. */
   label: PropTypes.node,
-  /** Link href. */
   href: PropTypes.string,
-  /** Icon element. */
   icon: PropTypes.node,
-  /** Badge configuration. */
   badge: PropTypes.shape({
     count: PropTypes.number,
     color: PropTypes.oneOf(['default', 'primary', 'success', 'warning', 'error', 'info']),
   }),
-  /** Active state. */
   active: PropTypes.bool,
-  /** Disabled state. */
   disabled: PropTypes.bool,
-  /** Whether the sidebar is collapsed. */
   collapsed: PropTypes.bool,
-  /** Whether the item is nested. */
   nested: PropTypes.bool,
-  /** Click handler. */
   onClick: PropTypes.func,
-  /** Size preset. */
   size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
-  /** Responsive overrides. */
   responsive: PropTypes.shape({
     xs: PropTypes.string,
     sm: PropTypes.string,
@@ -247,11 +210,8 @@ SidebarItem.propTypes = {
     lg: PropTypes.string,
     xl: PropTypes.string,
   }),
-  /** Additional CSS classes. */
   className: PropTypes.string,
-  /** ARIA role. */
   role: PropTypes.string,
-  /** Accessible label. */
   'aria-label': PropTypes.string,
 };
 

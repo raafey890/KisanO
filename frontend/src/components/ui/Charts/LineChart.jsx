@@ -11,7 +11,7 @@
  * @module components/ui/Chart/LineChart
  */
 
-import { forwardRef, memo, useMemo } from 'react';
+import { forwardRef, memo, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
   LineChart as RechartsLineChart,

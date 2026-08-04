@@ -1,0 +1,37 @@
+from enum import Enum
+
+class AdminRole(str, Enum):
+    SUPER_ADMIN = "SUPER_ADMIN"
+    ADMIN = "ADMIN"
+    SUPPORT_MANAGER = "SUPPORT_MANAGER"
+    MODERATOR = "MODERATOR"
+    FINANCE_MANAGER = "FINANCE_MANAGER"
+    OPERATIONS_MANAGER = "OPERATIONS_MANAGER"
+
+class ApprovalStatus(str, Enum):
+    PENDING = "PENDING"
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
+
+class FeatureFlagState(str, Enum):
+    ENABLED = "ENABLED"
+    DISABLED = "DISABLED"
+    MAINTENANCE = "MAINTENANCE"
+    REGIONAL = "REGIONAL"
+
+class ActionType(str, Enum):
+    APPROVE = "APPROVE"
+    REJECT = "REJECT"
+    MODERATE = "MODERATE"
+    UPDATE_SETTING = "UPDATE_SETTING"
+    UPDATE_FLAG = "UPDATE_FLAG"
+    BROADCAST = "BROADCAST"
+    LOGIN = "LOGIN"
+
+class ResourceType(str, Enum):
+    EQUIPMENT = "EQUIPMENT"
+    MARKETPLACE = "MARKETPLACE"
+    REVIEW = "REVIEW"
+    USER = "USER"
+    TICKET = "TICKET"
+    SPRAYER = "SPRAYER"

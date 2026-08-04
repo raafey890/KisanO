@@ -27,7 +27,6 @@ import {
 /* Component-specific tokens          */
 /* ---------------------------------- */
 
-/** Motion variants for group content. */
 const CONTENT_MOTION = {
   initial: { height: 0, opacity: 0 },
   animate: { height: 'auto', opacity: 1 },
@@ -35,14 +34,6 @@ const CONTENT_MOTION = {
   transition: { duration: 0.25, ease: [0.4, 0, 0.2, 1] },
 };
 
-/** Motion variants for group header. */
-const HEADER_MOTION = {
-  hover: { scale: 1.02 },
-  tap: { scale: 0.98 },
-  transition: { duration: 0.15, ease: [0.4, 0, 0.2, 1] },
-};
-
-/** Motion variants for chevron icon. */
 const CHEVRON_MOTION = {
   initial: { rotate: 0 },
   animate: { rotate: 180 },
@@ -53,16 +44,6 @@ const CHEVRON_MOTION = {
 /* Component                          */
 /* ---------------------------------- */
 
-/**
- * SidebarGroup – a collapsible group of sidebar items.
- *
- * @component
- * @example
- * <SidebarGroup label="Settings" defaultOpen>
- *   <SidebarItem label="Profile" href="/profile" />
- *   <SidebarItem label="Security" href="/security" />
- * </SidebarGroup>
- */
 const SidebarGroup = memo(
   forwardRef(function SidebarGroup(
     {
@@ -85,14 +66,14 @@ const SidebarGroup = memo(
   ) {
     const prefersReducedMotion = useReducedMotion();
 
-    // Internal state for uncontrolled mode.
+    // Internal state for uncontrolled mode
     const [internalOpen, setInternalOpen] = useState(defaultOpen);
 
-    // Determine if controlled or uncontrolled.
+    // Determine if controlled or uncontrolled
     const isControlled = controlledOpen !== undefined;
     const open = isControlled ? controlledOpen : internalOpen;
 
-    // Handle open change.
+    // Handle open change
     const handleOpenChange = useCallback(
       (newOpen) => {
         if (!isControlled) {
@@ -103,19 +84,19 @@ const SidebarGroup = memo(
       [isControlled, onOpenChange],
     );
 
-    // Handle toggle.
+    // Handle toggle
     const handleToggle = useCallback(() => {
       if (disabled || collapsed) return;
       handleOpenChange(!open);
     }, [disabled, collapsed, open, handleOpenChange]);
 
-    // Responsive overrides.
+    // Responsive overrides
     const responsiveClasses = useMemo(
       () => (responsive ? resolveResponsiveClasses(responsive) : ''),
       [responsive],
     );
 
-    // Group container classes.
+    // Group container classes
     const groupClasses = useMemo(() => {
       const base = mergeClasses(
         'flex flex-col',
@@ -125,7 +106,7 @@ const SidebarGroup = memo(
       return mergeClasses(base, responsiveClasses);
     }, [disabled, className, responsiveClasses]);
 
-    // Header classes.
+    // Header classes - ✅ NO hover state, pure CSS
     const headerClasses = useMemo(() => {
       const base = mergeClasses(
         'flex items-center w-full',
@@ -140,7 +121,7 @@ const SidebarGroup = memo(
       return base;
     }, [collapsed, disabled]);
 
-    // Label classes.
+    // Label classes
     const labelClasses = useMemo(() => {
       const base = mergeClasses(
         'flex-1 text-left truncate',
@@ -149,7 +130,7 @@ const SidebarGroup = memo(
       return base;
     }, [collapsed]);
 
-    // Icon classes.
+    // Icon classes
     const iconClasses = useMemo(() => {
       const base = mergeClasses(
         'shrink-0',
@@ -158,19 +139,11 @@ const SidebarGroup = memo(
       return base;
     }, [collapsed]);
 
-    // Motion props - respect reduced motion.
-    const motionProps = useMemo(() => {
-      if (prefersReducedMotion || disabled || collapsed) {
-        return {
-          whileHover: undefined,
-          whileTap: undefined,
-          transition: undefined,
-        };
-      }
-      return HEADER_MOTION;
-    }, [prefersReducedMotion, disabled, collapsed]);
+    // ✅ NO useRef for hover
+    // ✅ NO useState for hover
+    // ✅ NO onMouseEnter/onMouseLeave
 
-    // Chevron motion props.
+    // Chevron motion props
     const chevronMotionProps = useMemo(() => {
       if (prefersReducedMotion) {
         return { initial: false, animate: open };
@@ -178,7 +151,7 @@ const SidebarGroup = memo(
       return CHEVRON_MOTION;
     }, [prefersReducedMotion, open]);
 
-    // Content motion props.
+    // Content motion props
     const contentMotionProps = useMemo(() => {
       if (prefersReducedMotion) {
         return { initial: false, animate: true, exit: false };
@@ -186,7 +159,7 @@ const SidebarGroup = memo(
       return CONTENT_MOTION;
     }, [prefersReducedMotion]);
 
-    // Accessibility attributes.
+    // Accessibility attributes
     const ariaProps = useMemo(
       () => ({
         role,
@@ -197,7 +170,7 @@ const SidebarGroup = memo(
       [role, ariaLabel, label, disabled, open],
     );
 
-    // If collapsed, render only the icon.
+    // If collapsed, render only the icon
     if (collapsed) {
       return (
         <div className={groupClasses} {...rest}>
@@ -220,12 +193,11 @@ const SidebarGroup = memo(
         className={groupClasses}
         {...rest}
       >
-        {/* Header */}
+        {/* Header - ✅ Pure CSS hover, no state */}
         <motion.button
           className={headerClasses}
           onClick={handleToggle}
           disabled={disabled}
-          {...motionProps}
           {...ariaProps}
         >
           {icon && <span className={iconClasses}>{icon}</span>}
@@ -265,25 +237,15 @@ const SidebarGroup = memo(
 SidebarGroup.displayName = 'SidebarGroup';
 
 SidebarGroup.propTypes = {
-  /** Group content (items). */
   children: PropTypes.node,
-  /** Group label. */
   label: PropTypes.node,
-  /** Group icon. */
   icon: PropTypes.node,
-  /** Default open state for uncontrolled mode. */
   defaultOpen: PropTypes.bool,
-  /** Controlled open state. */
   open: PropTypes.bool,
-  /** Callback when open state changes. */
   onOpenChange: PropTypes.func,
-  /** Size preset. */
   size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
-  /** Whether the sidebar is collapsed. */
   collapsed: PropTypes.bool,
-  /** Disabled state. */
   disabled: PropTypes.bool,
-  /** Responsive overrides. */
   responsive: PropTypes.shape({
     xs: PropTypes.string,
     sm: PropTypes.string,
@@ -291,11 +253,8 @@ SidebarGroup.propTypes = {
     lg: PropTypes.string,
     xl: PropTypes.string,
   }),
-  /** Additional CSS classes. */
   className: PropTypes.string,
-  /** ARIA role. */
   role: PropTypes.string,
-  /** Accessible label. */
   'aria-label': PropTypes.string,
 };
 

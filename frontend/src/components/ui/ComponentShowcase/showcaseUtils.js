@@ -238,7 +238,7 @@ export function getShowcaseCardClasses({
     'bg-white dark:bg-gray-800',
     'border border-gray-200 dark:border-gray-700',
     'transition-all duration-200 ease-in-out',
-    interactive && 'cursor-pointer hover:shadow-md hover:-translate-y-1',
+    interactive && 'cursor-pointer hover:shadow-md',
     selected && 'ring-2 ring-blue-500 border-blue-500',
     disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
     className,

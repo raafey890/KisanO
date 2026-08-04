@@ -71,7 +71,7 @@ const SidebarContainer = memo(
   ) {
     const prefersReducedMotion = useReducedMotion();
 
-    // Filter out custom props before spreading to DOM element
+    // ✅ Filter out custom props before spreading to DOM element
     const { 
       onOpenChange, 
       onCollapseChange, 

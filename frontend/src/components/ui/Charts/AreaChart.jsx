@@ -10,9 +10,9 @@
  *
  * @module components/ui/Chart/AreaChart
  */
-
 import { forwardRef, memo, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
+
 import {
   AreaChart as RechartsAreaChart,
   Area,
@@ -22,20 +22,17 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Defs,
-  LinearGradient,
-  Stop,
 } from 'recharts';
 
 import {
   CHART_DEFAULTS,
   getChartColor,
 } from './chartVariants';
+
 import {
   mergeClasses,
   resolveResponsiveClasses,
 } from './chartUtils';
-
 /* ---------------------------------- */
 /* Component                          */
 /* ---------------------------------- */

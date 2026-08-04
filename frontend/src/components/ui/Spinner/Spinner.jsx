@@ -22,6 +22,7 @@ import {
   mergeClasses,
   resolveResponsiveClasses,
   resolveDefaultProps,
+  getSpinnerSize,
 } from './spinnerUtils';
 
 import SpinnerContainer from './SpinnerContainer';
@@ -58,7 +59,7 @@ const Spinner = memo(
       animation = SPINNER_DEFAULTS.animation,
       label = 'Loading...',
       disabled = false,
-      loading = true,
+      loading = SPINNER_DEFAULTS.loading,
       responsive,
       className = '',
       containerClassName = '',
@@ -87,6 +88,14 @@ const Spinner = memo(
         }),
       [variant, size, speed, animation, disabled, loading],
     );
+
+    console.log("Spinner props:", {
+  loading,
+  resolvedLoading: resolved.loading,
+  disabled,
+  resolvedDisabled: resolved.disabled,
+});
+
 
     // Determine if loading.
     const isLoading = resolved.loading && !resolved.disabled;

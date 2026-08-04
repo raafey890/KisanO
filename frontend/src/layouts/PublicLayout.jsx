@@ -1,19 +1,16 @@
-import { Outlet } from "react-router-dom";
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Navbar from '../components/shared/Navbar';
+import Footer from '../components/shared/Footer';
 
 export default function PublicLayout() {
-    return (
-        <div className="min-h-screen bg-[#F8FAF5]">
-
-            {/* Navbar */}
-
-            <main>
-
-                <Outlet />
-
-            </main>
-
-            {/* Footer */}
-
-        </div>
-    );
+  return (
+    <div className="min-h-screen flex flex-col" style={{ background: '#09090b' }}>
+      <Navbar />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
+  );
 }

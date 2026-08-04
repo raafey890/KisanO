@@ -42,7 +42,7 @@ import {
   Drawer,
   Toast,
   Alert,
-//   // Forms
+  //   // Forms
   Select,
   Dropdown,
   Checkbox,
@@ -51,27 +51,27 @@ import {
   Textarea,
   FileUpload,
   DatePicker,
-//   // Navigation
+  //   // Navigation
   Navbar,
   Sidebar,
-//   Tabs,
-//   Accordion,
-//   Breadcrumb,
-//   Pagination,
-//   // Display
-//   Badge,
-//   Avatar,
-//   Progress,
-//   Table,
-//   Skeleton,
-//   EmptyState,
-//   Spinner,
-//   // Charts
-//   Chart,
-//   LineChart,
-//   BarChart,
-//   PieChart,
-//   AreaChart,
+    Tabs,
+    Accordion,
+    Breadcrumb,
+    Pagination,
+  //   // Display
+    Badge,
+    Avatar,
+    Progress,
+    Table,
+    Skeleton,
+    EmptyState,
+    Spinner,
+  //   // Charts
+    Chart,
+    LineChart,
+    BarChart,
+    PieChart,
+    AreaChart,
 } from '../index';
 
 /* ---------------------------------- */
@@ -162,36 +162,36 @@ const ComponentShowcase = memo(
           icon: '🧭',
           components: [
             { name: 'Navbar', component: <Navbar brandText="Navbar" /> },
-            { name: 'Sidebar', component: <Sidebar /> },
-            // { name: 'Tabs', component: <Tabs /> },
-            // { name: 'Accordion', component: <Accordion /> },
-            // { name: 'Breadcrumb', component: <Breadcrumb /> },
-            // { name: 'Pagination', component: <Pagination total={10} /> },
+            { name: 'Sidebar', component: <Sidebar overlay={false} /> },
+            { name: 'Tabs', component: <Tabs /> },
+            { name: 'Accordion', component: <Accordion /> },
+            { name: 'Breadcrumb', component: <Breadcrumb /> },
+            { name: 'Pagination', component: <Pagination total={10} /> },
           ],
         },
-        // display: {
-        //   label: 'Display',
-        //   icon: '🖼️',
-        //   components: [
-        //     { name: 'Badge', component: <Badge>Badge</Badge> },
-        //     { name: 'Avatar', component: <Avatar name="User" /> },
-        //     { name: 'Progress', component: <Progress value={50} /> },
-        //     { name: 'Table', component: <Table /> },
-        //     { name: 'Skeleton', component: <Skeleton /> },
-        //     { name: 'EmptyState', component: <EmptyState title="Empty" /> },
-        //     { name: 'Spinner', component: <Spinner /> },
-        //   ],
-        // },
-        // charts: {
-        //   label: 'Charts',
-        //   icon: '📊',
-        //   components: [
-        //     { name: 'LineChart', component: <LineChart /> },
-        //     { name: 'BarChart', component: <BarChart /> },
-        //     { name: 'PieChart', component: <PieChart /> },
-        //     { name: 'AreaChart', component: <AreaChart /> },
-        //   ],
-        // },
+        display: {
+          label: 'Display',
+          icon: '🖼️',
+          components: [
+            { name: 'Badge', component: <Badge>Badge</Badge> },
+            { name: 'Avatar', component: <Avatar name="User" /> },
+            { name: 'Progress', component: <Progress value={50} /> },
+            { name: 'Table', component: <Table /> },
+            { name: 'Skeleton', component: <Skeleton /> },
+            { name: 'EmptyState', component: <EmptyState title="Empty" /> },
+            { name: 'Spinner', component: <Spinner /> },
+          ],
+        },
+        charts: {
+          label: 'Charts',
+          icon: '📊',
+          components: [
+            { name: 'LineChart', component: <LineChart /> },
+            { name: 'BarChart', component: <BarChart /> },
+            { name: 'PieChart', component: <PieChart /> },
+            { name: 'AreaChart', component: <AreaChart /> },
+          ],
+        },
       }),
       [],
     );

@@ -280,11 +280,17 @@ const Table = memo(
         return <TableLoader {...loaderPropsMerged} />;
       }
 
+      // ✅ FIXED: Use tbody and td instead of div for empty state
       if (!data || data.length === 0) {
+        const colCount = columns.length || 1;
         return (
-          <div className="flex items-center justify-center py-8 text-gray-500">
-            {emptyText}
-          </div>
+          <tbody>
+            <tr>
+              <td colSpan={colCount} className="text-center py-8 text-gray-500">
+                {emptyText}
+              </td>
+            </tr>
+          </tbody>
         );
       }
 

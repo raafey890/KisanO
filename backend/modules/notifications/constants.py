@@ -1,0 +1,37 @@
+from enum import Enum
+
+class NotificationChannel(str, Enum):
+    PUSH = "PUSH"
+    EMAIL = "EMAIL"
+    SMS = "SMS"
+    IN_APP = "IN_APP"
+    WHATSAPP = "WHATSAPP"
+
+class NotificationPriority(str, Enum):
+    LOW = "LOW"
+    NORMAL = "NORMAL"
+    HIGH = "HIGH"
+    CRITICAL = "CRITICAL"
+
+class NotificationStatus(str, Enum):
+    PENDING = "PENDING"
+    QUEUED = "QUEUED"
+    SENDING = "SENDING"
+    SENT = "SENT"
+    DELIVERED = "DELIVERED"
+    READ = "READ"
+    FAILED = "FAILED"
+    CANCELLED = "CANCELLED"
+
+class NotificationType(str, Enum):
+    EQUIPMENT_BOOKING = "EQUIPMENT_BOOKING"
+    MARKETPLACE_ORDER = "MARKETPLACE_ORDER"
+    PAYMENT = "PAYMENT"
+    REFUND = "REFUND"
+    SPRAYER_BOOKING = "SPRAYER_BOOKING"
+    AI_DIAGNOSIS = "AI_DIAGNOSIS"
+    REVIEW_ALERT = "REVIEW_ALERT"
+    SUPPORT_TICKET = "SUPPORT_TICKET"
+    ADMIN_BROADCAST = "ADMIN_BROADCAST"
+    SECURITY_ALERT = "SECURITY_ALERT"
+    SYSTEM_ANNOUNCEMENT = "SYSTEM_ANNOUNCEMENT"
