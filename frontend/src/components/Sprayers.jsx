@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiStar, FiPlus, FiX, FiCheck } from 'react-icons/fi';
 import api from '../services/api';
@@ -19,14 +19,14 @@ export default function Sprayers({ user }) {
   const [rate, setRate] = useState('');
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => { fetchSprayers(); }, []);
-
-  const fetchSprayers = async () => {
+  const fetchSprayers = useCallback(async () => {
     try {
       const res = await api.get('/sprayers');
       if (res.success) setSprayers(res.data.items);
     } catch (_) {}
-  };
+  }, []);
+
+  useEffect(() => { setTimeout(() => fetchSprayers(), 0); }, [fetchSprayers]);
 
   const handleRegister = async (e) => {
     e.preventDefault();

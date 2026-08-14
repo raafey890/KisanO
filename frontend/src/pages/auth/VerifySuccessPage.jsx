@@ -2,46 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
+
 
 export default function VerifySuccessPage() {
   const [searchParams] = useSearchParams();
   const mode = searchParams.get('mode') || 'register';
   const role = searchParams.get('role') || 'FARMER';
   const navigate = useNavigate();
-  const { login } = useAuth();
-
   const isReset = mode === 'reset';
   const [countdown, setCountdown] = useState(5);
 
-  const getTargetDashboard = () => {
-    switch (role) {
-      case 'EQUIPMENT_OWNER':
-        return '/owner/dashboard';
-      case 'ADMIN':
-        return '/admin/dashboard';
-      case 'FARMER':
-      case 'SPRAYER':
-      default:
-        return '/farmer/dashboard';
-    }
-  };
-
   const handleProceed = () => {
-    if (isReset) {
-      navigate('/auth/login');
-    } else {
-      // Auto login user on registration activation
-      login(
-        {
-          id: 'usr_' + Date.now(),
-          name: 'Verified KisanO User',
-          role: role,
-        },
-        'mock_jwt_verified_token'
-      );
-      navigate(getTargetDashboard());
-    }
+    navigate('/auth/login');
   };
 
   // Auto redirect logic for Password Reset mode (5 seconds countdown)

@@ -139,7 +139,7 @@ async def delete_address(
 async def search_users(
     query: Optional[str] = Query(None, description="Search name, phone, or email"),
     role: Optional[str] = None,
-    status: Optional[str] = None,
+    user_status: Optional[str] = None,
     skip: int = 0,
     limit: int = 20,
     _: Dict[str, Any] = Depends(RequireRole([UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.SUPPORT_AGENT]))
@@ -151,7 +151,7 @@ async def search_users(
     filters = {}
     if query: filters["query"] = query
     if role: filters["role"] = role
-    if status: filters["status"] = status
+    if user_status: filters["status"] = user_status
     
     items, total = await UserService.search_users(filters, skip, limit)
     return success_response(message="Users found", data={"items": items, "total": total, "skip": skip, "limit": limit})

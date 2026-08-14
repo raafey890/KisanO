@@ -171,16 +171,6 @@ const Dialog = memo(
       handleOpenChange(false);
     }, [isInteractive, handleOpenChange]);
 
-    // Default close button.
-    const defaultCloseButton = resolved.showCloseButton && (
-      <DialogCloseButton
-        onClick={handleClose}
-        size={resolved.size}
-        disabled={resolved.disabled}
-        {...closeButtonProps}
-      />
-    );
-
     // Default loader.
     const defaultLoader = (
       <DialogLoader
@@ -197,6 +187,14 @@ const Dialog = memo(
     const headerContent = useMemo(() => {
       if (header) return header;
       if (title || description || icon) {
+        const defaultCloseButton = resolved.showCloseButton && (
+          <DialogCloseButton
+            onClick={handleClose}
+            size={resolved.size}
+            disabled={resolved.disabled}
+            {...closeButtonProps}
+          />
+        );
         return (
           <DialogHeader
             title={title}
@@ -221,7 +219,9 @@ const Dialog = memo(
       resolved.variant,
       resolved.disabled,
       resolved.loading,
-      defaultCloseButton,
+      resolved.showCloseButton,
+      handleClose,
+      closeButtonProps,
       headerProps,
     ]);
 

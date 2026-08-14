@@ -187,11 +187,6 @@ const DrawerHeader = memo(
     const hasIcon = Boolean(icon);
     const hasActions = Boolean(actions);
 
-    // If no content, render nothing.
-    if (!hasTitle && !hasIcon && !hasActions) {
-      return null;
-    }
-
     // Accessibility attributes.
     const ariaProps = useMemo(
       () => ({
@@ -202,6 +197,11 @@ const DrawerHeader = memo(
       }),
       [role, ariaLevel, disabled, loading],
     );
+
+    // If no content, render nothing.
+    if (!hasTitle && !hasIcon && !hasActions) {
+      return null;
+    }
 
     return (
       <motion.header

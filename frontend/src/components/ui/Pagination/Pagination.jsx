@@ -364,6 +364,12 @@ const Pagination = memo(
       return renderItems();
     }, [children, renderItems]);
 
+    const loaderPropsMerged = useMemo(() => ({
+      ...loaderProps,
+      size: resolved.size,
+      variant: resolved.variant,
+    }), [loaderProps, resolved.size, resolved.variant]);
+
     // Show loader.
     const showLoader = resolved.loading;
 

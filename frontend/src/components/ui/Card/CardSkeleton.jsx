@@ -177,7 +177,7 @@ const CardSkeleton = memo(
           />
         );
       });
-    }, [variant, lines, skeletonClasses]);
+    }, [variant, lines, className, shape, sizeConfig.height]);
 
     // For other variants, render a single block.
     const renderBlock = useMemo(() => {

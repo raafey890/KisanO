@@ -43,7 +43,7 @@ class RequireRole:
     def __init__(self, allowed_roles: List[str]):
         self.allowed_roles = allowed_roles
 
-    async def __call__(self, current_user = Depends(get_current_user)):
+    async def __call__(self, current_user=Depends(get_current_user)):
         if current_user.get("role") not in self.allowed_roles:
             raise ForbiddenException(message="You do not have permission to perform this action.")
         return current_user

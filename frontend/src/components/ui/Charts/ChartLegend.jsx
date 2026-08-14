@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 /**
  * KisanO Design System — Chart Package
  * ChartLegend

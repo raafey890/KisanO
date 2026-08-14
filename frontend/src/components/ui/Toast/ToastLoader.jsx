@@ -22,6 +22,7 @@ import {
 import {
   mergeClasses,
   resolveResponsiveClasses,
+  getToastSize,
 } from './toastUtils';
 
 /* ---------------------------------- */
@@ -126,7 +127,7 @@ const ToastLoader = memo(
     }, [sizeConfig.gap, disabled, className, responsiveClasses]);
 
     // Render a single skeleton row.
-    const renderRow = (index) => {
+    const renderRow = useCallback((index) => {
       // Determine row type: first row is title, rest are text.
       const rowType = index === 0 ? 'title' : 'text';
       const heightMap = SKELETON_HEIGHTS[rowType];
@@ -137,7 +138,7 @@ const ToastLoader = memo(
         ? TEXT_WIDTHS[index % TEXT_WIDTHS.length] 
         : 'w-2/3';
 
-     
+      const isIcon = rowType === 'icon';
 
       // Build row classes.
       const rowClasses = mergeClasses(
@@ -179,12 +180,12 @@ const ToastLoader = memo(
           {shimmerElement}
         </motion.div>
       );
-    };
+    }, [isAnimated, size, variant]);
 
     // Generate rows.
     const rowsToRender = useMemo(
       () => Array.from({ length: rows }, (_, i) => renderRow(i)),
-      [rows, size, variant, isAnimated,disabled],
+      [rows, renderRow],
     );
 
     // Motion props - respect reduced motion.

@@ -58,7 +58,7 @@ class OrderService:
             # Deduct Stock (Atomic, Optimistic)
             success = await product_repository.update_inventory(item.productId, product["version"], -item.quantity)
             if not success:
-                 raise AppException(f"Stock update failed for {product['productName']}. Please try again.", 409)
+                raise AppException(f"Stock update failed for {product['productName']}. Please try again.", 409)
                  
             await inventory_history_repository.log_movement(
                 item.productId, -item.quantity, buyer_id, "Order Placed"
@@ -162,15 +162,15 @@ class OrderService:
         
         # Delivery Status Mappings
         if new_status == OrderStatus.PACKED:
-             update_data["deliveryStatus"] = DeliveryStatus.PENDING.value
+            update_data["deliveryStatus"] = DeliveryStatus.PENDING.value
         elif new_status == OrderStatus.SHIPPED:
-             update_data["deliveryStatus"] = DeliveryStatus.DISPATCHED.value
+            update_data["deliveryStatus"] = DeliveryStatus.DISPATCHED.value
         elif new_status == OrderStatus.OUT_FOR_DELIVERY:
-             update_data["deliveryStatus"] = DeliveryStatus.IN_TRANSIT.value
+            update_data["deliveryStatus"] = DeliveryStatus.IN_TRANSIT.value
         elif new_status == OrderStatus.DELIVERED:
-             update_data["deliveryStatus"] = DeliveryStatus.DELIVERED.value
+            update_data["deliveryStatus"] = DeliveryStatus.DELIVERED.value
         elif new_status == OrderStatus.RETURNED:
-             update_data["deliveryStatus"] = DeliveryStatus.RETURNED_TO_SENDER.value
+            update_data["deliveryStatus"] = DeliveryStatus.RETURNED_TO_SENDER.value
              
         # Perform Optimistic Update
         success = await order_repository.update_order_optimistic(order_id, current_version, update_data)

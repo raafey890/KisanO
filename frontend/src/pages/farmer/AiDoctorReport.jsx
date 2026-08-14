@@ -2,13 +2,24 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, Printer, Download, Share2, Leaf, ShieldCheck, CheckCircle2, AlertTriangle } from 'lucide-react';
 
+import { useScanDetails } from '../../features/aidoctor/hooks/useAiDoctor';
+
 export default function AiDoctorReport() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { data: RESULT, isLoading } = useScanDetails(id);
 
   const handlePrint = () => {
     window.print();
   };
+
+  if (isLoading || !RESULT) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 font-sans pb-32 pt-4 px-4 sm:px-6 lg:px-8">
@@ -42,8 +53,8 @@ export default function AiDoctorReport() {
               <Leaf className="w-6 h-6" /> KisanO AI Plant Doctor
             </div>
             <h1 className="text-3xl font-black text-gray-900 mt-4">Diagnostic Report</h1>
-            <p className="text-gray-500 font-bold text-sm mt-1">Generated on: 28 August 2026</p>
-            <p className="text-gray-500 font-bold text-sm">Scan ID: {id || '#SCN-101'}</p>
+            <p className="text-gray-500 font-bold text-sm mt-1">Generated on: {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
+            <p className="text-gray-500 font-bold text-sm">Scan ID: {RESULT.id}</p>
           </div>
           
           {/* Mock QR Code space */}
@@ -56,21 +67,21 @@ export default function AiDoctorReport() {
         <div className="grid grid-cols-2 gap-8">
           <div>
              <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Patient (Crop)</h3>
-             <p className="text-xl font-black text-gray-900">Cotton Plant</p>
+             <p className="text-xl font-black text-gray-900">{RESULT.cropName}</p>
           </div>
           <div>
              <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Detected Issue</h3>
-             <p className="text-xl font-black text-red-600">Bacterial Blight</p>
+             <p className="text-xl font-black text-red-600">{RESULT.diseaseName}</p>
           </div>
           <div>
              <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-2">AI Confidence</h3>
              <p className="text-xl font-black text-blue-600 flex items-center gap-1">
-               <ShieldCheck className="w-5 h-5" /> 94%
+               <ShieldCheck className="w-5 h-5" /> {RESULT.confidence}
              </p>
           </div>
           <div>
              <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Severity Level</h3>
-             <p className="text-xl font-black text-red-600">High (Immediate Action Required)</p>
+             <p className="text-xl font-black text-red-600">{RESULT.severity} (Immediate Action Required)</p>
           </div>
         </div>
 
@@ -79,7 +90,7 @@ export default function AiDoctorReport() {
           <div>
              <h3 className="text-lg font-black text-gray-900 mb-2">AI Summary</h3>
              <p className="text-gray-600 font-medium leading-relaxed">
-               The AI has detected signs of Bacterial Blight on the cotton leaves. Immediate action is required to prevent it from spreading to healthy parts of the crop. Bacterial blight is a highly contagious disease caused by Xanthomonas axonopodis. It primarily affects leaves, stems, and bolls of cotton plants.
+               {RESULT.summary} {RESULT.diseaseInfo?.description}
              </p>
           </div>
           
@@ -87,17 +98,17 @@ export default function AiDoctorReport() {
              <div>
                <h3 className="text-sm font-black text-gray-900 mb-3 border-b border-gray-100 pb-2">Primary Symptoms</h3>
                <ul className="space-y-2">
-                 <li className="flex gap-2 text-sm text-gray-700 font-medium"><span className="text-gray-400">•</span> Water-soaked angular spots on leaves</li>
-                 <li className="flex gap-2 text-sm text-gray-700 font-medium"><span className="text-gray-400">•</span> Blackening of stem (blackarm)</li>
-                 <li className="flex gap-2 text-sm text-gray-700 font-medium"><span className="text-gray-400">•</span> Premature boll drop</li>
+                 {RESULT.diseaseInfo?.symptoms?.map((sym, i) => (
+                   <li key={i} className="flex gap-2 text-sm text-gray-700 font-medium"><span className="text-gray-400">•</span> {sym}</li>
+                 ))}
                </ul>
              </div>
              <div>
                <h3 className="text-sm font-black text-gray-900 mb-3 border-b border-gray-100 pb-2">Possible Causes</h3>
                <ul className="space-y-2">
-                 <li className="flex gap-2 text-sm text-gray-700 font-medium"><span className="text-gray-400">•</span> Infected seeds</li>
-                 <li className="flex gap-2 text-sm text-gray-700 font-medium"><span className="text-gray-400">•</span> Rain splashes spreading bacteria</li>
-                 <li className="flex gap-2 text-sm text-gray-700 font-medium"><span className="text-gray-400">•</span> High humidity and warm temperatures</li>
+                 {RESULT.diseaseInfo?.causes?.map((cause, i) => (
+                   <li key={i} className="flex gap-2 text-sm text-gray-700 font-medium"><span className="text-gray-400">•</span> {cause}</li>
+                 ))}
                </ul>
              </div>
           </div>
@@ -112,21 +123,19 @@ export default function AiDoctorReport() {
            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 print:bg-transparent print:border-gray-300">
              <h4 className="font-black text-gray-900 mb-4">Chemical Treatment Protocol</h4>
              <ul className="space-y-3">
-               <li className="flex items-start gap-2 text-sm font-bold text-gray-700">
-                 <CheckCircle2 className="w-5 h-5 text-gray-400 shrink-0" /> Spray Copper Oxychloride (50% WP) @ 2.5g/L of water.
-               </li>
-               <li className="flex items-start gap-2 text-sm font-bold text-gray-700">
-                 <CheckCircle2 className="w-5 h-5 text-gray-400 shrink-0" /> Mix with Streptocycline (1g/10L water) for severe infections.
-               </li>
-               <li className="flex items-start gap-2 text-sm font-bold text-gray-700">
-                 <CheckCircle2 className="w-5 h-5 text-gray-400 shrink-0" /> Apply 2-3 sprays at 15-day intervals.
-               </li>
+               {RESULT.treatments?.chemical?.map((treatment, i) => (
+                 <li key={i} className="flex items-start gap-2 text-sm font-bold text-gray-700">
+                   <CheckCircle2 className="w-5 h-5 text-gray-400 shrink-0" /> {treatment}
+                 </li>
+               ))}
              </ul>
              
-             <div className="mt-6 flex items-start gap-2 text-amber-700 bg-amber-50 p-4 rounded-xl print:border print:border-amber-200">
-                <AlertTriangle className="w-5 h-5 shrink-0" />
-                <p className="text-xs font-bold leading-relaxed">Always wear protective gear (mask, gloves) when mixing and spraying chemicals. Avoid spraying during strong winds or rain.</p>
-             </div>
+             {RESULT.treatments?.safety && (
+               <div className="mt-6 flex items-start gap-2 text-amber-700 bg-amber-50 p-4 rounded-xl print:border print:border-amber-200">
+                  <AlertTriangle className="w-5 h-5 shrink-0" />
+                  <p className="text-xs font-bold leading-relaxed">{RESULT.treatments.safety}</p>
+               </div>
+             )}
            </div>
         </div>
 

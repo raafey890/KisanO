@@ -9,7 +9,7 @@ import confetti from 'canvas-confetti';
 
 export default function OrderSuccessPage() {
   const navigate = useNavigate();
-  const [orderId] = useState(`ORD-${Math.floor(100000 + Math.random() * 900000)}`);
+  const [orderId] = useState(() => `ORD-${Math.floor(100000 + Math.random() * 900000)}`);
   
   useEffect(() => {
     // Subtle confetti celebration on load

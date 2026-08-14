@@ -25,14 +25,24 @@ class LoggingEngine:
 
     @staticmethod
     def _redact(payload_str: str) -> str:
-        for pattern in LoggingEngine._REDACT_PATTERNS.values():
-            payload_str = pattern.sub(r'"\g<1>":"***REDACTED***"', payload_str) # Fast replacement
-            # Simplified for MVP: Just replace the whole matched string
-            # In a real scenario, you'd use a more precise regex to only replace the value
-            
-        # Simplified redaction
-        payload_str = re.sub(r'("password"\s*:\s*)"[^"]+"', r'\1"***REDACTED***"', payload_str, flags=re.IGNORECASE)
-        payload_str = re.sub(r'("(?:access_token|refresh_token|jwt|token)"\s*:\s*)"[^"]+"', r'\1"***REDACTED***"', payload_str, flags=re.IGNORECASE)
+        payload_str = re.sub(
+            r'("password"\s*:\s*)"[^"]+"',
+            r'\1"***REDACTED***"',
+            payload_str,
+            flags=re.IGNORECASE,
+        )
+        payload_str = re.sub(
+            r'("(?:access_token|refresh_token|jwt|token)"\s*:\s*)"[^"]+"',
+            r'\1"***REDACTED***"',
+            payload_str,
+            flags=re.IGNORECASE,
+        )
+        payload_str = re.sub(
+            r'("(?:card_number|credit_card|cvv)"\s*:\s*)"[^"]+"',
+            r'\1"***REDACTED***"',
+            payload_str,
+            flags=re.IGNORECASE,
+        )
         return payload_str
 
     @staticmethod

@@ -192,11 +192,6 @@ const SpinnerDots = memo(
       [role, ariaLabel, isLoading, disabled, size, variant, speed, dotCount],
     );
 
-    // If not loading, render nothing.
-    if (!isLoading) {
-      return null;
-    }
-
     // Generate dots.
     const dots = useMemo(
       () =>
@@ -226,8 +221,13 @@ const SpinnerDots = memo(
             {...dotMotionProps}
           />
         )),
-      [dotCount, dotSize, variant, prefersReducedMotion, speedDuration],
+      [dotCount, dotSize, variant, prefersReducedMotion, speedDuration, dotMotionProps],
     );
+
+    // If not loading, render nothing.
+    if (!isLoading) {
+      return null;
+    }
 
     return (
       <motion.div

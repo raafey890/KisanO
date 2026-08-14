@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './context/AuthContext';
+import { ProtectedRoute, PublicRoute, RoleGuard, USER_ROLES } from './features/auth';
 
 /* ── Layouts ── */
 import PublicLayout from './layouts/PublicLayout';
@@ -10,110 +10,109 @@ import OwnerLayout  from './layouts/OwnerLayout';
 import AdminLayout  from './layouts/AdminLayout';
 
 /* ── Public Pages ── */
-import WelcomePage  from './pages/public/WelcomePage';
-import ExplorePage  from './pages/public/ExplorePage';
+const WelcomePage = React.lazy(() => import('./pages/public/WelcomePage'));
+const ExplorePage = React.lazy(() => import('./pages/public/ExplorePage'));
 
 /* ── Auth Module Pages ── */
-import RoleSelectionPage   from './pages/auth/RoleSelectionPage';
-import LoginPage           from './pages/auth/LoginPage';
-import RegisterPage        from './pages/auth/RegisterPage';
-import ForgotPasswordPage  from './pages/auth/ForgotPasswordPage';
-import OTPVerificationPage from './pages/auth/OTPVerificationPage';
-import ResetPasswordPage   from './pages/auth/ResetPasswordPage';
-import VerifySuccessPage   from './pages/auth/VerifySuccessPage';
+const RoleSelectionPage = React.lazy(() => import('./pages/auth/RoleSelectionPage'));
+const LoginPage = React.lazy(() => import('./pages/auth/LoginPage'));
+const RegisterPage = React.lazy(() => import('./pages/auth/RegisterPage'));
+const ForgotPasswordPage = React.lazy(() => import('./pages/auth/ForgotPasswordPage'));
+const OTPVerificationPage = React.lazy(() => import('./pages/auth/OTPVerificationPage'));
+const ResetPasswordPage = React.lazy(() => import('./pages/auth/ResetPasswordPage'));
+const VerifySuccessPage = React.lazy(() => import('./pages/auth/VerifySuccessPage'));
 
 /* ── Legacy Auth Route Wrappers ── */
-import FarmerLogin    from './pages/auth/FarmerLogin';
-import FarmerRegister from './pages/auth/FarmerRegister';
-import OwnerLogin     from './pages/auth/OwnerLogin';
-import OwnerRegister  from './pages/auth/OwnerRegister';
-import AdminLogin     from './pages/auth/AdminLogin';
+const FarmerLogin = React.lazy(() => import('./pages/auth/FarmerLogin'));
+const FarmerRegister = React.lazy(() => import('./pages/auth/FarmerRegister'));
+const OwnerLogin = React.lazy(() => import('./pages/auth/OwnerLogin'));
+const OwnerRegister = React.lazy(() => import('./pages/auth/OwnerRegister'));
+const AdminLogin = React.lazy(() => import('./pages/auth/AdminLogin'));
 
 /* ── Farmer Pages ── */
-import FarmerDashboard           from './pages/farmer/FarmerDashboard';
-import EquipmentSearch           from './pages/farmer/EquipmentSearch';
-import EquipmentDetail           from './pages/farmer/EquipmentDetail';
-import EquipmentAvailabilityPage from './pages/farmer/EquipmentAvailabilityPage';
-import RentalDurationPage        from './pages/farmer/RentalDurationPage';
-import BookingConfirm            from './pages/farmer/BookingConfirm';
-import MarketplacePage           from './pages/farmer/MarketplacePage';
-import ProductDetail             from './pages/farmer/ProductDetail';
-import CartPage                  from './pages/farmer/CartPage';
-import CheckoutPage              from './pages/farmer/CheckoutPage';
-import PaymentPage               from './pages/farmer/PaymentPage';
-import OrderSuccessPage          from './pages/farmer/OrderSuccessPage';
-import MyOrdersPage              from './pages/farmer/MyOrdersPage';
-import SprayerServices           from './pages/farmer/SprayerServices';
-import SprayerDetail             from './pages/farmer/SprayerDetail';
-import ServiceBookingTimePage    from './pages/farmer/ServiceBookingTimePage';
-import ServiceLocationPage       from './pages/farmer/ServiceLocationPage';
-import ServiceBookingSummaryPage from './pages/farmer/ServiceBookingSummaryPage';
-import ServiceBookingSuccessPage from './pages/farmer/ServiceBookingSuccessPage';
-import SprayerHistoryPage        from './pages/farmer/SprayerHistoryPage';
-import BookingHistory            from './pages/farmer/BookingHistory';
-import AiDoctorHome              from './pages/farmer/AiDoctorHome';
-import AiDoctorUpload            from './pages/farmer/AiDoctorUpload';
-import AiDoctorResult            from './pages/farmer/AiDoctorResult';
-import AiDoctorReport            from './pages/farmer/AiDoctorReport';
-import AiDoctorHistory           from './pages/farmer/AiDoctorHistory';
-import FarmerProfilePage         from './pages/farmer/FarmerProfilePage';
-import EditProfilePage           from './pages/farmer/EditProfilePage';
-import NotificationsPage         from './pages/farmer/NotificationsPage';
-import SettingsPage              from './pages/farmer/SettingsPage';
+const FarmerDashboard = React.lazy(() => import('./pages/farmer/FarmerDashboard'));
+const EquipmentSearch = React.lazy(() => import('./pages/farmer/EquipmentSearch'));
+const EquipmentDetail = React.lazy(() => import('./pages/farmer/EquipmentDetail'));
+const EquipmentAvailabilityPage = React.lazy(() => import('./pages/farmer/EquipmentAvailabilityPage'));
+const RentalDurationPage = React.lazy(() => import('./pages/farmer/RentalDurationPage'));
+const BookingConfirm = React.lazy(() => import('./pages/farmer/BookingConfirm'));
+const MarketplacePage = React.lazy(() => import('./pages/farmer/MarketplacePage'));
+const ProductDetail = React.lazy(() => import('./pages/farmer/ProductDetail'));
+const CartPage = React.lazy(() => import('./pages/farmer/CartPage'));
+const CheckoutPage = React.lazy(() => import('./pages/farmer/CheckoutPage'));
+const PaymentPage = React.lazy(() => import('./pages/farmer/PaymentPage'));
+const OrderSuccessPage = React.lazy(() => import('./pages/farmer/OrderSuccessPage'));
+const MyOrdersPage = React.lazy(() => import('./pages/farmer/MyOrdersPage'));
+const SprayerServices = React.lazy(() => import('./pages/farmer/SprayerServices'));
+const SprayerDetail = React.lazy(() => import('./pages/farmer/SprayerDetail'));
+const ServiceBookingTimePage = React.lazy(() => import('./pages/farmer/ServiceBookingTimePage'));
+const ServiceLocationPage = React.lazy(() => import('./pages/farmer/ServiceLocationPage'));
+const ServiceBookingSummaryPage = React.lazy(() => import('./pages/farmer/ServiceBookingSummaryPage'));
+const ServiceBookingSuccessPage = React.lazy(() => import('./pages/farmer/ServiceBookingSuccessPage'));
+const SprayerHistoryPage = React.lazy(() => import('./pages/farmer/SprayerHistoryPage'));
+const BookingHistory = React.lazy(() => import('./pages/farmer/BookingHistory'));
+const AiDoctorHome = React.lazy(() => import('./pages/farmer/AiDoctorHome'));
+const AiDoctorUpload = React.lazy(() => import('./pages/farmer/AiDoctorUpload'));
+const AiDoctorResult = React.lazy(() => import('./pages/farmer/AiDoctorResult'));
+const AiDoctorReport = React.lazy(() => import('./pages/farmer/AiDoctorReport'));
+const AiDoctorHistory = React.lazy(() => import('./pages/farmer/AiDoctorHistory'));
+const FarmerProfilePage = React.lazy(() => import('./pages/farmer/FarmerProfilePage'));
+const EditProfilePage = React.lazy(() => import('./pages/farmer/EditProfilePage'));
+const NotificationsPage = React.lazy(() => import('./pages/farmer/NotificationsPage'));
+const SettingsPage = React.lazy(() => import('./pages/farmer/SettingsPage'));
 
 /* ── Owner Pages ── */
-import OwnerDashboard      from './pages/owner/OwnerDashboard';
-import OwnerEquipment      from './pages/owner/OwnerEquipment';
-import AddEquipment        from './pages/owner/AddEquipment';
-import EditEquipment       from './pages/owner/EditEquipment';
-import OwnerBookings       from './pages/owner/OwnerBookings';
-import OwnerCalendar       from './pages/owner/OwnerCalendar';
-import OwnerEarnings       from './pages/owner/OwnerEarnings';
-import OwnerReviews        from './pages/owner/OwnerReviews';
-import OwnerNotifications  from './pages/owner/OwnerNotifications';
-import OwnerProfile        from './pages/owner/OwnerProfile';
-import OwnerEditProfile    from './pages/owner/OwnerEditProfile';
+const OwnerDashboard = React.lazy(() => import('./pages/owner/OwnerDashboard'));
+const OwnerEquipment = React.lazy(() => import('./pages/owner/OwnerEquipment'));
+const AddEquipment = React.lazy(() => import('./pages/owner/AddEquipment'));
+const EditEquipment = React.lazy(() => import('./pages/owner/EditEquipment'));
+const OwnerBookings = React.lazy(() => import('./pages/owner/OwnerBookings'));
+const OwnerCalendar = React.lazy(() => import('./pages/owner/OwnerCalendar'));
+const OwnerEarnings = React.lazy(() => import('./pages/owner/OwnerEarnings'));
+const OwnerReviews = React.lazy(() => import('./pages/owner/OwnerReviews'));
+const OwnerNotifications = React.lazy(() => import('./pages/owner/OwnerNotifications'));
+const OwnerProfile = React.lazy(() => import('./pages/owner/OwnerProfile'));
+const OwnerEditProfile = React.lazy(() => import('./pages/owner/OwnerEditProfile'));
 
 
 /* ── Operator Pages ── */
 import OperatorLayout         from './layouts/OperatorLayout';
-import OperatorDashboard      from './pages/operator/OperatorDashboard';
-import OperatorJobs           from './pages/operator/OperatorJobs';
-import OperatorJobDetails     from './pages/operator/OperatorJobDetails';
-import OperatorCalendar       from './pages/operator/OperatorCalendar';
-import OperatorEarnings       from './pages/operator/OperatorEarnings';
-import OperatorCustomers      from './pages/operator/OperatorCustomers';
-import OperatorReviews        from './pages/operator/OperatorReviews';
-import OperatorNotifications  from './pages/operator/OperatorNotifications';
-import OperatorProfile        from './pages/operator/OperatorProfile';
-import OperatorEditProfile    from './pages/operator/OperatorEditProfile';
-import AdminDashboard      from './pages/admin/AdminDashboard';
-import UserManagement      from './pages/admin/UserManagement';
-import AdminVerifications  from './pages/admin/AdminVerifications';
-import AdminEquipment      from './pages/admin/AdminEquipment';
-import AdminMarketplace    from './pages/admin/AdminMarketplace';
-import AdminBookings       from './pages/admin/AdminBookings';
-import AdminPayments       from './pages/admin/AdminPayments';
-import AdminAiReports      from './pages/admin/AdminAiReports';
-import AdminReviews        from './pages/admin/AdminReviews';
-import AdminSupport        from './pages/admin/AdminSupport';
-import AdminNotifications  from './pages/admin/AdminNotifications';
-import AdminReports        from './pages/admin/AdminReports';
-import AdminActivityLogs   from './pages/admin/AdminActivityLogs';
-import AdminSettings       from './pages/admin/AdminSettings';
-import AdminProfile        from './pages/admin/AdminProfile';
+const OperatorDashboard = React.lazy(() => import('./pages/operator/OperatorDashboard'));
+const OperatorJobs = React.lazy(() => import('./pages/operator/OperatorJobs'));
+const OperatorJobDetails = React.lazy(() => import('./pages/operator/OperatorJobDetails'));
+const OperatorCalendar = React.lazy(() => import('./pages/operator/OperatorCalendar'));
+const OperatorEarnings = React.lazy(() => import('./pages/operator/OperatorEarnings'));
+const OperatorCustomers = React.lazy(() => import('./pages/operator/OperatorCustomers'));
+const OperatorReviews = React.lazy(() => import('./pages/operator/OperatorReviews'));
+const OperatorNotifications = React.lazy(() => import('./pages/operator/OperatorNotifications'));
+const OperatorProfile = React.lazy(() => import('./pages/operator/OperatorProfile'));
+const OperatorEditProfile = React.lazy(() => import('./pages/operator/OperatorEditProfile'));
+const AdminDashboard = React.lazy(() => import('./pages/admin/AdminDashboard'));
+const UserManagement = React.lazy(() => import('./pages/admin/UserManagement'));
+const AdminVerifications = React.lazy(() => import('./pages/admin/AdminVerifications'));
+const AdminEquipment = React.lazy(() => import('./pages/admin/AdminEquipment'));
+const AdminMarketplace = React.lazy(() => import('./pages/admin/AdminMarketplace'));
+const AdminBookings = React.lazy(() => import('./pages/admin/AdminBookings'));
+const AdminPayments = React.lazy(() => import('./pages/admin/AdminPayments'));
+const AdminAiReports = React.lazy(() => import('./pages/admin/AdminAiReports'));
+const AdminReviews = React.lazy(() => import('./pages/admin/AdminReviews'));
+const AdminSupport = React.lazy(() => import('./pages/admin/AdminSupport'));
+const AdminNotifications = React.lazy(() => import('./pages/admin/AdminNotifications'));
+const AdminReports = React.lazy(() => import('./pages/admin/AdminReports'));
+const AdminActivityLogs = React.lazy(() => import('./pages/admin/AdminActivityLogs'));
+const AdminSettings = React.lazy(() => import('./pages/admin/AdminSettings'));
+const AdminProfile = React.lazy(() => import('./pages/admin/AdminProfile'));
 
-/* ── Protected Route Wrapper ── */
-function ProtectedRoute({ children, allowedRoles }) {
-  const { user } = useAuth();
-  if (!user) return <Navigate to="/auth/select-role" replace />;
-  if (allowedRoles && !allowedRoles.includes(user.role)) return <Navigate to="/" replace />;
-  return children;
-}
+/* ── Guards Imported from Auth Feature ── */
 
 export default function App() {
   return (
-    <Routes>
+    <Suspense fallback={
+        <div className="flex min-h-screen items-center justify-center bg-gray-50">
+          <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      }>
+      <Routes>
       {/* ═══════════════════════════════════════
           PUBLIC PAGES (No Auth Required)
          ═══════════════════════════════════════ */}
@@ -125,7 +124,7 @@ export default function App() {
       {/* ═══════════════════════════════════════
           AUTHENTICATION MODULE (Dark Premium Layout)
          ═══════════════════════════════════════ */}
-      <Route element={<AuthLayout />}>
+      <Route element={<PublicRoute><AuthLayout /></PublicRoute>}>
         {/* Core Auth Routes */}
         <Route path="auth/select-role"     element={<RoleSelectionPage />} />
         <Route path="auth/login"           element={<LoginPage />} />
@@ -149,8 +148,10 @@ export default function App() {
           FARMER APP (Role: FARMER / SPRAYER)
          ═══════════════════════════════════════ */}
       <Route path="farmer" element={
-        <ProtectedRoute allowedRoles={['FARMER', 'SPRAYER', 'ADMIN']}>
-          <FarmerLayout />
+        <ProtectedRoute>
+          <RoleGuard allowedRoles={[USER_ROLES.FARMER, USER_ROLES.SPRAYER, USER_ROLES.ADMIN]}>
+            <FarmerLayout />
+          </RoleGuard>
         </ProtectedRoute>
       }>
         <Route path="dashboard"                 element={<FarmerDashboard />} />
@@ -190,8 +191,10 @@ export default function App() {
           OWNER APP (Role: EQUIPMENT_OWNER)
          ═══════════════════════════════════════ */}
       <Route path="owner" element={
-        <ProtectedRoute allowedRoles={['EQUIPMENT_OWNER', 'ADMIN']}>
-          <OwnerLayout />
+        <ProtectedRoute>
+          <RoleGuard allowedRoles={[USER_ROLES.EQUIPMENT_OWNER, USER_ROLES.ADMIN]}>
+            <OwnerLayout />
+          </RoleGuard>
         </ProtectedRoute>
       }>
         <Route index element={<Navigate to="dashboard" replace />} />
@@ -212,8 +215,10 @@ export default function App() {
           OPERATOR PORTAL
       ═══════════════════════════════════════ */}
       <Route path="operator" element={
-        <ProtectedRoute allowedRoles={['SPRAYER', 'ADMIN']}>
-          <OperatorLayout />
+        <ProtectedRoute>
+          <RoleGuard allowedRoles={[USER_ROLES.SPRAYER, USER_ROLES.ADMIN]}>
+            <OperatorLayout />
+          </RoleGuard>
         </ProtectedRoute>
       }>
         <Route index element={<Navigate to="dashboard" replace />} />
@@ -233,8 +238,10 @@ export default function App() {
           ADMIN PORTAL
          ═══════════════════════════════════════ */}
       <Route path="admin" element={
-        <ProtectedRoute allowedRoles={['ADMIN']}>
-          <AdminLayout />
+        <ProtectedRoute>
+          <RoleGuard allowedRoles={[USER_ROLES.ADMIN]}>
+            <AdminLayout />
+          </RoleGuard>
         </ProtectedRoute>
       }>
         <Route index element={<Navigate to="dashboard" replace />} />
@@ -258,5 +265,6 @@ export default function App() {
       {/* ── Catch-all → back to Welcome ── */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+      </Suspense>
   );
 }

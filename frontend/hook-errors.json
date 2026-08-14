@@ -1,0 +1,560 @@
+[
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\Dashboard.jsx",
+    "line": 18,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useEffect has a missing dependency: 'duration'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\Dashboard.jsx",
+    "line": 66,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useEffect has a missing dependency: 'user.role'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\Equipment.jsx",
+    "line": 33,
+    "rule": "react-hooks/immutability",
+    "message": "Error: Cannot access variable before it is declared\n\n`fetchList` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.\n\n  31 |   const [loading, setLoading] = useState(false);\n  32 |\n> 33 |   useEffect(() => { fetchList(); }, [search, eqType, sortBy]);\n     |                     ^^^^^^^^^ `fetchList` accessed before it is declared\n  34 |\n  35 |   const fetchList = async () => {\n  36 |     try {\n\n  33 |   useEffect(() => { fetchList(); }, [search, eqType, sortBy]);\n  34 |\n> 35 |   const fetchList = async () => {\n     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 36 |     try {\n     | ^^^^^^^^^\n> 37 |       const res = await api.get('/equipment', { params: { search, eq_type: eqType || undefined, sortBy: sortBy || undefined } });\n     | ^^^^^^^^^\n> 38 |       if (res.success) setList(res.data.items);\n     | ^^^^^^^^^\n> 39 |     } catch (_) {}\n     | ^^^^^^^^^\n> 40 |   };\n     | ^^^^^ `fetchList` is declared here\n  41 |\n  42 |   const openEq = async (eq) => {\n  43 |     setSelectedEq(eq); setPickedSlot(null);"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\Equipment.jsx",
+    "line": 33,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useEffect has a missing dependency: 'fetchList'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\Marketplace.jsx",
+    "line": 27,
+    "rule": "react-hooks/immutability",
+    "message": "Error: Cannot access variable before it is declared\n\n`fetch` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.\n\n  25 |   const [loading, setLoading] = useState(false);\n  26 |\n> 27 |   useEffect(() => { fetch(); }, [district, village]);\n     |                     ^^^^^ `fetch` accessed before it is declared\n  28 |\n  29 |   const fetch = async () => {\n  30 |     try {\n\n  27 |   useEffect(() => { fetch(); }, [district, village]);\n  28 |\n> 29 |   const fetch = async () => {\n     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 30 |     try {\n     | ^^^^^^^^^\n> 31 |       const res = await api.get('/naruu', { params: { district: district || undefined, village: village || undefined } });\n     | ^^^^^^^^^\n> 32 |       if (res.success) setListings(res.data.items);\n     | ^^^^^^^^^\n> 33 |     } catch (_) {}\n     | ^^^^^^^^^\n> 34 |   };\n     | ^^^^^ `fetch` is declared here\n  35 |\n  36 |   const handleCreate = async (e) => {\n  37 |     e.preventDefault();"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\Marketplace.jsx",
+    "line": 27,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useEffect has a missing dependency: 'fetch'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\OwnerManage.jsx",
+    "line": 27,
+    "rule": "react-hooks/immutability",
+    "message": "Error: Cannot access variable before it is declared\n\n`loadData` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.\n\n  25 |   const [loading, setLoading] = useState(false);\n  26 |\n> 27 |   useEffect(() => { loadData(); }, []);\n     |                     ^^^^^^^^ `loadData` accessed before it is declared\n  28 |\n  29 |   const loadData = async () => {\n  30 |     try {\n\n  27 |   useEffect(() => { loadData(); }, []);\n  28 |\n> 29 |   const loadData = async () => {\n     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 30 |     try {\n     | ^^^^^^^^^\n> 31 |       const [eqRes, bkRes] = await Promise.all([\n     | ^^^^^^^^^\n> 32 |         api.get('/equipment'),\n     | ^^^^^^^^^\n> 33 |         api.get('/bookings'),\n     | ^^^^^^^^^\n> 34 |       ]);\n     | ^^^^^^^^^\n> 35 |       if (eqRes.success) setMyEquipment(eqRes.data.items.filter(e => e.ownerId === user.id));\n     | ^^^^^^^^^\n> 36 |       if (bkRes.success) setRequests(bkRes.data.items);\n     | ^^^^^^^^^\n> 37 |     } catch (_) {}\n     | ^^^^^^^^^\n> 38 |   };\n     | ^^^^^ `loadData` is declared here\n  39 |\n  40 |   const handleAddEq = async (e) => {\n  41 |     e.preventDefault();"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\OwnerManage.jsx",
+    "line": 27,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useEffect has a missing dependency: 'loadData'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\Sprayers.jsx",
+    "line": 22,
+    "rule": "react-hooks/immutability",
+    "message": "Error: Cannot access variable before it is declared\n\n`fetchSprayers` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.\n\n  20 |   const [loading, setLoading] = useState(false);\n  21 |\n> 22 |   useEffect(() => { fetchSprayers(); }, []);\n     |                     ^^^^^^^^^^^^^ `fetchSprayers` accessed before it is declared\n  23 |\n  24 |   const fetchSprayers = async () => {\n  25 |     try {\n\n  22 |   useEffect(() => { fetchSprayers(); }, []);\n  23 |\n> 24 |   const fetchSprayers = async () => {\n     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 25 |     try {\n     | ^^^^^^^^^\n> 26 |       const res = await api.get('/sprayers');\n     | ^^^^^^^^^\n> 27 |       if (res.success) setSprayers(res.data.items);\n     | ^^^^^^^^^\n> 28 |     } catch (_) {}\n     | ^^^^^^^^^\n> 29 |   };\n     | ^^^^^ `fetchSprayers` is declared here\n  30 |\n  31 |   const handleRegister = async (e) => {\n  32 |     e.preventDefault();"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Accordion\\AccordionLoader.jsx",
+    "line": 202,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderItem'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Alert\\Alert.jsx",
+    "line": 188,
+    "rule": "react-hooks/rules-of-hooks",
+    "message": "React Hook \"useMemo\" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Alert\\Alert.jsx",
+    "line": 197,
+    "rule": "react-hooks/rules-of-hooks",
+    "message": "React Hook \"useMemo\" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Alert\\Alert.jsx",
+    "line": 215,
+    "rule": "react-hooks/rules-of-hooks",
+    "message": "React Hook \"useMemo\" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Alert\\AlertHeader.jsx",
+    "line": 142,
+    "rule": "react-hooks/rules-of-hooks",
+    "message": "React Hook \"useMemo\" is called conditionally. React Hooks must be called in the exact same order in every component render."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Alert\\AlertLoader.jsx",
+    "line": 163,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderRow'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Breadcrumb\\BreadcrumbLoader.jsx",
+    "line": 202,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderItem'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Button\\ButtonContainer.jsx",
+    "line": 256,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has missing dependencies: 'onBlur', 'onFocus', 'onMouseEnter', and 'onMouseLeave'. Either include them or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Card\\Card.jsx",
+    "line": 176,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'contentMotion'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Card\\CardBody.jsx",
+    "line": 55,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'resolvedPadding'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Card\\CardContainer.jsx",
+    "line": 70,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has unnecessary dependencies: 'disabled', 'elevation', 'interactive', 'loading', and 'radius'. Either exclude them or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Card\\CardContainer.jsx",
+    "line": 89,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has unnecessary dependencies: 'resolvedProps.disabled' and 'resolvedProps.loading'. Either exclude them or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Card\\CardMedia.jsx",
+    "line": 63,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has unnecessary dependencies: 'objectFit' and 'objectPosition'. Either exclude them or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Card\\CardSkeleton.jsx",
+    "line": 180,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has missing dependencies: 'className', 'shape', and 'sizeConfig.height'. Either include them or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\AreaChart.jsx",
+    "line": 133,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'labels'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\BarChart.jsx",
+    "line": 126,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'labels'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\LineChart.jsx",
+    "line": 124,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'labels'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\PieChart.jsx",
+    "line": 123,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'labels'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Checkbox\\CheckboxLoader.jsx",
+    "line": 211,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderRow'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Dialog\\Dialog.jsx",
+    "line": 175,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "The 'defaultCloseButton' logical expression could make the dependencies of useMemo Hook (at line 215) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'defaultCloseButton' in its own useMemo() Hook."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Dialog\\DialogHeader.jsx",
+    "line": 195,
+    "rule": "react-hooks/rules-of-hooks",
+    "message": "React Hook \"useMemo\" is called conditionally. React Hooks must be called in the exact same order in every component render."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Dialog\\DialogLoader.jsx",
+    "line": 163,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderRow'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Drawer\\Drawer.jsx",
+    "line": 175,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "The 'defaultCloseButton' logical expression could make the dependencies of useMemo Hook (at line 216) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'defaultCloseButton' in its own useMemo() Hook."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Drawer\\DrawerHeader.jsx",
+    "line": 196,
+    "rule": "react-hooks/rules-of-hooks",
+    "message": "React Hook \"useMemo\" is called conditionally. React Hooks must be called in the exact same order in every component render."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Drawer\\DrawerLoader.jsx",
+    "line": 164,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderRow'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Dropdown\\DropdownLoader.jsx",
+    "line": 155,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderRow'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Dropdown\\DropdownTrigger.jsx",
+    "line": 115,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'radius'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\FileUpload\\FileUploadLoader.jsx",
+    "line": 216,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderRow'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Input\\Input.jsx",
+    "line": 382,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'counterId'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Navbar\\Navbar.jsx",
+    "line": 187,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'handleToggle'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Pagination\\PaginationLoader.jsx",
+    "line": 215,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has missing dependencies: 'itemWidth' and 'navWidth'. Either include them or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Radio\\RadioLoader.jsx",
+    "line": 211,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderRow'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Select\\SelectLoader.jsx",
+    "line": 155,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderRow'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Sidebar\\Sidebar.jsx",
+    "line": 231,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'handleToggle'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Skeleton\\SkeletonText.jsx",
+    "line": 155,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has missing dependencies: 'lastLineWidth' and 'width'. Either include them or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Spinner\\SpinnerDots.jsx",
+    "line": 201,
+    "rule": "react-hooks/rules-of-hooks",
+    "message": "React Hook \"useMemo\" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Spinner\\SpinnerDots.jsx",
+    "line": 229,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'dotMotionProps'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Spinner\\SpinnerPulse.jsx",
+    "line": 205,
+    "rule": "react-hooks/rules-of-hooks",
+    "message": "React Hook \"useMemo\" is called conditionally. React Hooks must be called in the exact same order in every component render."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Spinner\\SpinnerPulse.jsx",
+    "line": 237,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'rippleMotionProps'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Switch\\SwitchLoader.jsx",
+    "line": 211,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderRow'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Tabs\\TabsIndicator.jsx",
+    "line": 174,
+    "rule": "react-hooks/rules-of-hooks",
+    "message": "React Hook \"useMemo\" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Textarea\\TextareaCounter.jsx",
+    "line": 138,
+    "rule": "react-hooks/rules-of-hooks",
+    "message": "React Hook \"useMemo\" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Textarea\\TextareaLoader.jsx",
+    "line": 188,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderRow'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Toast\\ToastBody.jsx",
+    "line": 139,
+    "rule": "react-hooks/rules-of-hooks",
+    "message": "React Hook \"useMemo\" is called conditionally. React Hooks must be called in the exact same order in every component render."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Toast\\ToastLoader.jsx",
+    "line": 188,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderRow'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Toast\\ToastProgress.jsx",
+    "line": 145,
+    "rule": "react-hooks/rules-of-hooks",
+    "message": "React Hook \"useMemo\" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Toast\\ToastProgress.jsx",
+    "line": 154,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has an unnecessary dependency: 'paused'. Either exclude it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Tooltip\\TooltipLoader.jsx",
+    "line": 163,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has a missing dependency: 'renderRow'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Tooltip\\TooltipTrigger.jsx",
+    "line": 161,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useCallback has a missing dependency: 'isHovered'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Tooltip\\TooltipTrigger.jsx",
+    "line": 169,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useCallback has a missing dependency: 'isHovered'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Tooltip\\TooltipTrigger.jsx",
+    "line": 178,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useCallback has a missing dependency: 'isFocused'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Tooltip\\TooltipTrigger.jsx",
+    "line": 186,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useCallback has a missing dependency: 'isFocused'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Tooltip\\TooltipTrigger.jsx",
+    "line": 213,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useCallback has a missing dependency: 'isPressed'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Tooltip\\TooltipTrigger.jsx",
+    "line": 226,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useCallback has a missing dependency: 'isPressed'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\context\\AuthContext.jsx",
+    "line": 13,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\n  11 |         if (savedUser && token) {\n  12 |             try {\n> 13 |                 setUser(JSON.parse(savedUser));\n     |                 ^^^^^^^ Avoid calling setState() directly within an effect\n  14 |             } catch (e) {\n  15 |                 logout();\n  16 |             }"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\context\\AuthContext.jsx",
+    "line": 15,
+    "rule": "react-hooks/immutability",
+    "message": "Error: Cannot access variable before it is declared\n\n`logout` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.\n\n  13 |                 setUser(JSON.parse(savedUser));\n  14 |             } catch (e) {\n> 15 |                 logout();\n     |                 ^^^^^^ `logout` accessed before it is declared\n  16 |             }\n  17 |         }\n  18 |     }, [token]);\n\n  25 |     };\n  26 |\n> 27 |     const logout = () => {\n     |     ^^^^^^^^^^^^^^^^^^^^^^\n> 28 |         setUser(null);\n     | ^^^^^^^^^^^^^^^^^^^^^^\n> 29 |         setToken(\"\");\n     | ^^^^^^^^^^^^^^^^^^^^^^\n> 30 |         localStorage.removeItem(\"token\");\n     | ^^^^^^^^^^^^^^^^^^^^^^\n> 31 |         localStorage.removeItem(\"user\");\n     | ^^^^^^^^^^^^^^^^^^^^^^\n> 32 |     };\n     | ^^^^^^^ `logout` is declared here\n  33 |\n  34 |     return (\n  35 |         <AuthContext.Provider"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\context\\ToastContext.jsx",
+    "line": 15,
+    "rule": "react-hooks/immutability",
+    "message": "Error: Cannot access variable before it is declared\n\n`removeToast` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.\n\n  13 |\n  14 |     setTimeout(() => {\n> 15 |       removeToast(id);\n     |       ^^^^^^^^^^^ `removeToast` accessed before it is declared\n  16 |     }, 4000);\n  17 |   }, []);\n  18 |\n\n  17 |   }, []);\n  18 |\n> 19 |   const removeToast = useCallback((id) => {\n     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 20 |     setToasts((prev) => prev.filter((t) => t.id !== id));\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 21 |   }, []);\n     | ^^^^^^^^^^ `removeToast` is declared here\n  22 |\n  23 |   const showSuccess = useCallback((msg) => addToast(msg, 'success'), [addToast]);\n  24 |   const showError = useCallback((msg) => addToast(msg, 'error'), [addToast]);"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\context\\ToastContext.jsx",
+    "line": 17,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useCallback has a missing dependency: 'removeToast'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\context\\ToastContext.jsx",
+    "line": 19,
+    "rule": "react-hooks/preserve-manual-memoization",
+    "message": "Compilation Skipped: Existing memoization could not be preserved\n\nReact Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. This value was memoized in source but not in compilation output.\n\n  17 |   }, []);\n  18 |\n> 19 |   const removeToast = useCallback((id) => {\n     |                                   ^^^^^^^^^\n> 20 |     setToasts((prev) => prev.filter((t) => t.id !== id));\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 21 |   }, []);\n     | ^^^^ Could not preserve existing memoization\n  22 |\n  23 |   const showSuccess = useCallback((msg) => addToast(msg, 'success'), [addToast]);\n  24 |   const showError = useCallback((msg) => addToast(msg, 'error'), [addToast]);"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\auth\\LoginPage.jsx",
+    "line": 96,
+    "rule": "react-hooks/purity",
+    "message": "Error: Cannot call impure function during render\n\n`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).\n\n  94 |\n  95 |       const mockUser = {\n> 96 |         id: 'usr_' + Math.floor(Math.random() * 10000),\n     |                                 ^^^^^^^^^^^^^ Cannot call impure function\n  97 |         name: `${roleConfig.name} User`,\n  98 |         identifier: data.identifier,\n  99 |         role: roleConfig.roleKey,"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\auth\\LoginPage.jsx",
+    "line": 101,
+    "rule": "react-hooks/purity",
+    "message": "Error: Cannot call impure function during render\n\n`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).\n\n   99 |         role: roleConfig.roleKey,\n  100 |       };\n> 101 |       const mockJwtToken = 'jwt_mock_token_' + Date.now();\n      |                                                ^^^^^^^^^^ Cannot call impure function\n  102 |\n  103 |       login(mockUser, mockJwtToken);\n  104 |       showSuccess(`Welcome back! Logged in as ${roleConfig.name}.`);"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\auth\\RegisterPage.jsx",
+    "line": 92,
+    "rule": "react-hooks/incompatible-library",
+    "message": "Compilation Skipped: Use of incompatible library\n\nThis API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.\n\n  90 |   });\n  91 |\n> 92 |   const passwordVal = watch('password', '');\n     |                       ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.\n  93 |   const getPasswordStrength = () => {\n  94 |     if (!passwordVal) return { label: '', color: 'w-0 bg-transparent' };\n  95 |     if (passwordVal.length < 6) return { label: 'Weak', color: 'w-1/3 bg-red-500' };"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\auth\\ResetPasswordPage.jsx",
+    "line": 46,
+    "rule": "react-hooks/incompatible-library",
+    "message": "Compilation Skipped: Use of incompatible library\n\nThis API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.\n\n  44 |   });\n  45 |\n> 46 |   const passwordVal = watch('password', '');\n     |                       ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.\n  47 |\n  48 |   // Requirements breakdown\n  49 |   const reqs = ["
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\BookingConfirm.jsx",
+    "line": 43,
+    "rule": "react-hooks/purity",
+    "message": "Error: Cannot call impure function during render\n\n`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).\n\n  41 |   // Safely extract rental state\n  42 |   const startDate = state?.startDate || new Date().toISOString().split('T')[0];\n> 43 |   const endDate = state?.endDate || new Date(Date.now() + 86400000).toISOString().split('T')[0];\n     |                                              ^^^^^^^^^^ Cannot call impure function\n  44 |   const numDays = state?.numDays || 2;\n  45 |   const startTime = state?.startTime || '08:00 AM';\n  46 |   const dailyRate = state?.dailyRate || equipment.dailyRate || 4500;"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\BookingConfirm.jsx",
+    "line": 66,
+    "rule": "react-hooks/purity",
+    "message": "Error: Cannot call impure function during render\n\n`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).\n\n  64 |\n  65 |   if (success) {\n> 66 |     const mockBookingId = `BKG-${Math.floor(1000 + Math.random() * 9000)}`;\n     |                                                    ^^^^^^^^^^^^^ Cannot call impure function\n  67 |\n  68 |     return (\n  69 |       <motion.div"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\OrderSuccessPage.jsx",
+    "line": 12,
+    "rule": "react-hooks/purity",
+    "message": "Error: Cannot call impure function during render\n\n`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).\n\n  10 | export default function OrderSuccessPage() {\n  11 |   const navigate = useNavigate();\n> 12 |   const [orderId] = useState(`ORD-${Math.floor(100000 + Math.random() * 900000)}`);\n     |                                                         ^^^^^^^^^^^^^ Cannot call impure function\n  13 |   \n  14 |   useEffect(() => {\n  15 |     // Subtle confetti celebration on load"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\RentalDurationPage.jsx",
+    "line": 34,
+    "rule": "react-hooks/purity",
+    "message": "Error: Cannot call impure function during render\n\n`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).\n\n  32 |\n  33 |   // State: Start Date, Duration Days, Start Time\n> 34 |   const tomorrowStr = new Date(Date.now() + 86400000).toISOString().split('T')[0];\n     |                                ^^^^^^^^^^ Cannot call impure function\n  35 |   const [startDate, setStartDate] = useState(state?.date || tomorrowStr);\n  36 |   const [numDays, setNumDays] = useState(2);\n  37 |   const [startTime, setStartTime] = useState('08:00 AM');"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 135,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  133 |                   <h2 className=\"text-xl font-black text-gray-900 mb-4\">Preferences</h2>\n  134 |                   <div className=\"space-y-3\">\n> 135 |                     <ToggleSwitch label=\"Push Notifications\" description=\"Receive updates about bookings and orders\" icon={Bell} stateKey=\"notifications\" />\n      |                      ^^^^^^^^^^^^ This component is created during render\n  136 |                     <ToggleSwitch label=\"Dark Mode\" description=\"Switch to a darker theme (Beta)\" icon={Moon} stateKey=\"darkMode\" />\n  137 |                     \n  138 |                     {/* Language Dropdown Alternative */}\n\n  51 |\n  52 |   // Reusable Toggle Component\n> 53 |   const ToggleSwitch = ({ label, description, icon: Icon, stateKey }) => (\n     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 54 |     <div className=\"flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-green-200 transition-colors\">\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 55 |       <div className=\"flex items-center gap-4\">\n     …\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 75 |     </div>\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 76 |   );\n     | ^^^^ The component is created during render here\n  77 |\n  78 |   // Reusable Action Row Component\n  79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => ("
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 136,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  134 |                   <div className=\"space-y-3\">\n  135 |                     <ToggleSwitch label=\"Push Notifications\" description=\"Receive updates about bookings and orders\" icon={Bell} stateKey=\"notifications\" />\n> 136 |                     <ToggleSwitch label=\"Dark Mode\" description=\"Switch to a darker theme (Beta)\" icon={Moon} stateKey=\"darkMode\" />\n      |                      ^^^^^^^^^^^^ This component is created during render\n  137 |                     \n  138 |                     {/* Language Dropdown Alternative */}\n  139 |                     <div className=\"flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100\">\n\n  51 |\n  52 |   // Reusable Toggle Component\n> 53 |   const ToggleSwitch = ({ label, description, icon: Icon, stateKey }) => (\n     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 54 |     <div className=\"flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-green-200 transition-colors\">\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 55 |       <div className=\"flex items-center gap-4\">\n     …\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 75 |     </div>\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 76 |   );\n     | ^^^^ The component is created during render here\n  77 |\n  78 |   // Reusable Action Row Component\n  79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => ("
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 161,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  159 |                   <h2 className=\"text-xl font-black text-gray-900 mb-4\">App Permissions</h2>\n  160 |                   <div className=\"space-y-3\">\n> 161 |                     <ToggleSwitch label=\"Location Access\" description=\"Required to find nearby sprayer services\" icon={MapPin} stateKey=\"location\" />\n      |                      ^^^^^^^^^^^^ This component is created during render\n  162 |                     <ToggleSwitch label=\"Camera Access\" description=\"Required for AI Plant Doctor scans\" icon={Camera} stateKey=\"camera\" />\n  163 |                     <ToggleSwitch label=\"Storage Access\" description=\"Required to save PDF reports\" icon={HardDrive} stateKey=\"storage\" />\n  164 |                   </div>\n\n  51 |\n  52 |   // Reusable Toggle Component\n> 53 |   const ToggleSwitch = ({ label, description, icon: Icon, stateKey }) => (\n     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 54 |     <div className=\"flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-green-200 transition-colors\">\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 55 |       <div className=\"flex items-center gap-4\">\n     …\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 75 |     </div>\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 76 |   );\n     | ^^^^ The component is created during render here\n  77 |\n  78 |   // Reusable Action Row Component\n  79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => ("
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 162,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  160 |                   <div className=\"space-y-3\">\n  161 |                     <ToggleSwitch label=\"Location Access\" description=\"Required to find nearby sprayer services\" icon={MapPin} stateKey=\"location\" />\n> 162 |                     <ToggleSwitch label=\"Camera Access\" description=\"Required for AI Plant Doctor scans\" icon={Camera} stateKey=\"camera\" />\n      |                      ^^^^^^^^^^^^ This component is created during render\n  163 |                     <ToggleSwitch label=\"Storage Access\" description=\"Required to save PDF reports\" icon={HardDrive} stateKey=\"storage\" />\n  164 |                   </div>\n  165 |                 </div>\n\n  51 |\n  52 |   // Reusable Toggle Component\n> 53 |   const ToggleSwitch = ({ label, description, icon: Icon, stateKey }) => (\n     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 54 |     <div className=\"flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-green-200 transition-colors\">\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 55 |       <div className=\"flex items-center gap-4\">\n     …\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 75 |     </div>\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 76 |   );\n     | ^^^^ The component is created during render here\n  77 |\n  78 |   // Reusable Action Row Component\n  79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => ("
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 163,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  161 |                     <ToggleSwitch label=\"Location Access\" description=\"Required to find nearby sprayer services\" icon={MapPin} stateKey=\"location\" />\n  162 |                     <ToggleSwitch label=\"Camera Access\" description=\"Required for AI Plant Doctor scans\" icon={Camera} stateKey=\"camera\" />\n> 163 |                     <ToggleSwitch label=\"Storage Access\" description=\"Required to save PDF reports\" icon={HardDrive} stateKey=\"storage\" />\n      |                      ^^^^^^^^^^^^ This component is created during render\n  164 |                   </div>\n  165 |                 </div>\n  166 |               </motion.div>\n\n  51 |\n  52 |   // Reusable Toggle Component\n> 53 |   const ToggleSwitch = ({ label, description, icon: Icon, stateKey }) => (\n     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 54 |     <div className=\"flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-green-200 transition-colors\">\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 55 |       <div className=\"flex items-center gap-4\">\n     …\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 75 |     </div>\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 76 |   );\n     | ^^^^ The component is created during render here\n  77 |\n  78 |   // Reusable Action Row Component\n  79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => ("
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 175,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  173 |                   <h2 className=\"text-xl font-black text-gray-900 mb-4\">Login & Security</h2>\n  174 |                   <div className=\"space-y-3\">\n> 175 |                     <ActionRow label=\"Change Password\" description=\"Update your account password\" icon={Key} />\n      |                      ^^^^^^^^^ This component is created during render\n  176 |                     <ToggleSwitch label=\"Two-Factor Authentication (2FA)\" description=\"Add an extra layer of security via SMS\" icon={Shield} stateKey=\"twoFactor\" />\n  177 |                     <ActionRow label=\"Manage Login Devices\" description=\"Review active sessions on other devices\" icon={Smartphone} />\n  178 |                   </div>\n\n  77 |\n  78 |   // Reusable Action Row Component\n> 79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => (\n     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 80 |     <button \n     | ^^^^^^^^^^^^\n> 81 |       onClick={onClick}\n     …\n     | ^^^^^^^^^^^^\n> 94 |     </button>\n     | ^^^^^^^^^^^^\n> 95 |   );\n     | ^^^^ The component is created during render here\n  96 |\n  97 |   return (\n  98 |     <div className=\"max-w-6xl mx-auto space-y-8 font-sans pb-32 pt-4 px-4 sm:px-6 lg:px-8\">"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 176,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  174 |                   <div className=\"space-y-3\">\n  175 |                     <ActionRow label=\"Change Password\" description=\"Update your account password\" icon={Key} />\n> 176 |                     <ToggleSwitch label=\"Two-Factor Authentication (2FA)\" description=\"Add an extra layer of security via SMS\" icon={Shield} stateKey=\"twoFactor\" />\n      |                      ^^^^^^^^^^^^ This component is created during render\n  177 |                     <ActionRow label=\"Manage Login Devices\" description=\"Review active sessions on other devices\" icon={Smartphone} />\n  178 |                   </div>\n  179 |                 </div>\n\n  51 |\n  52 |   // Reusable Toggle Component\n> 53 |   const ToggleSwitch = ({ label, description, icon: Icon, stateKey }) => (\n     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 54 |     <div className=\"flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-green-200 transition-colors\">\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 55 |       <div className=\"flex items-center gap-4\">\n     …\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 75 |     </div>\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 76 |   );\n     | ^^^^ The component is created during render here\n  77 |\n  78 |   // Reusable Action Row Component\n  79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => ("
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 177,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  175 |                     <ActionRow label=\"Change Password\" description=\"Update your account password\" icon={Key} />\n  176 |                     <ToggleSwitch label=\"Two-Factor Authentication (2FA)\" description=\"Add an extra layer of security via SMS\" icon={Shield} stateKey=\"twoFactor\" />\n> 177 |                     <ActionRow label=\"Manage Login Devices\" description=\"Review active sessions on other devices\" icon={Smartphone} />\n      |                      ^^^^^^^^^ This component is created during render\n  178 |                   </div>\n  179 |                 </div>\n  180 |\n\n  77 |\n  78 |   // Reusable Action Row Component\n> 79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => (\n     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 80 |     <button \n     | ^^^^^^^^^^^^\n> 81 |       onClick={onClick}\n     …\n     | ^^^^^^^^^^^^\n> 94 |     </button>\n     | ^^^^^^^^^^^^\n> 95 |   );\n     | ^^^^ The component is created during render here\n  96 |\n  97 |   return (\n  98 |     <div className=\"max-w-6xl mx-auto space-y-8 font-sans pb-32 pt-4 px-4 sm:px-6 lg:px-8\">"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 212,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  210 |                   </div>\n  211 |                   <div className=\"space-y-3\">\n> 212 |                     <ActionRow label=\"Send an Email\" description=\"support@kisano.in\" icon={Mail} />\n      |                      ^^^^^^^^^ This component is created during render\n  213 |                     <ActionRow label=\"Report an Issue\" description=\"Report a bug or problem with the app\" icon={AlertTriangle} />\n  214 |                   </div>\n  215 |                 </div>\n\n  77 |\n  78 |   // Reusable Action Row Component\n> 79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => (\n     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 80 |     <button \n     | ^^^^^^^^^^^^\n> 81 |       onClick={onClick}\n     …\n     | ^^^^^^^^^^^^\n> 94 |     </button>\n     | ^^^^^^^^^^^^\n> 95 |   );\n     | ^^^^ The component is created during render here\n  96 |\n  97 |   return (\n  98 |     <div className=\"max-w-6xl mx-auto space-y-8 font-sans pb-32 pt-4 px-4 sm:px-6 lg:px-8\">"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 213,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  211 |                   <div className=\"space-y-3\">\n  212 |                     <ActionRow label=\"Send an Email\" description=\"support@kisano.in\" icon={Mail} />\n> 213 |                     <ActionRow label=\"Report an Issue\" description=\"Report a bug or problem with the app\" icon={AlertTriangle} />\n      |                      ^^^^^^^^^ This component is created during render\n  214 |                   </div>\n  215 |                 </div>\n  216 |\n\n  77 |\n  78 |   // Reusable Action Row Component\n> 79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => (\n     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 80 |     <button \n     | ^^^^^^^^^^^^\n> 81 |       onClick={onClick}\n     …\n     | ^^^^^^^^^^^^\n> 94 |     </button>\n     | ^^^^^^^^^^^^\n> 95 |   );\n     | ^^^^ The component is created during render here\n  96 |\n  97 |   return (\n  98 |     <div className=\"max-w-6xl mx-auto space-y-8 font-sans pb-32 pt-4 px-4 sm:px-6 lg:px-8\">"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 220,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  218 |                   <h2 className=\"text-xl font-black text-gray-900 mb-4\">Help Resources</h2>\n  219 |                   <div className=\"space-y-3\">\n> 220 |                     <ActionRow label=\"Frequently Asked Questions (FAQ)\" description=\"Find quick answers to common questions\" icon={HelpCircle} />\n      |                      ^^^^^^^^^ This component is created during render\n  221 |                     <ActionRow label=\"Video Tutorials\" description=\"Learn how to use AI Doctor and Marketplace\" icon={Info} />\n  222 |                   </div>\n  223 |                 </div>\n\n  77 |\n  78 |   // Reusable Action Row Component\n> 79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => (\n     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 80 |     <button \n     | ^^^^^^^^^^^^\n> 81 |       onClick={onClick}\n     …\n     | ^^^^^^^^^^^^\n> 94 |     </button>\n     | ^^^^^^^^^^^^\n> 95 |   );\n     | ^^^^ The component is created during render here\n  96 |\n  97 |   return (\n  98 |     <div className=\"max-w-6xl mx-auto space-y-8 font-sans pb-32 pt-4 px-4 sm:px-6 lg:px-8\">"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 221,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  219 |                   <div className=\"space-y-3\">\n  220 |                     <ActionRow label=\"Frequently Asked Questions (FAQ)\" description=\"Find quick answers to common questions\" icon={HelpCircle} />\n> 221 |                     <ActionRow label=\"Video Tutorials\" description=\"Learn how to use AI Doctor and Marketplace\" icon={Info} />\n      |                      ^^^^^^^^^ This component is created during render\n  222 |                   </div>\n  223 |                 </div>\n  224 |               </motion.div>\n\n  77 |\n  78 |   // Reusable Action Row Component\n> 79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => (\n     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 80 |     <button \n     | ^^^^^^^^^^^^\n> 81 |       onClick={onClick}\n     …\n     | ^^^^^^^^^^^^\n> 94 |     </button>\n     | ^^^^^^^^^^^^\n> 95 |   );\n     | ^^^^ The component is created during render here\n  96 |\n  97 |   return (\n  98 |     <div className=\"max-w-6xl mx-auto space-y-8 font-sans pb-32 pt-4 px-4 sm:px-6 lg:px-8\">"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 240,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  238 |\n  239 |                 <div className=\"space-y-3 pt-4\">\n> 240 |                   <ActionRow label=\"Terms & Conditions\" icon={FileText} />\n      |                    ^^^^^^^^^ This component is created during render\n  241 |                   <ActionRow label=\"Privacy Policy\" icon={Shield} />\n  242 |                   <ActionRow label=\"Open Source Licenses\" icon={Code} />\n  243 |                 </div>\n\n  77 |\n  78 |   // Reusable Action Row Component\n> 79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => (\n     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 80 |     <button \n     | ^^^^^^^^^^^^\n> 81 |       onClick={onClick}\n     …\n     | ^^^^^^^^^^^^\n> 94 |     </button>\n     | ^^^^^^^^^^^^\n> 95 |   );\n     | ^^^^ The component is created during render here\n  96 |\n  97 |   return (\n  98 |     <div className=\"max-w-6xl mx-auto space-y-8 font-sans pb-32 pt-4 px-4 sm:px-6 lg:px-8\">"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 241,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  239 |                 <div className=\"space-y-3 pt-4\">\n  240 |                   <ActionRow label=\"Terms & Conditions\" icon={FileText} />\n> 241 |                   <ActionRow label=\"Privacy Policy\" icon={Shield} />\n      |                    ^^^^^^^^^ This component is created during render\n  242 |                   <ActionRow label=\"Open Source Licenses\" icon={Code} />\n  243 |                 </div>\n  244 |               </motion.div>\n\n  77 |\n  78 |   // Reusable Action Row Component\n> 79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => (\n     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 80 |     <button \n     | ^^^^^^^^^^^^\n> 81 |       onClick={onClick}\n     …\n     | ^^^^^^^^^^^^\n> 94 |     </button>\n     | ^^^^^^^^^^^^\n> 95 |   );\n     | ^^^^ The component is created during render here\n  96 |\n  97 |   return (\n  98 |     <div className=\"max-w-6xl mx-auto space-y-8 font-sans pb-32 pt-4 px-4 sm:px-6 lg:px-8\">"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\SettingsPage.jsx",
+    "line": 242,
+    "rule": "react-hooks/static-components",
+    "message": "Error: Cannot create components during render\n\nComponents created during render will reset their state each time they are created. Declare components outside of render.\n\n  240 |                   <ActionRow label=\"Terms & Conditions\" icon={FileText} />\n  241 |                   <ActionRow label=\"Privacy Policy\" icon={Shield} />\n> 242 |                   <ActionRow label=\"Open Source Licenses\" icon={Code} />\n      |                    ^^^^^^^^^ This component is created during render\n  243 |                 </div>\n  244 |               </motion.div>\n  245 |             )}\n\n  77 |\n  78 |   // Reusable Action Row Component\n> 79 |   const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => (\n     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n> 80 |     <button \n     | ^^^^^^^^^^^^\n> 81 |       onClick={onClick}\n     …\n     | ^^^^^^^^^^^^\n> 94 |     </button>\n     | ^^^^^^^^^^^^\n> 95 |   );\n     | ^^^^ The component is created during render here\n  96 |\n  97 |   return (\n  98 |     <div className=\"max-w-6xl mx-auto space-y-8 font-sans pb-32 pt-4 px-4 sm:px-6 lg:px-8\">"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\owner\\BookingRequests.jsx",
+    "line": 28,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\n  26 |\n  27 |   useEffect(() => {\n> 28 |     fetchBookings();\n     |     ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect\n  29 |   }, []);\n  30 |\n  31 |   const handleStatusChange = async (id, newStatus) => {"
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\public\\ExplorePage.jsx",
+    "line": 54,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update external systems with the latest state from React.\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\n\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\n\n  52 |     const tabFromUrl = searchParams.get('tab');\n  53 |     if (tabFromUrl && ['equipment', 'marketplace', 'sprayers'].includes(tabFromUrl)) {\n> 54 |       setActiveTab(tabFromUrl);\n     |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect\n  55 |     }\n  56 |   }, [searchParams]);\n  57 |"
+  }
+]

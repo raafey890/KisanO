@@ -9,370 +9,246 @@ import {
   MapPin, 
   Package, 
   CheckCircle2, 
-  AlertCircle,
   ChevronDown
 } from 'lucide-react';
 import { TractorEquipment } from '../../assets/images'; // Fallback image
-import tomatoSeedsImg from '../../assets/products/tomato_seeds.jpg';
-import npkFertilizerImg from '../../assets/products/npk_fertilizer.jpg';
-import rotavatorBladeImg from '../../assets/products/rotavator_blade.jpg';
-import dripIrrigationImg from '../../assets/products/drip_irrigation.jpg';
-import neemOilImg from '../../assets/products/neem_oil.jpg';
-import cattleFeedImg from '../../assets/products/cattle_feed.jpg';
-import mangoSeedlingImg from '../../assets/products/mango_seedling.jpg';
-import handTrowelImg from '../../assets/products/hand_trowel.jpg';
-
-const CATEGORIES = [
-  'All', 'Seeds', 'Seedlings', 'Fertilizers', 'Pesticides', 
-  'Farm Tools', 'Irrigation', 'Organic Products', 'Animal Feed'
-];
-
-const MOCK_PRODUCTS = [
-  {
-    id: 'p1',
-    name: 'Premium Hybrid Tomato Seeds (100g)',
-    category: 'Seeds',
-    sellerName: 'Kisan Seeds Co.',
-    price: 450,
-    originalPrice: 500,
-    discount: '10% OFF',
-    rating: 4.8,
-    reviews: 124,
-    availability: 'In Stock',
-    deliveryEstimate: 'Tomorrow',
-    image: tomatoSeedsImg,
-    isFeatured: true
-  },
-  {
-    id: 'p2',
-    name: 'Organic NPK Fertilizer (50kg)',
-    category: 'Fertilizers',
-    sellerName: 'GreenFarm Organics',
-    price: 1200,
-    originalPrice: 1500,
-    discount: '20% OFF',
-    rating: 4.6,
-    reviews: 89,
-    availability: 'In Stock',
-    deliveryEstimate: '2 Days',
-    image: npkFertilizerImg,
-    isFeatured: true
-  },
-  {
-    id: 'p3',
-    name: 'Heavy Duty Steel Rotavator Blade',
-    category: 'Farm Tools',
-    sellerName: 'Agro Implement Tools',
-    price: 850,
-    originalPrice: null,
-    discount: null,
-    rating: 4.9,
-    reviews: 210,
-    availability: 'Few Left',
-    deliveryEstimate: '3 Days',
-    image: rotavatorBladeImg,
-    isFeatured: true
-  },
-  {
-    id: 'p4',
-    name: 'Drip Irrigation Starter Kit',
-    category: 'Irrigation',
-    sellerName: 'AquaFlow Solutions',
-    price: 3400,
-    originalPrice: 4000,
-    discount: '15% OFF',
-    rating: 4.7,
-    reviews: 56,
-    availability: 'In Stock',
-    deliveryEstimate: 'Tomorrow',
-    image: dripIrrigationImg,
-    isFeatured: true
-  },
-  {
-    id: 'p5',
-    name: 'Neem Oil Natural Pesticide (1L)',
-    category: 'Pesticides',
-    sellerName: 'BioSafe Farms',
-    price: 380,
-    originalPrice: 400,
-    discount: '5% OFF',
-    rating: 4.5,
-    reviews: 34,
-    availability: 'In Stock',
-    deliveryEstimate: 'Tomorrow',
-    image: neemOilImg,
-    isFeatured: false
-  },
-  {
-    id: 'p6',
-    name: 'Premium Cattle Feed (25kg)',
-    category: 'Animal Feed',
-    sellerName: 'Nandi Feeds Ltd.',
-    price: 950,
-    originalPrice: null,
-    discount: null,
-    rating: 4.4,
-    reviews: 112,
-    availability: 'Out of Stock',
-    deliveryEstimate: 'Unknown',
-    image: cattleFeedImg,
-    isFeatured: false
-  },
-  {
-    id: 'p7',
-    name: 'Mango Seedlings (Alphonso) - Pack of 5',
-    category: 'Seedlings',
-    sellerName: 'Ratnagiri Nursery',
-    price: 600,
-    originalPrice: null,
-    discount: null,
-    rating: 4.8,
-    reviews: 45,
-    availability: 'In Stock',
-    deliveryEstimate: '3 Days',
-    image: mangoSeedlingImg,
-    isFeatured: false
-  },
-  {
-    id: 'p8',
-    name: 'Multi-purpose Hand Trowel',
-    category: 'Farm Tools',
-    sellerName: 'Agro Implement Tools',
-    price: 250,
-    originalPrice: 300,
-    discount: '16% OFF',
-    rating: 4.3,
-    reviews: 78,
-    availability: 'In Stock',
-    deliveryEstimate: 'Tomorrow',
-    image: handTrowelImg,
-    isFeatured: false
-  }
-];
+import { CATEGORIES } from '../../features/marketplace/constants/mockData';
+import { useProducts } from '../../features/marketplace/hooks/useProducts';
 
 export default function MarketplacePage() {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('Newest');
+  
+  const { data: products = [], isLoading, isError } = useProducts();
 
-  // Filter products based on category and search
-  const filteredProducts = MOCK_PRODUCTS.filter(product => {
-    const matchesCat = activeCategory === 'All' || product.category === activeCategory;
+  // Filter & Sort Logic
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = activeCategory === 'All' || product.category === activeCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          product.category.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCat && matchesSearch;
+                          product.sellerName.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
   });
 
-  const featuredProducts = MOCK_PRODUCTS.filter(p => p.isFeatured);
+  // Featured Products
+  const featuredProducts = products.filter(p => p.isFeatured);
 
-  const ProductCard = ({ product }) => (
+  return (
+    <div className="flex flex-col gap-8 pb-10">
+      
+      {/* Header Section */}
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-black tracking-tight text-gray-900">Marketplace</h1>
+            <p className="text-sm text-gray-500 mt-1">Buy seeds, fertilizers, and farm tools directly from verified sellers.</p>
+          </div>
+          <button className="flex items-center gap-2 bg-gray-900 text-white rounded-full px-5 py-2 text-sm font-bold">
+            <Heart size={16} /> Wishlist
+          </button>
+        </div>
+
+        {/* Search & Filter Bar */}
+        <div className="flex flex-col sm:flex-row gap-3 mt-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <input 
+              type="text" 
+              placeholder="Search products, brands, or sellers..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all text-sm"
+            />
+          </div>
+          <div className="flex gap-2">
+            <button className="flex items-center gap-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-4 py-3 rounded-xl text-sm font-medium whitespace-nowrap">
+              <SlidersHorizontal size={16} /> Filters
+            </button>
+            <div className="relative">
+              <select 
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="appearance-none bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 py-3 pl-4 pr-10 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-green-500/20 cursor-pointer h-full"
+              >
+                <option>Newest</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+                <option>Highest Rated</option>
+              </select>
+              <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+            </div>
+          </div>
+        </div>
+
+        {/* Categories */}
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+          {CATEGORIES.map(category => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                activeCategory === category 
+                  ? 'bg-black text-white' 
+                  : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {isLoading ? (
+        <div className="flex justify-center p-12">Loading products...</div>
+      ) : isError ? (
+        <div className="flex flex-col items-center p-12 text-red-500">
+          <p>Failed to load products.</p>
+        </div>
+      ) : (
+        <>
+          {/* Featured Deals (Only show on 'All' tab) */}
+          <AnimatePresence>
+            {activeCategory === 'All' && searchQuery === '' && featuredProducts.length > 0 && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="flex flex-col gap-4"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
+                    <Star size={16} className="fill-current" />
+                  </div>
+                  <h2 className="text-lg font-bold text-gray-900">Featured Deals</h2>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                  {featuredProducts.map(product => (
+                    <ProductCard key={`featured-${product.id}`} product={product} />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* All Products Grid */}
+          <div className="flex flex-col gap-4">
+            <h2 className="text-lg font-bold text-gray-900">
+              {searchQuery ? 'Search Results' : activeCategory === 'All' ? 'All Products' : `${activeCategory} Products`}
+              <span className="text-sm font-normal text-gray-500 ml-2">({filteredProducts.length})</span>
+            </h2>
+            
+            {filteredProducts.length === 0 ? (
+              <div className="p-12 flex flex-col items-center justify-center text-center border-2 border-dashed border-gray-200 rounded-2xl">
+                <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 mb-4">
+                  <Package size={24} />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 mb-1">No products found</h3>
+                <p className="text-sm text-gray-500 max-w-sm">
+                  We couldn't find any products matching your current filters. Try adjusting your search or category.
+                </p>
+                <button 
+                  onClick={() => { setSearchQuery(''); setActiveCategory('All'); }}
+                  className="mt-6 px-6 py-2 bg-white border border-gray-300 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                {filteredProducts.map(product => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
+    </div>
+  );
+}
+
+// Subcomponent for Product Card
+function ProductCard({ product }) {
+  return (
     <motion.div 
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
       whileHover={{ y: -4 }}
-      className="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer"
+      className="group cursor-pointer flex flex-col overflow-hidden border border-gray-100 bg-white rounded-2xl hover:border-green-500/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300"
     >
-      {/* Image Container */}
-      <div className="relative h-48 sm:h-56 w-full bg-gray-100 overflow-hidden">
+      {/* Image Area */}
+      <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden">
         <img 
-          src={product.image} 
-          alt={product.name} 
+          src={product.image || TractorEquipment} 
+          alt={product.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          onError={(e) => { e.target.src = TractorEquipment }} // Fallback
         />
         
-        {/* Discount Badge */}
-        {product.discount && (
-          <div className="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full shadow-md">
-            {product.discount}
-          </div>
-        )}
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+          {product.discount && (
+            <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm">
+              {product.discount}
+            </span>
+          )}
+          {product.isFeatured && (
+            <span className="bg-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm">
+              FEATURED
+            </span>
+          )}
+        </div>
 
         {/* Wishlist Button */}
-        <button className="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur hover:bg-white text-gray-400 hover:text-red-500 rounded-full flex items-center justify-center shadow-sm transition-colors">
-          <Heart className="w-4 h-4" />
+        <button className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-white shadow-sm transition-colors z-10">
+          <Heart size={14} />
         </button>
       </div>
 
-      {/* Content */}
-      <div className="p-5 flex flex-col flex-1 gap-4">
+      {/* Content Area */}
+      <div className="p-4 flex flex-col flex-1">
+        <div className="text-[10px] font-bold tracking-wider text-green-600 uppercase mb-1.5">
+          {product.category}
+        </div>
         
-        <div className="flex flex-col gap-1.5">
-          <span className="text-[10px] font-black uppercase tracking-wider text-green-600">
-            {product.category}
-          </span>
-          <h3 className="text-base font-black text-gray-900 leading-snug line-clamp-2">
-            {product.name}
-          </h3>
-          <p className="text-xs font-semibold text-gray-500">
-            Sold by <span className="text-gray-900">{product.sellerName}</span>
-          </p>
+        <h3 className="text-sm font-bold text-gray-900 leading-tight mb-2 line-clamp-2 group-hover:text-green-600 transition-colors">
+          {product.name}
+        </h3>
+        
+        <div className="flex items-center gap-1 text-[11px] text-gray-500 mb-3">
+          <CheckCircle2 size={12} className="text-green-500" />
+          <span>{product.sellerName}</span>
         </div>
 
-        {/* Rating */}
-        <div className="flex items-center gap-1.5 mt-auto">
-          <div className="flex items-center text-amber-400 bg-amber-50 px-1.5 py-0.5 rounded text-xs font-black">
-            <Star className="w-3 h-3 fill-current mr-1" />
-            {product.rating}
-          </div>
-          <span className="text-xs font-medium text-gray-400">({product.reviews})</span>
-        </div>
-
-        {/* Price & Delivery */}
-        <div className="flex items-end justify-between border-t border-gray-100 pt-4">
+        <div className="mt-auto pt-3 border-t border-gray-100 flex items-end justify-between">
           <div className="flex flex-col">
             {product.originalPrice && (
-              <span className="text-xs text-gray-400 font-bold line-through">₹{product.originalPrice}</span>
+              <span className="text-[10px] text-gray-400 line-through">₹{product.originalPrice}</span>
             )}
-            <span className="text-2xl font-black text-gray-900 leading-none">
-              ₹{product.price}
-            </span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-lg font-black text-gray-900">₹{product.price}</span>
+            </div>
           </div>
-
+          
           <div className="flex flex-col items-end gap-1">
-            {product.availability === 'In Stock' ? (
-              <span className="text-[10px] font-bold uppercase text-green-600 flex items-center gap-1">
-                <CheckCircle2 className="w-3 h-3" /> In Stock
-              </span>
-            ) : product.availability === 'Out of Stock' ? (
-              <span className="text-[10px] font-bold uppercase text-red-500 flex items-center gap-1">
-                <AlertCircle className="w-3 h-3" /> Out of Stock
-              </span>
-            ) : (
-              <span className="text-[10px] font-bold uppercase text-amber-500 flex items-center gap-1">
-                <AlertCircle className="w-3 h-3" /> Few Left
-              </span>
-            )}
-            <span className="text-[10px] font-medium text-gray-500 flex items-center gap-1">
-              <Package className="w-3 h-3" /> Delivery: {product.deliveryEstimate}
-            </span>
+            <div className="flex items-center gap-1 bg-gray-50 px-1.5 py-0.5 rounded text-[10px] font-medium text-gray-600">
+              <Star size={10} className="fill-orange-400 text-orange-400" />
+              {product.rating} ({product.reviews})
+            </div>
           </div>
         </div>
-
-        {/* Action */}
-        <button 
-          onClick={() => navigate(`/farmer/marketplace/${product.id}`)}
-          className="w-full h-10 mt-1 bg-gray-50 hover:bg-green-600 text-gray-700 hover:text-white font-black text-sm uppercase tracking-wider rounded-xl transition-colors border border-gray-200 hover:border-transparent flex items-center justify-center"
-        >
-          View Details
+      </div>
+      
+      {/* Quick Add Button (appears on hover) */}
+      <div className="px-4 pb-4 pt-0 h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-300">
+        <button className="w-full btn btn-black btn-sm">
+          Add to Cart
         </button>
       </div>
     </motion.div>
-  );
-
-  return (
-    <div className="max-w-7xl mx-auto space-y-12 font-sans pb-24 pt-4 px-4 sm:px-6 lg:px-8">
-      
-      {/* 1. HEADER & SEARCH SECTION */}
-      <div className="flex flex-col items-center text-center space-y-8 max-w-4xl mx-auto pt-4 sm:pt-8 px-2 sm:px-0">
-        <div className="space-y-3">
-          <h1 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">
-            Marketplace
-          </h1>
-          <p className="text-base sm:text-lg font-medium text-gray-500">
-            Buy quality farming products from trusted sellers near you.
-          </p>
-        </div>
-
-        {/* Large Search Bar */}
-        <div className="w-full max-w-3xl mx-auto flex items-center bg-white border-2 border-gray-200 rounded-3xl px-6 py-4 focus-within:border-green-500 focus-within:shadow-md transition-all">
-          <Search className="w-7 h-7 text-gray-400 shrink-0" />
-          <input
-            type="text"
-            className="flex-1 bg-transparent border-none focus:outline-none focus:ring-0 text-gray-900 placeholder-gray-400 text-lg font-medium ml-4 w-full"
-            placeholder="Search seeds, fertilizers, tools..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </div>
-
-      {/* 2. CATEGORY CHIPS */}
-      <div className="flex overflow-x-auto hide-scrollbar gap-3 pb-2 pt-2 snap-x">
-        {CATEGORIES.map(category => (
-          <button
-            key={category}
-            onClick={() => setActiveCategory(category)}
-            className={`snap-start px-6 py-3 rounded-full font-black text-sm transition-all whitespace-nowrap border-2 ${
-              activeCategory === category 
-                ? 'bg-gray-900 text-white border-gray-900 shadow-md' 
-                : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-            }`}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
-
-      {/* 3. FEATURED SECTION (Only show on 'All' category and no search) */}
-      {!searchQuery && activeCategory === 'All' && (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-black text-gray-900 tracking-tight">Featured Products</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map(product => (
-              <ProductCard key={`featured-${product.id}`} product={product} />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* 4. FILTERS & ALL PRODUCTS HEADER */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-6 border-t border-gray-100">
-        <h2 className="text-2xl font-black text-gray-900 tracking-tight">
-          {searchQuery ? 'Search Results' : activeCategory === 'All' ? 'All Products' : activeCategory}
-          <span className="text-gray-400 text-base font-bold ml-3">({filteredProducts.length})</span>
-        </h2>
-        
-        {/* Simple Filters */}
-        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-          
-          <button className="h-10 px-4 bg-white border border-gray-200 rounded-xl text-xs font-bold text-gray-700 flex items-center gap-2 hover:bg-gray-50 transition-colors">
-            <SlidersHorizontal className="w-4 h-4" /> Filters
-          </button>
-          
-          <div className="relative">
-            <select 
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="h-10 pl-4 pr-10 bg-white border border-gray-200 rounded-xl text-xs font-bold text-gray-700 appearance-none focus:outline-none focus:border-gray-900 cursor-pointer"
-            >
-              <option>Newest</option>
-              <option>Price Low to High</option>
-              <option>Price High to Low</option>
-              <option>Highest Rated</option>
-            </select>
-            <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
-
-        </div>
-      </div>
-
-      {/* 5. PRODUCT GRID */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map(product => (
-            <ProductCard key={product.id} product={product} />
-          ))
-        ) : (
-          <div className="col-span-full py-20 flex flex-col items-center justify-center text-center bg-gray-50 rounded-3xl border border-gray-200">
-            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm text-gray-400 mb-4">
-              <Search className="w-8 h-8" />
-            </div>
-            <h3 className="text-xl font-black text-gray-900">No products found</h3>
-            <p className="text-gray-500 font-medium mt-1">Try adjusting your search or category filter.</p>
-            <button 
-              onClick={() => {setSearchQuery(''); setActiveCategory('All');}}
-              className="mt-6 px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-black rounded-xl transition-colors"
-            >
-              Clear Filters
-            </button>
-          </div>
-        )}
-      </div>
-
-    </div>
   );
 }

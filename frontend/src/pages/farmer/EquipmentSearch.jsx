@@ -10,7 +10,7 @@ import {
   SeedDrillEquipment,
   CropSprayerService,
 } from '../../assets/images';
-import api from '../../services/api';
+import { useEquipment } from '../../features/farmer/hooks/useEquipment';
 
 const MOCK_EQUIPMENT_ITEMS = [
   {
@@ -117,7 +117,8 @@ const CATEGORIES = [
 
 export default function EquipmentSearch() {
   const navigate = useNavigate();
-  const [equipmentList, setEquipmentList] = useState(MOCK_EQUIPMENT_ITEMS);
+  const { data, isLoading, isError } = useEquipment();
+
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -126,31 +127,28 @@ export default function EquipmentSearch() {
   const [distanceFilter, setDistanceFilter] = useState('all');
   const [availabilityFilter, setAvailabilityFilter] = useState('all');
 
-  useEffect(() => {
-    const fetchEquipment = async () => {
-      try {
-        const res = await api.get('/equipment');
-        if (res.data?.success && res.data.data?.length > 0) {
-          const mapped = res.data.data.map((item, idx) => ({
-            ...item,
-            image: item.image || MOCK_EQUIPMENT_ITEMS[idx % MOCK_EQUIPMENT_ITEMS.length].image,
-            dailyRate: item.dailyRate || 4500,
-            distanceKm: item.distanceKm || (idx + 1) * 1.5,
-            ownerName: item.owner?.fullName || MOCK_EQUIPMENT_ITEMS[idx % MOCK_EQUIPMENT_ITEMS.length].ownerName,
-            availability: 'Available Today',
-            rating: item.rating || 4.9,
-          }));
-          setEquipmentList(mapped);
-        }
-      } catch (err) {
-        // Fallback to rich local dataset if offline
-      }
-    };
-    fetchEquipment();
-  }, []);
+  // Map API data or fallback to mock data
+  const processedList = React.useMemo(() => {
+    if (data && data.length > 0) {
+      return data.map((item, idx) => ({
+        ...item,
+        id: item._id || item.id,
+        equipmentName: item.name || item.equipmentName,
+        equipmentType: item.category || item.equipmentType,
+        image: item.image || MOCK_EQUIPMENT_ITEMS[idx % MOCK_EQUIPMENT_ITEMS.length].image,
+        dailyRate: item.rate || item.dailyRate || 4500,
+        distanceKm: item.distanceKm || (idx + 1) * 1.5,
+        ownerName: item.ownerId?.name || item.owner?.fullName || MOCK_EQUIPMENT_ITEMS[idx % MOCK_EQUIPMENT_ITEMS.length].ownerName,
+        availability: item.status || 'Available Today',
+        rating: item.rating || 4.9,
+        reviewsCount: item.reviews || 24,
+      }));
+    }
+    return MOCK_EQUIPMENT_ITEMS;
+  }, [data]);
 
   // Filter Logic
-  const filteredList = equipmentList
+  const filteredList = processedList
     .filter((item) => {
       if (selectedCategory !== 'All' && item.equipmentType.toLowerCase() !== selectedCategory.toLowerCase()) {
         return false;
@@ -172,6 +170,14 @@ export default function EquipmentSearch() {
       if (priceSort === 'high_to_low') return b.dailyRate - a.dailyRate;
       return 0;
     });
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto space-y-10 font-sans pb-20 pt-2 px-2 sm:px-4">

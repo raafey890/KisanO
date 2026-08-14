@@ -104,7 +104,7 @@ const DropdownLoader = memo(
     }, [disabled, className, responsiveClasses]);
 
     // Render a single skeleton row.
-    const renderRow = (index) => {
+    const renderRow = useCallback((index) => {
       // Use varying widths.
       const widthClass = SKELETON_WIDTHS[index % SKELETON_WIDTHS.length];
 
@@ -147,12 +147,12 @@ const DropdownLoader = memo(
           {shimmerElement}
         </motion.div>
       );
-    };
+    }, [isAnimated, skeletonHeight, variant]);
 
     // Generate rows.
     const rowsToRender = useMemo(
       () => Array.from({ length: rows }, (_, i) => renderRow(i)),
-      [rows, size, variant, isAnimated, skeletonHeight],
+      [rows, renderRow],
     );
 
     // Motion props - respect reduced motion.

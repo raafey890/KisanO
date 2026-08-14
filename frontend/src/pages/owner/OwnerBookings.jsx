@@ -7,52 +7,20 @@ import {
 
 import userAvatar from '../../assets/ai/farmer_3d_icon.jpg';
 
-const TABS = ['Pending', 'Accepted', 'Active', 'Completed', 'Cancelled'];
+import { useBookings, useUpdateBookingStatus } from '../../features/owner/hooks/useBookings';
 
-const MOCK_BOOKINGS = [
-  {
-    id: 'BK-7829',
-    status: 'Pending',
-    farmer: 'Suresh Patil',
-    equipment: 'Mahindra 575 DI XP Plus',
-    date: '12 Sep 2026',
-    duration: '2 Days',
-    amount: 1600,
-    location: 'Village Khed, Pune',
-    avatar: userAvatar
-  },
-  {
-    id: 'BK-7830',
-    status: 'Accepted',
-    farmer: 'Ramesh Kumar',
-    equipment: 'John Deere Harvester',
-    date: '15 Sep 2026',
-    duration: '1 Day',
-    amount: 2500,
-    location: 'Village Shirur, Pune',
-    avatar: userAvatar
-  },
-  {
-    id: 'BK-7821',
-    status: 'Active',
-    farmer: 'Anil Desai',
-    equipment: 'Rotavator',
-    date: 'Today',
-    duration: '3 Days',
-    amount: 1200,
-    location: 'Village Baramati, Pune',
-    avatar: userAvatar
-  }
-];
+const TABS = ['Pending', 'Accepted', 'Active', 'Completed', 'Cancelled'];
 
 export default function OwnerBookings() {
   const [activeTab, setActiveTab] = useState('Pending');
-  const [bookings, setBookings] = useState(MOCK_BOOKINGS);
+  
+  const { data: bookings = [], isLoading } = useBookings();
+  const { mutate: updateStatus } = useUpdateBookingStatus();
 
-  const filteredBookings = bookings.filter(b => b.status === activeTab);
+  const filteredBookings = bookings.filter(b => b.status === activeTab || b.bookingStatus === activeTab);
 
   const handleStatusChange = (id, newStatus) => {
-    setBookings(prev => prev.map(b => b.id === id ? { ...b, status: newStatus } : b));
+    updateStatus({ id, status: newStatus });
   };
 
   return (
@@ -98,7 +66,11 @@ export default function OwnerBookings() {
       {/* 3. BOOKINGS LIST */}
       <div className="space-y-6">
         <AnimatePresence mode="popLayout">
-          {filteredBookings.length > 0 ? (
+          {isLoading ? (
+            <div className="flex justify-center p-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500"></div>
+            </div>
+          ) : filteredBookings.length > 0 ? (
             filteredBookings.map((booking) => (
               <motion.div 
                 key={booking.id}

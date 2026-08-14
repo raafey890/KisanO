@@ -3,14 +3,19 @@ import { motion } from 'framer-motion';
 import { Search, Filter, Tractor, ShieldCheck, CheckCircle2, XCircle } from 'lucide-react';
 import equipmentImg from '../../assets/ai/ai_hero.jpg';
 
-const EQUIPMENT = [
-  { id: 'EQ-1001', name: 'John Deere 5310', owner: 'Suresh Patil', category: 'Tractor', price: '₹800/hr', status: 'Pending', rating: 0, utilization: '0%' },
-  { id: 'EQ-1002', name: 'Mahindra Arjun Novo', owner: 'Anil Desai', category: 'Tractor', price: '₹850/hr', status: 'Active', rating: 4.8, utilization: '75%' },
-  { id: 'EQ-1003', name: 'Automatic Seed Drill', owner: 'Ramesh Kumar', category: 'Implement', price: '₹300/hr', status: 'Active', rating: 4.5, utilization: '40%' },
-];
+import { useAdminEquipment, useApproveEquipment, useRejectEquipment } from '../../features/admin/hooks/useAdmin';
 
 export default function AdminEquipment() {
   const [search, setSearch] = useState('');
+
+  const { data: equipment = [], isLoading } = useAdminEquipment();
+  const { mutate: approveEquipment } = useApproveEquipment();
+  const { mutate: rejectEquipment } = useRejectEquipment();
+
+  const filteredEquipment = equipment.filter(item => 
+    item.name.toLowerCase().includes(search.toLowerCase()) ||
+    item.owner.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 font-sans pb-32 pt-6 px-4 sm:px-6 lg:px-8">
@@ -40,8 +45,13 @@ export default function AdminEquipment() {
       </div>
 
       {/* EQUIPMENT GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {EQUIPMENT.map((item) => (
+      {isLoading ? (
+        <div className="flex justify-center p-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {filteredEquipment.map((item) => (
           <motion.div 
             key={item.id}
             whileHover={{ y: -4 }}
@@ -88,10 +98,16 @@ export default function AdminEquipment() {
             <div className="mt-auto flex gap-2">
               {item.status === 'Pending' ? (
                 <>
-                  <button className="flex-1 py-2.5 bg-green-500 hover:bg-green-600 text-white font-bold text-sm rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                  <button 
+                    onClick={() => approveEquipment(item.id)}
+                    className="flex-1 py-2.5 bg-green-500 hover:bg-green-600 text-white font-bold text-sm rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                  >
                     <CheckCircle2 className="w-4 h-4" /> Approve
                   </button>
-                  <button className="flex-1 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold text-sm rounded-xl transition-colors flex items-center justify-center gap-1.5 border border-red-200">
+                  <button 
+                    onClick={() => rejectEquipment(item.id)}
+                    className="flex-1 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold text-sm rounded-xl transition-colors flex items-center justify-center gap-1.5 border border-red-200"
+                  >
                     <XCircle className="w-4 h-4" /> Reject
                   </button>
                 </>
@@ -103,8 +119,8 @@ export default function AdminEquipment() {
             </div>
           </motion.div>
         ))}
-      </div>
-
+        </div>
+      )}
     </div>
   );
 }

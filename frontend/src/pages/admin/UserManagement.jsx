@@ -2,19 +2,27 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Filter, MoreVertical, ShieldCheck, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react';
 import userAvatar from '../../assets/ai/farmer_3d_icon.jpg';
+import { useAdminUsers, useSuspendUser } from '../../features/admin/hooks/useAdmin';
 
 const TABS = ['All Users', 'Farmers', 'Equipment Owners', 'Sprayer Operators', 'Admins'];
-
-const USERS = [
-  { id: 'USR-001', name: 'Ramesh Patil', role: 'Farmer', phone: '+91 9876543210', email: 'ramesh@example.com', status: 'Active', verified: true, date: '12 Sep 2026' },
-  { id: 'USR-002', name: 'Suresh Desai', role: 'Equipment Owner', phone: '+91 8765432109', email: 'suresh@example.com', status: 'Active', verified: true, date: '10 Sep 2026' },
-  { id: 'USR-003', name: 'Anil Kumar', role: 'Sprayer Operator', phone: '+91 7654321098', email: 'anil@example.com', status: 'Suspended', verified: false, date: '05 Sep 2026' },
-  { id: 'USR-004', name: 'Vikram Singh', role: 'Admin', phone: '+91 6543210987', email: 'admin.vikram@kisano.com', status: 'Active', verified: true, date: '01 Sep 2026' },
-];
 
 export default function UserManagement() {
   const [activeTab, setActiveTab] = useState('All Users');
   const [search, setSearch] = useState('');
+
+  const { data: users = [], isLoading } = useAdminUsers();
+  const { mutate: suspendUser } = useSuspendUser();
+
+  const filteredUsers = users.filter(user => {
+    const matchesTab = activeTab === 'All Users' || user.role === (
+      activeTab === 'Farmers' ? 'Farmer' : 
+      activeTab === 'Equipment Owners' ? 'Equipment Owner' : 
+      activeTab === 'Sprayer Operators' ? 'Sprayer Operator' : 'Admin'
+    );
+    const matchesSearch = user.name.toLowerCase().includes(search.toLowerCase()) || 
+                          user.email.toLowerCase().includes(search.toLowerCase());
+    return matchesTab && matchesSearch;
+  });
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 font-sans pb-32 pt-6 px-4 sm:px-6 lg:px-8">
@@ -61,6 +69,11 @@ export default function UserManagement() {
       </div>
 
       {/* USERS TABLE / CARDS */}
+      {isLoading ? (
+        <div className="flex justify-center p-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+        </div>
+      ) : (
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
@@ -75,7 +88,7 @@ export default function UserManagement() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {USERS.map((user) => (
+              {filteredUsers.map((user) => (
                 <motion.tr 
                   key={user.id}
                   initial={{ opacity: 0 }}
@@ -121,7 +134,15 @@ export default function UserManagement() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
                     {user.date}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right">
+                  <td className="px-6 py-4 whitespace-nowrap text-right flex gap-2 justify-end">
+                    {user.status !== 'Suspended' && (
+                      <button 
+                        onClick={() => suspendUser(user.id)}
+                        className="px-3 py-1.5 text-xs font-bold bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors border border-red-200"
+                      >
+                        Suspend
+                      </button>
+                    )}
                     <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-400 hover:text-gray-900">
                       <MoreVertical className="w-5 h-5" />
                     </button>
@@ -140,6 +161,7 @@ export default function UserManagement() {
           </div>
         </div>
       </div>
+      )}
 
     </div>
   );

@@ -48,12 +48,15 @@ export default function ExplorePage() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const [prevSearch, setPrevSearch] = useState(searchParams);
+
+  if (searchParams !== prevSearch) {
+    setPrevSearch(searchParams);
     const tabFromUrl = searchParams.get('tab');
-    if (tabFromUrl && ['equipment', 'marketplace', 'sprayers'].includes(tabFromUrl)) {
+    if (tabFromUrl && tabFromUrl !== activeTab && ['equipment', 'marketplace', 'sprayers'].includes(tabFromUrl)) {
       setActiveTab(tabFromUrl);
     }
-  }, [searchParams]);
+  }
 
   useEffect(() => {
     const fetchData = async () => {

@@ -78,6 +78,7 @@ const BarChart = memo(
       loading = false,
       responsive,
       className = '',
+      labels = [],
       ...rest
     },
     ref,
@@ -122,7 +123,7 @@ const BarChart = memo(
       }
 
       return data;
-    }, [data, dataKey]);
+    }, [data, dataKey, labels]);
 
     // If no series provided, create one from dataKey.
     const chartSeries = useMemo(() => {

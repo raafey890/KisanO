@@ -6,37 +6,14 @@ import {
   Trash2, Eye, RefreshCw, ChevronLeft, Scan
 } from 'lucide-react';
 
-const MOCK_SCANS = [
-  {
-    id: 'SCN-101',
-    date: '28 Jul 2026',
-    crop: 'Cotton',
-    disease: 'Leaf Blight',
-    severity: 'High',
-    color: 'bg-red-100 text-red-700 border-red-200'
-  },
-  {
-    id: 'SCN-102',
-    date: '25 Jul 2026',
-    crop: 'Tomato',
-    disease: 'Healthy',
-    severity: 'None',
-    color: 'bg-green-100 text-green-700 border-green-200'
-  },
-  {
-    id: 'SCN-103',
-    date: '20 Jul 2026',
-    crop: 'Sugarcane',
-    disease: 'Red Rot',
-    severity: 'Medium',
-    color: 'bg-amber-100 text-amber-700 border-amber-200'
-  }
-];
+import { useScans, useDeleteScan } from '../../features/aidoctor/hooks/useAiDoctor';
 
 export default function AiDoctorHistory() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [scans, setScans] = useState(MOCK_SCANS);
+  
+  const { data: scans = [], isLoading } = useScans();
+  const { mutate: deleteScan } = useDeleteScan();
 
   const filteredScans = scans.filter(scan => 
     scan.crop.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -45,7 +22,7 @@ export default function AiDoctorHistory() {
   );
 
   const handleDelete = (id) => {
-    setScans(scans.filter(s => s.id !== id));
+    deleteScan(id);
   };
 
   return (
@@ -92,7 +69,11 @@ export default function AiDoctorHistory() {
       {/* 2. SCANS GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <AnimatePresence mode="popLayout">
-          {filteredScans.length > 0 ? (
+          {isLoading ? (
+            <div className="col-span-full flex justify-center p-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+            </div>
+          ) : filteredScans.length > 0 ? (
             filteredScans.map(scan => (
               <motion.div 
                 key={scan.id}

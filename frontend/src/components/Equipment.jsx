@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiFilter, FiClock, FiX, FiCheck, FiMapPin } from 'react-icons/fi';
 import api from '../services/api';
@@ -30,14 +30,14 @@ export default function Equipment() {
   const [pickedSlot, setPickedSlot] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => { fetchList(); }, [search, eqType, sortBy]);
-
-  const fetchList = async () => {
+  const fetchList = useCallback(async () => {
     try {
       const res = await api.get('/equipment', { params: { search, eq_type: eqType || undefined, sortBy: sortBy || undefined } });
       if (res.success) setList(res.data.items);
     } catch (_) {}
-  };
+  }, [search, eqType, sortBy]);
+
+  useEffect(() => { setTimeout(() => fetchList(), 0); }, [fetchList]);
 
   const openEq = async (eq) => {
     setSelectedEq(eq); setPickedSlot(null);

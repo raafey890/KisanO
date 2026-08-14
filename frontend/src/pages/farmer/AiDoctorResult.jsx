@@ -2,52 +2,27 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
 import { 
-  ChevronLeft, AlertTriangle, ShieldCheck, Download, Share2, 
+  ChevronLeft, CheckCircle2, AlertTriangle, ShieldCheck, Download, Share2, 
   Leaf, Info, Droplet, Sun, Scan, ArrowRight, Star, AlertCircle, Bookmark
 } from 'lucide-react';
 
 import npkFertilizerImg from '../../assets/products/npk_fertilizer.jpg';
 
+import { useScanDetails } from '../../features/aidoctor/hooks/useAiDoctor';
+
 export default function AiDoctorResult() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // Mock Result Data
-  const RESULT = {
-    id: id || 'NEW-SCAN',
-    date: 'Just Now',
-    cropName: 'Cotton',
-    diseaseName: 'Bacterial Blight',
-    status: 'Diseased',
-    confidence: '94%',
-    severity: 'High',
-    summary: 'The AI has detected signs of Bacterial Blight on the cotton leaves. Immediate action is required to prevent it from spreading to healthy parts of the crop.',
-    diseaseInfo: {
-      description: 'Bacterial blight is a highly contagious disease caused by Xanthomonas axonopodis. It primarily affects leaves, stems, and bolls of cotton plants.',
-      symptoms: ['Water-soaked angular spots on leaves', 'Blackening of stem (blackarm)', 'Premature boll drop'],
-      causes: ['Infected seeds', 'Rain splashes spreading bacteria', 'High humidity and warm temperatures'],
-      spread: 'Spreads rapidly during monsoon through wind-driven rain and infected farming tools.',
-      affectedCrops: ['Cotton', 'Beans', 'Rice']
-    },
-    treatments: {
-      organic: [
-        'Prune and destroy infected leaves immediately.',
-        'Apply copper-based organic sprays.',
-        'Ensure proper spacing between plants to improve air circulation.'
-      ],
-      chemical: [
-        'Spray Copper Oxychloride (50% WP) @ 2.5g/L of water.',
-        'Mix with Streptocycline (1g/10L water) for severe infections.',
-        'Apply 2-3 sprays at 15-day intervals.'
-      ],
-      safety: 'Always wear protective gear (mask, gloves) when mixing and spraying chemicals.'
-    },
-    prevention: [
-      'Use certified disease-free seeds for next planting.',
-      'Practice crop rotation with non-host crops like cereals.',
-      'Avoid overhead irrigation to keep foliage dry.'
-    ]
-  };
+  const { data: RESULT, isLoading } = useScanDetails(id);
+
+  if (isLoading || !RESULT) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+      </div>
+    );
+  }
 
   const MOCK_PRODUCTS = [
     { id: 'p1', name: 'Copper Oxychloride 50% WP (500g)', image: npkFertilizerImg, price: 450, seller: 'AgriCare Solutions', rating: 4.8 },

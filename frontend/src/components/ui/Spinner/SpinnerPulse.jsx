@@ -196,11 +196,6 @@ const SpinnerPulse = memo(
       [role, ariaLabel, isLoading, disabled, size, variant, speed, pulseCount],
     );
 
-    // If not loading, render nothing.
-    if (!isLoading) {
-      return null;
-    }
-
     // Generate pulses.
     const pulses = useMemo(
       () =>
@@ -234,8 +229,13 @@ const SpinnerPulse = memo(
             />
           );
         }),
-      [pulseCount, variant, prefersReducedMotion, speedDuration],
+      [pulseCount, variant, prefersReducedMotion, speedDuration, rippleMotionProps],
     );
+
+    // If not loading, render nothing.
+    if (!isLoading) {
+      return null;
+    }
 
     return (
       <motion.div

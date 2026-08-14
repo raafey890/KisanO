@@ -1,31 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Plus, Tractor, MoreVertical, Wrench, CheckCircle } from 'lucide-react';
-import api from '../../services/api';
-import { useAuth } from '../../context/AuthContext';
+import { useFleet } from '../../features/owner/hooks/useFleet';
 
 const FleetManagement = () => {
-  const { user } = useAuth();
-  const [equipment, setEquipment] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: equipment = [], isLoading: loading, isError, error } = useFleet();
 
-  useEffect(() => {
-    const fetchFleet = async () => {
-      try {
-        const response = await api.get('/equipment');
-        if (response.data?.success) {
-          const myFleet = response.data.data.filter(eq => eq.ownerId === user?.id);
-          setEquipment(myFleet);
-        }
-      } catch (error) {
-        console.error("Error fetching fleet", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFleet();
-  }, [user]);
+  if (isError) {
+    return (
+      <div className="p-8 text-center text-red-600">
+        <h2 className="text-xl font-bold mb-2">Error Loading Fleet</h2>
+        <p>{error?.message || 'Something went wrong.'}</p>
+      </div>
+    );
+  }
 
   const containerVariants = {
     hidden: { opacity: 0 },

@@ -203,9 +203,6 @@ export const CHART_ANIMATIONS = Object.freeze({
 /* Defaults                           */
 /* ---------------------------------- */
 
-/**
- * Default values for all Chart dimensions.
- */
 export const CHART_DEFAULTS = Object.freeze({
   variant: 'default',
   size: 'md',
@@ -214,6 +211,41 @@ export const CHART_DEFAULTS = Object.freeze({
   responsive: true,
   loading: false,
   disabled: false,
+  radius: 'md',
+  shadow: 'none',
+});
+
+/* ---------------------------------- */
+/* Radius                             */
+/* ---------------------------------- */
+
+/**
+ * Border radius presets for Charts.
+ */
+export const CHART_RADIUS = Object.freeze({
+  none: 'rounded-none',
+  sm: 'rounded-sm',
+  md: 'rounded-md',
+  lg: 'rounded-lg',
+  xl: 'rounded-xl',
+  '2xl': 'rounded-2xl',
+  full: 'rounded-full',
+});
+
+/* ---------------------------------- */
+/* Shadows                            */
+/* ---------------------------------- */
+
+/**
+ * Shadow presets for Charts.
+ */
+export const CHART_SHADOWS = Object.freeze({
+  none: 'shadow-none',
+  sm: 'shadow-sm',
+  md: 'shadow-md',
+  lg: 'shadow-lg',
+  xl: 'shadow-xl',
+  '2xl': 'shadow-2xl',
 });
 
 /* ---------------------------------- */
@@ -254,4 +286,22 @@ export function getChartColor(colors) {
  */
 export function getChartAnimation(animation) {
   return CHART_ANIMATIONS[animation] || CHART_ANIMATIONS[CHART_DEFAULTS.animation];
+}
+
+/**
+ * Gets the radius configuration for a chart.
+ * @param {string} radius - The radius key.
+ * @returns {string} The radius configuration.
+ */
+export function getChartRadius(radius) {
+  return CHART_RADIUS[radius] || CHART_RADIUS[CHART_DEFAULTS.radius];
+}
+
+/**
+ * Gets the shadow configuration for a chart.
+ * @param {string} shadow - The shadow key.
+ * @returns {string} The shadow configuration.
+ */
+export function getChartShadow(shadow) {
+  return CHART_SHADOWS[shadow] || CHART_SHADOWS[CHART_DEFAULTS.shadow];
 }

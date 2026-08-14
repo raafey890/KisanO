@@ -11,59 +11,16 @@ import sprayerPerson1Img from '../../assets/services/sprayer_person1.jpg';
 import sprayerPerson2Img from '../../assets/services/sprayer_person2.jpg';
 import sprayerDroneImg from '../../assets/services/sprayer_drone.jpg';
 
-const TABS = ['Upcoming', 'Completed', 'Cancelled'];
+import { useSprayerBookings } from '../../features/operator/hooks/useOperator';
 
-const MOCK_BOOKINGS = [
-  {
-    id: 'SPY-88492',
-    status: 'Upcoming',
-    date: '27 Aug 2026',
-    time: '06:00 AM',
-    provider: {
-      name: 'Ramesh Kumar',
-      serviceType: 'Pesticide Spraying',
-      image: sprayerPerson1Img
-    }
-  },
-  {
-    id: 'SPY-77381',
-    status: 'Completed',
-    date: '15 Aug 2026',
-    time: '08:30 AM',
-    provider: {
-      name: 'Suresh Patil',
-      serviceType: 'Fertilizer Spraying',
-      image: sprayerPerson2Img
-    }
-  },
-  {
-    id: 'SPY-99211',
-    status: 'Completed',
-    date: '02 Aug 2026',
-    time: '07:00 AM',
-    provider: {
-      name: 'AeroTech AgriDrones',
-      serviceType: 'Drone Spraying',
-      image: sprayerDroneImg
-    }
-  },
-  {
-    id: 'SPY-55422',
-    status: 'Cancelled',
-    date: '20 Jul 2026',
-    time: '04:00 PM',
-    provider: {
-      name: 'Ramesh Kumar',
-      serviceType: 'Pesticide Spraying',
-      image: sprayerPerson1Img
-    }
-  }
-];
+const TABS = ['Upcoming', 'Completed', 'Cancelled'];
 
 export default function SprayerHistoryPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('Upcoming');
   const [searchQuery, setSearchQuery] = useState('');
+
+  const { data: bookings = [], isLoading } = useSprayerBookings();
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -83,7 +40,7 @@ export default function SprayerHistoryPage() {
     }
   };
 
-  const filteredBookings = MOCK_BOOKINGS.filter(booking => {
+  const filteredBookings = bookings.filter(booking => {
     const matchesTab = booking.status === activeTab;
     const matchesSearch = booking.provider.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           booking.provider.serviceType.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -142,9 +99,13 @@ export default function SprayerHistoryPage() {
       </div>
 
       {/* 3. BOOKINGS LIST */}
-      <div className="flex flex-col gap-6">
+      <div className="space-y-6">
         <AnimatePresence mode="popLayout">
-          {filteredBookings.length > 0 ? (
+          {isLoading ? (
+            <div className="flex justify-center p-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+            </div>
+          ) : filteredBookings.length > 0 ? (
             filteredBookings.map(booking => (
               <motion.div 
                 key={booking.id}

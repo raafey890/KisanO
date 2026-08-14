@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     # Razorpay
     RAZORPAY_KEY_ID: Optional[str] = None
     RAZORPAY_KEY_SECRET: Optional[str] = None
+    RAZORPAY_WEBHOOK_SECRET: Optional[str] = None
 
     # Google Maps
     GOOGLE_MAPS_API_KEY: Optional[str] = None
@@ -35,9 +36,13 @@ class Settings(BaseSettings):
     # Firebase
     FIREBASE_CREDENTIALS_JSON_PATH: Optional[str] = None
 
-    # OTP Provider
-    OTP_API_KEY: Optional[str] = None
-    OTP_SENDER_ID: Optional[str] = None
+    # MSG91 (OTP Provider)
+    MSG91_AUTH_KEY: Optional[str] = None
+    MSG91_SENDER_ID: Optional[str] = None
+    MSG91_OTP_TEMPLATE_ID: Optional[str] = None
+
+    # AI (Gemini)
+    GEMINI_API_KEY: Optional[str] = None
 
     model_config = SettingsConfigDict(
         env_file=".env", 

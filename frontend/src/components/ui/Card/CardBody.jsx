@@ -52,7 +52,7 @@ const resolvedPadding = padding || paddingClasses[spacing];
       'text-gray-700',
       disabled && 'opacity-50 cursor-not-allowed',
       className
-    ), [spacing, padding, scrollable, disabled, className]);
+    ), [scrollable, disabled, className, resolvedPadding]);
     
     const contentClasses = useMemo(() => mergeClasses(
       'space-y-4',

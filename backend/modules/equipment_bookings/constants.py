@@ -1,4 +1,33 @@
 from shared.booking_core.constants import BookingStatus, PaymentStatus, CompletionStatus
 
-# Equipment Specific Finite State Machine Transitions are now handled by BookingWorkflow in core, 
-# but if we wanted to enforce strict custom rules, we could define a subset here.
+# Equipment Booking FSM — defines which status transitions are permitted
+VALID_BOOKING_TRANSITIONS = {
+    BookingStatus.REQUESTED: [
+        BookingStatus.ACCEPTED,
+        BookingStatus.REJECTED,
+        BookingStatus.CANCELLED,
+    ],
+    BookingStatus.ACCEPTED: [
+        BookingStatus.PAYMENT_PENDING,
+        BookingStatus.CANCELLED,
+    ],
+    BookingStatus.PAYMENT_PENDING: [
+        BookingStatus.CONFIRMED,
+        BookingStatus.CANCELLED,
+    ],
+    BookingStatus.CONFIRMED: [
+        BookingStatus.IN_PROGRESS,
+        BookingStatus.CANCELLED,
+    ],
+    BookingStatus.IN_PROGRESS: [
+        BookingStatus.COMPLETED,
+        BookingStatus.DISPUTED,
+    ],
+    BookingStatus.COMPLETED: [],
+    BookingStatus.REJECTED: [],
+    BookingStatus.CANCELLED: [],
+    BookingStatus.DISPUTED: [BookingStatus.COMPLETED, BookingStatus.CANCELLED],
+}
+
+__all__ = ["BookingStatus", "PaymentStatus", "CompletionStatus",
+           "VALID_BOOKING_TRANSITIONS"]

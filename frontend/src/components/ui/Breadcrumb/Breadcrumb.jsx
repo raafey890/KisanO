@@ -199,6 +199,12 @@ const Breadcrumb = memo(
       return children;
     }, [items, renderItems, children]);
 
+    const loaderPropsMerged = useMemo(() => ({
+      ...loaderProps,
+      size: resolved.size,
+      variant: resolved.variant,
+    }), [loaderProps, resolved.size, resolved.variant]);
+
     // Show loader.
     const showLoader = resolved.loading;
 

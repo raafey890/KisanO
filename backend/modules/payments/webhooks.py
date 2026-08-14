@@ -22,7 +22,6 @@ class WebhookService:
         if not signature:
             raise AppException("Missing webhook signature", 400)
             
-        gateway = get_payment_gateway()
         # In a real scenario, gateway validates webhook signature using a specific webhook secret.
         # Here we mock the validation.
         secret = "mock_webhook_secret"
@@ -46,10 +45,9 @@ class WebhookService:
         try:
             if event_type == "payment.captured":
                 # Extract identifiers from webhook payload
-                entity = payload.get("payload", {}).get("payment", {}).get("entity", {})
-                gateway_order_id = entity.get("order_id")
-                # In real flow, we'd lookup our internal Payment ID using the gateway_order_id
-                # For MVP, we assume it's logged successfully
+                # TODO: extract entity = payload["payload"]["payment"]["entity"]
+                # then lookup internal Payment by entity["order_id"]
+                # For MVP, the event is logged as processed below
                 pass
                 
             elif event_type == "refund.processed":

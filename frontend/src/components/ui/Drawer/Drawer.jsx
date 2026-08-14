@@ -171,16 +171,6 @@ const Drawer = memo(
       handleOpenChange(false);
     }, [isInteractive, handleOpenChange]);
 
-    // Default close button.
-    const defaultCloseButton = resolved.showCloseButton && (
-      <DrawerCloseButton
-        onClick={handleClose}
-        size={resolved.size}
-        disabled={resolved.disabled}
-        {...closeButtonProps}
-      />
-    );
-
     // Default loader.
     const defaultLoader = (
       <DrawerLoader
@@ -197,6 +187,14 @@ const Drawer = memo(
     const headerContent = useMemo(() => {
       if (header) return header;
       if (title || description || icon) {
+        const defaultCloseButton = resolved.showCloseButton && (
+          <DrawerCloseButton
+            onClick={handleClose}
+            size={resolved.size}
+            disabled={resolved.disabled}
+            {...closeButtonProps}
+          />
+        );
         return (
           <DrawerHeader
             title={title}
@@ -223,7 +221,9 @@ const Drawer = memo(
       resolved.position,
       resolved.disabled,
       resolved.loading,
-      defaultCloseButton,
+      resolved.showCloseButton,
+      handleClose,
+      closeButtonProps,
       headerProps,
     ]);
 

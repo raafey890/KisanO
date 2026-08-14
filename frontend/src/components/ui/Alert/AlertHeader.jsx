@@ -130,14 +130,6 @@ const AlertHeader = memo(
       return HEADER_MOTION;
     }, [prefersReducedMotion]);
 
-    // Determine if header has content.
-    const hasContent = Boolean(title || message || children);
-
-    // If no content, render nothing.
-    if (!hasContent) {
-      return null;
-    }
-
     // Accessibility attributes.
     const ariaProps = useMemo(
       () => ({
@@ -148,6 +140,14 @@ const AlertHeader = memo(
       }),
       [role, ariaLevel, disabled, loading],
     );
+
+    // Determine if header has content.
+    const hasContent = Boolean(title || message || children);
+
+    // If no content, render nothing.
+    if (!hasContent) {
+      return null;
+    }
 
     return (
       <motion.div

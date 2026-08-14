@@ -88,9 +88,9 @@ const TooltipTrigger = memo(
     const triggerRef = useRef(null);
     const openTimerRef = useRef(null);
     const closeTimerRef = useRef(null);
-    const [isHovered, setIsHovered] ;
-    const [isFocused, setIsFocused];
-    const [isPressed, setIsPressed]
+    const isHovered = useRef(false);
+    const isFocused = useRef(false);
+    const isPressed = useRef(false);
 
     // Determine trigger modes.
     const triggers = useMemo(() => {

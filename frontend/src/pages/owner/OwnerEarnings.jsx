@@ -4,6 +4,7 @@ import {
   IndianRupee, TrendingUp, Download, ArrowUpRight, 
   ArrowDownRight, CheckCircle2, Clock
 } from 'lucide-react';
+import { useEarnings } from '../../features/owner/hooks/useEarnings';
 
 const TRANSACTIONS = [
   { id: 'TXN-9938', date: '12 Sep 2026', type: 'Credit', amount: 1600, status: 'Completed', title: 'Booking BK-7829', user: 'Suresh Patil' },
@@ -13,6 +14,16 @@ const TRANSACTIONS = [
 ];
 
 export default function OwnerEarnings() {
+  const { isLoading, isError } = useEarnings();
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-6xl mx-auto space-y-8 font-sans pb-32 pt-4 px-4 sm:px-6 lg:px-8">
       

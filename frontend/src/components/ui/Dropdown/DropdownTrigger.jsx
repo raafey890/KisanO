@@ -112,7 +112,7 @@ radius = DROPDOWN_DEFAULTS.radius,
           loading,
           open,
         }),
-      [variant, size, className, disabled, loading, open],
+      [variant, size, radius, className, disabled, loading, open],
     );
 
     // Responsive overrides.

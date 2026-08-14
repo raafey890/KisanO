@@ -54,16 +54,16 @@ const CardMedia = memo(
       type === 'custom' && 'aspect-auto',
       
       className
-    ), [resolvedProps, className]);
+    ), [type, className]);
     
     const mediaContentClasses = useMemo(() => mergeClasses(
       'w-full h-full',
       'object-cover',
       
-    ), [objectFit, objectPosition]);
+    ), []);
     
     const renderMediaContent = useMemo(() => {
-      switch (resolvedProps.type) {
+      switch (type) {
         case 'image':
           return (
             <img
@@ -119,7 +119,7 @@ const CardMedia = memo(
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
         aria-hidden={disabled}
-        aria-label={alt || `Card ${resolvedProps.type}`}
+        aria-label={alt || `Card ${type}`}
         {...rest}
       >
         {renderMediaContent}

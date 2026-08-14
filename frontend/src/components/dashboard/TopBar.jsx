@@ -14,7 +14,7 @@ import {
   CheckCircle2,
   AlertTriangle,
 } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
+import { useAuthStore, authActions } from '../../features/auth';
 import { useToast } from '../../context/ToastContext';
 
 const DISTRICTS = ['Nashik', 'Pune', 'Ahmednagar', 'Aurangabad', 'Solapur', 'Satara', 'Kolhapur'];
@@ -26,14 +26,15 @@ const MOCK_NOTIFICATIONS = [
 ];
 
 export default function TopBar({ setMobileOpen }) {
-  const { user, logout } = useAuth();
-  const { showInfo } = useToast();
-  const navigate = useNavigate();
-
-  const [selectedDistrict, setSelectedDistrict] = useState('Nashik');
   const [showNotifMenu, setShowNotifMenu] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [unreadCount, setUnreadCount] = useState(3);
+  const [selectedDistrict, setSelectedDistrict] = useState('Pune');
+  const navigate = useNavigate();
+  const { showInfo } = useToast();
+  
+  const user = useAuthStore((state) => state.user);
+  const { logout } = authActions;
 
   const handleLogout = () => {
     logout();

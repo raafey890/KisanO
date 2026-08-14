@@ -127,7 +127,7 @@ const RadioLoader = memo(
     }, [sizeConfig.gap, disabled, className, responsiveClasses]);
 
     // Render a single radio skeleton row.
-    const renderRow = (index) => {
+    const renderRow = useCallback((index) => {
       // Use varying widths for text rows.
       const widthClass = SKELETON_WIDTHS[index % SKELETON_WIDTHS.length];
 
@@ -203,12 +203,12 @@ const RadioLoader = memo(
           </div>
         </motion.div>
       );
-    };
+    }, [radioSize, isAnimated, variant, skeletonHeight]);
 
     // Generate rows.
     const rowsToRender = useMemo(
       () => Array.from({ length: rows }, (_, i) => renderRow(i)),
-      [rows, size, variant, isAnimated, radioSize, skeletonHeight],
+      [rows, renderRow],
     );
 
     // Motion props - respect reduced motion.

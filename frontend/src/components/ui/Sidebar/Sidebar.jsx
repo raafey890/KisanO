@@ -228,7 +228,7 @@ const Sidebar = memo(
         className: '',
         ...toggleProps,
       }),
-      [resolved.size, isCollapsed, loading, toggleProps],
+      [resolved.size, isCollapsed, loading, toggleProps, handleToggle],
     );
 
     // Loader props

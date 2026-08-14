@@ -160,19 +160,17 @@ const Card = memo(
     };
 
     // Animation presets for the content area (fade in/out).
-    const contentMotion = {
-      initial: { opacity: 0, y: 8 },
-      animate: { opacity: 1, y: 0 },
-      exit: { opacity: 0, y: 8 },
-      transition: { duration: 0.25, ease: [0.4, 0, 0.2, 1] },
-    };
-
     // If reduced motion is preferred, skip animations.
     const motionProps = useMemo(() => {
       if (prefersReducedMotion) {
         return { initial: false, animate: true, exit: false };
       }
-      return contentMotion;
+      return {
+        initial: { opacity: 0, y: -8 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: 8 },
+        transition: { duration: 0.25, ease: [0.4, 0, 0.2, 1] },
+      };
     }, [prefersReducedMotion]);
 
     // Default loader component if none provided.

@@ -129,11 +129,6 @@ const TextareaCounter = memo(
       return `Character count: ${current}`;
     }, [current, max]);
 
-    // If max is not provided, render nothing.
-    if (!max) {
-      return null;
-    }
-
     // Accessibility attributes.
     const ariaProps = useMemo(
       () => ({
@@ -146,6 +141,11 @@ const TextareaCounter = memo(
       }),
       [role, ariaLabel, accessibleLabel, disabled, current, max],
     );
+
+    // If max is not provided, render nothing.
+    if (!max) {
+      return null;
+    }
 
     return (
       <span

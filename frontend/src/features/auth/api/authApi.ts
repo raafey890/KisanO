@@ -1,5 +1,5 @@
-import { createSession, destroySession, getRefreshToken } from '../services/authSession';
-import { saveAccessToken, saveRefreshToken } from '../services/authStorage';
+import { createSession, destroySession } from '../services/authSession';
+import { saveAccessToken, saveRefreshToken, getRefreshToken } from '../services/authStorage';
 // @ts-ignore - Importing JS module into TS without declarations
 import api from '../../../services/api';
 import { AUTH_ENDPOINTS } from './authEndpoints';

@@ -14,6 +14,51 @@ const TABS = [
   { id: 'about', label: 'About', icon: Info },
 ];
 
+// Reusable Toggle Component
+const ToggleSwitch = ({ label, description, icon: Icon, stateKey, isToggled, onToggle }) => (
+  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-green-200 transition-colors">
+    <div className="flex items-center gap-4">
+      <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
+        <Icon className="w-5 h-5 text-gray-600" />
+      </div>
+      <div>
+        <h4 className="font-bold text-gray-900 text-sm">{label}</h4>
+        {description && <p className="text-xs font-medium text-gray-500 mt-0.5">{description}</p>}
+      </div>
+    </div>
+    <button 
+      onClick={() => onToggle(stateKey)}
+      className={`w-12 h-6 rounded-full transition-colors relative ${isToggled ? 'bg-green-500' : 'bg-gray-300'}`}
+    >
+      <motion.div 
+        layout
+        className="w-5 h-5 bg-white rounded-full absolute top-0.5 shadow-sm"
+        animate={{ left: isToggled ? '1.5rem' : '0.125rem' }}
+        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+      />
+    </button>
+  </div>
+);
+
+// Reusable Action Row Component
+const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => (
+  <button 
+    onClick={onClick}
+    className={`w-full flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100 transition-colors group ${destructive ? 'hover:border-red-200 hover:bg-red-50/50' : 'hover:border-green-200 hover:bg-white'}`}
+  >
+    <div className="flex items-center gap-4">
+      <div className={`w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm ${destructive ? 'text-red-500' : 'text-gray-600 group-hover:text-green-600'}`}>
+        <Icon className="w-5 h-5" />
+      </div>
+      <div className="text-left">
+        <h4 className={`font-bold text-sm ${destructive ? 'text-red-600' : 'text-gray-900'}`}>{label}</h4>
+        {description && <p className="text-xs font-medium text-gray-500 mt-0.5">{description}</p>}
+      </div>
+    </div>
+    <ChevronRight className={`w-5 h-5 ${destructive ? 'text-red-300' : 'text-gray-300 group-hover:text-green-500'}`} />
+  </button>
+);
+
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('general');
 
@@ -48,51 +93,6 @@ export default function SettingsPage() {
       return { ...prev, [key]: newState };
     });
   };
-
-  // Reusable Toggle Component
-  const ToggleSwitch = ({ label, description, icon: Icon, stateKey }) => (
-    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-green-200 transition-colors">
-      <div className="flex items-center gap-4">
-        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
-          <Icon className="w-5 h-5 text-gray-600" />
-        </div>
-        <div>
-          <h4 className="font-bold text-gray-900 text-sm">{label}</h4>
-          {description && <p className="text-xs font-medium text-gray-500 mt-0.5">{description}</p>}
-        </div>
-      </div>
-      <button 
-        onClick={() => handleToggle(stateKey)}
-        className={`w-12 h-6 rounded-full transition-colors relative ${toggles[stateKey] ? 'bg-green-500' : 'bg-gray-300'}`}
-      >
-        <motion.div 
-          layout
-          className="w-5 h-5 bg-white rounded-full absolute top-0.5 shadow-sm"
-          animate={{ left: toggles[stateKey] ? '1.5rem' : '0.125rem' }}
-          transition={{ type: "spring", stiffness: 500, damping: 30 }}
-        />
-      </button>
-    </div>
-  );
-
-  // Reusable Action Row Component
-  const ActionRow = ({ label, description, icon: Icon, onClick, destructive }) => (
-    <button 
-      onClick={onClick}
-      className={`w-full flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100 transition-colors group ${destructive ? 'hover:border-red-200 hover:bg-red-50/50' : 'hover:border-green-200 hover:bg-white'}`}
-    >
-      <div className="flex items-center gap-4">
-        <div className={`w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm ${destructive ? 'text-red-500' : 'text-gray-600 group-hover:text-green-600'}`}>
-          <Icon className="w-5 h-5" />
-        </div>
-        <div className="text-left">
-          <h4 className={`font-bold text-sm ${destructive ? 'text-red-600' : 'text-gray-900'}`}>{label}</h4>
-          {description && <p className="text-xs font-medium text-gray-500 mt-0.5">{description}</p>}
-        </div>
-      </div>
-      <ChevronRight className={`w-5 h-5 ${destructive ? 'text-red-300' : 'text-gray-300 group-hover:text-green-500'}`} />
-    </button>
-  );
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 font-sans pb-32 pt-4 px-4 sm:px-6 lg:px-8">
@@ -132,8 +132,8 @@ export default function SettingsPage() {
                 <div>
                   <h2 className="text-xl font-black text-gray-900 mb-4">Preferences</h2>
                   <div className="space-y-3">
-                    <ToggleSwitch label="Push Notifications" description="Receive updates about bookings and orders" icon={Bell} stateKey="notifications" />
-                    <ToggleSwitch label="Dark Mode" description="Switch to a darker theme (Beta)" icon={Moon} stateKey="darkMode" />
+                    <ToggleSwitch label="Push Notifications" description="Receive updates about bookings and orders" icon={Bell} stateKey="notifications" isToggled={toggles.notifications} onToggle={handleToggle} />
+                    <ToggleSwitch label="Dark Mode" description="Switch to a darker theme (Beta)" icon={Moon} stateKey="darkMode" isToggled={toggles.darkMode} onToggle={handleToggle} />
                     
                     {/* Language Dropdown Alternative */}
                     <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
@@ -158,9 +158,9 @@ export default function SettingsPage() {
                 <div>
                   <h2 className="text-xl font-black text-gray-900 mb-4">App Permissions</h2>
                   <div className="space-y-3">
-                    <ToggleSwitch label="Location Access" description="Required to find nearby sprayer services" icon={MapPin} stateKey="location" />
-                    <ToggleSwitch label="Camera Access" description="Required for AI Plant Doctor scans" icon={Camera} stateKey="camera" />
-                    <ToggleSwitch label="Storage Access" description="Required to save PDF reports" icon={HardDrive} stateKey="storage" />
+                    <ToggleSwitch label="Location Access" description="Required to find nearby sprayer services" icon={MapPin} stateKey="location" isToggled={toggles.location} onToggle={handleToggle} />
+                    <ToggleSwitch label="Camera Access" description="Required for AI Plant Doctor scans" icon={Camera} stateKey="camera" isToggled={toggles.camera} onToggle={handleToggle} />
+                    <ToggleSwitch label="Storage Access" description="Required to save PDF reports" icon={HardDrive} stateKey="storage" isToggled={toggles.storage} onToggle={handleToggle} />
                   </div>
                 </div>
               </motion.div>

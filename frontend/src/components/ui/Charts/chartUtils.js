@@ -21,6 +21,8 @@ import {
   getChartSize,
   getChartColor,
   getChartAnimation,
+  getChartRadius,
+  getChartShadow,
 } from './chartVariants';
 
 /* ---------------------------------- */
@@ -127,6 +129,8 @@ export function resolveDefaultProps({
 export function getChartClasses({
   variant = CHART_DEFAULTS.variant,
   size = CHART_DEFAULTS.size,
+  radius = CHART_DEFAULTS.radius,
+  shadow = CHART_DEFAULTS.shadow,
   className = '',
   disabled = false,
   loading = false,
@@ -319,4 +323,6 @@ export {
   getChartSize,
   getChartColor,
   getChartAnimation,
+  getChartRadius,
+  getChartShadow,
 };

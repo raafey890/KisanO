@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, LogOut, Bell } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
+import { useAuthStore, authActions } from '../../features/auth';
 
 export default function AppSidebar({ navItems, roleLabel, roleColor, roleBg }) {
   const [collapsed, setCollapsed] = useState(false);
-  const { user, logout } = useAuth();
+  const user = useAuthStore((state) => state.user);
+  const { logout } = authActions;
   const { pathname } = useLocation();
   const navigate = useNavigate();
 

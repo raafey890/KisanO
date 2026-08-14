@@ -165,11 +165,6 @@ const TabsIndicator = memo(
       return style;
     }, [dimensions, orientation]);
 
-    // If disabled, no indicator.
-    if (disabled || loading || itemsCount === 0 || indicator === 'none') {
-      return null;
-    }
-
     // Accessibility attributes.
     const ariaProps = useMemo(
       () => ({
@@ -179,6 +174,11 @@ const TabsIndicator = memo(
       }),
       [role, ariaLabel],
     );
+
+    // If disabled, no indicator.
+    if (disabled || loading || itemsCount === 0 || indicator === 'none') {
+      return null;
+    }
 
     return (
       <motion.div

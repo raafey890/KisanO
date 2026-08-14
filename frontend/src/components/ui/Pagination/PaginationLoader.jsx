@@ -11,7 +11,7 @@
  * @module components/ui/Pagination/PaginationLoader
  */
 
-import { forwardRef, memo, useMemo } from 'react';
+import { forwardRef, memo, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { motion, useReducedMotion } from 'framer-motion';
 
@@ -139,7 +139,7 @@ const PaginationLoader = memo(
     }, [sizeConfig.gap, disabled, className, responsiveClasses]);
 
     // Render a single skeleton item.
-    const renderItem = (index, width) => {
+    const renderItem = useCallback((index, width) => {
       const isNav = index === 0 || index === items + 1 || index === items + 2 || index === items + 3;
 
       return (
@@ -178,7 +178,7 @@ const PaginationLoader = memo(
           )}
         </motion.div>
       );
-    };
+    }, [items, skeletonHeight, navWidth, itemWidth, isAnimated, variant]);
 
     // Generate items.
     const itemsToRender = useMemo(() => {
@@ -212,7 +212,7 @@ const PaginationLoader = memo(
       }
 
       return result;
-    }, [items, showPrevNext, showFirstLast, renderItem]);
+    }, [items, showPrevNext, showFirstLast, renderItem, itemWidth, navWidth]);
 
     // Motion props - respect reduced motion.
     const motionProps = useMemo(() => {

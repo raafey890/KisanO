@@ -387,6 +387,7 @@ const Input = memo(
       helperId,
       helperText,
       resolvedErrorMessage,
+      counterId,
     ]);
 
     const shouldShowCounter = useMemo(

@@ -946,4 +946,4 @@ const ComponentShowcase = () => {
   );
 };
 
-export default ComponentShowcase_FULL;
+export default ComponentShowcase;

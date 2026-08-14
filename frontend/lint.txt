@@ -1,0 +1,1154 @@
+
+> frontend@0.0.0 lint
+> eslint .
+
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\App.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\Dashboard.jsx
+   1:8   error  'React' is defined but never used    no-unused-vars
+   1:38  error  'useRef' is defined but never used   no-unused-vars
+   3:51  error  'FiCloud' is defined but never used  no-unused-vars
+  64:16  error  '_' is defined but never used        no-unused-vars
+  64:19  error  Empty block statement                no-empty
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\Equipment.jsx
+   1:8   error  'React' is defined but never used     no-unused-vars
+   3:20  error  'FiFilter' is defined but never used  no-unused-vars
+   3:53  error  'FiMapPin' is defined but never used  no-unused-vars
+  37:14  error  '_' is defined but never used         no-unused-vars
+  37:17  error  Empty block statement                 no-empty
+  57:14  error  '_' is defined but never used         no-unused-vars
+  57:17  error  Empty block statement                 no-empty
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\Marketplace.jsx
+   1:8   error  'React' is defined but never used  no-unused-vars
+  31:14  error  '_' is defined but never used      no-unused-vars
+  31:17  error  Empty block statement              no-empty
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\OwnerManage.jsx
+   1:8   error  'React' is defined but never used  no-unused-vars
+  35:14  error  '_' is defined but never used      no-unused-vars
+  35:17  error  Empty block statement              no-empty
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\Sprayers.jsx
+   1:8   error  'React' is defined but never used  no-unused-vars
+  26:14  error  '_' is defined but never used      no-unused-vars
+  26:17  error  Empty block statement              no-empty
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\auth\OTPInput.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\auth\RoleCard.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\dashboard\QuickActionButton.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\dashboard\RecentActivityList.jsx
+  1:8   error  'React' is defined but never used         no-unused-vars
+  3:58  error  'CheckCircle2' is defined but never used  no-unused-vars
+  3:72  error  'Clock' is defined but never used         no-unused-vars
+  3:79  error  'AlertCircle' is defined but never used   no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\dashboard\Sidebar.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\dashboard\StatCard.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\dashboard\TopBar.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\layout\AppShell.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\shared\AppSidebar.jsx
+  1:8   error  'React' is defined but never used  no-unused-vars
+  4:45  error  'Bell' is defined but never used   no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\shared\Footer.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\shared\Navbar.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Accordion\Accordion.jsx
+  15:60  error  'useEffect' is defined but never used                 no-unused-vars
+  22:3   error  'mergeClasses' is defined but never used              no-unused-vars
+  23:3   error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+  75:7   error  'responsive' is defined but never used                no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Accordion\AccordionContent.jsx
+  16:18  error  'AnimatePresence' is defined but never used          no-unused-vars
+  33:7   error  'CONTENT_MOTION' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Accordion\AccordionLoader.jsx
+   14:37  error    'useCallback' is defined but never used                                                                                                                                                                                       no-unused-vars
+  119:11  warning  The 'renderItem' function makes the dependencies of useMemo Hook (at line 202) change on every render. Move it inside the useMemo callback. Alternatively, wrap the definition of 'renderItem' in its own useCallback() Hook  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Alert\Alert.jsx
+  28:8  error  'AlertBody' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Alert\AlertBody.jsx
+  78:11  error  'sizeConfig' is assigned a value but never used     no-unused-vars
+  84:11  error  'variantConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Alert\AlertCloseButton.jsx
+  20:3   error  'getAlertSize' is defined but never used         no-unused-vars
+  82:7   error  'variant' is assigned a value but never used     no-unused-vars
+  96:11  error  'buttonSize' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Alert\AlertContainer.jsx
+  83:11  error  'interactive' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Alert\AlertIcon.jsx
+  64:7   error  'loading' is assigned a value but never used        no-unused-vars
+  76:11  error  'sizeConfig' is assigned a value but never used     no-unused-vars
+  82:11  error  'variantConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Alert\AlertLoader.jsx
+  115:23  error    'useCallback' is not defined                                                                                                                        no-undef
+  158:8   warning  React Hook useCallback has missing dependencies: 'isAnimated', 'skeletonHeight', and 'variant'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Alert\alertUtils.js
+  291:9  error  'sizeConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Avatar\Avatar.jsx
+   22:3   error  'mergeClasses' is defined but never used              no-unused-vars
+   23:3   error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+   31:8   error  'AvatarGroup' is defined but never used               no-unused-vars
+   70:7   error  'responsive' is defined but never used                no-unused-vars
+   71:7   error  'className' is assigned a value but never used        no-unused-vars
+  101:11  error  'isInteractive' is assigned a value but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Avatar\AvatarImage.jsx
+  19:3  error  'AVATAR_DEFAULTS' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Avatar\avatarUtils.js
+  294:3  error  'radius' is assigned a value but never used  no-unused-vars
+  295:3  error  'max' is assigned a value but never used     no-unused-vars
+  296:3  error  'count' is assigned a value but never used   no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Badge\Badge.jsx
+  22:3   error  'mergeClasses' is defined but never used              no-unused-vars
+  23:3   error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+  66:7   error  'responsive' is defined but never used                no-unused-vars
+  67:7   error  'className' is assigned a value but never used        no-unused-vars
+  94:11  error  'isInteractive' is assigned a value but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Badge\BadgeContainer.jsx
+  110:11  error  'containerClasses' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Badge\badgeUtils.js
+  169:3  error  'position' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Breadcrumb\Breadcrumb.jsx
+  22:3  error  'mergeClasses' is defined but never used              no-unused-vars
+  23:3  error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+  68:7  error  'responsive' is defined but never used                no-unused-vars
+  74:7  error  'renderSeparator' is defined but never used           no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Breadcrumb\BreadcrumbLoader.jsx
+  126:24  error    'useCallback' is not defined                                                                                                                                              no-undef
+  197:8   warning  React Hook useCallback has missing dependencies: 'isAnimated', 'itemWidth', 'items', 'skeletonHeight', and 'variant'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Breadcrumb\BreadcrumbSeparator.jsx
+  41:7  error  'SEPARATOR_CHARS' is assigned a value but never used  no-unused-vars
+  73:7  error  'loading' is assigned a value but never used          no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Button\Button.jsx
+   13:8   error  'React' is defined but never used          no-unused-vars
+   13:29  error  'memo' is defined but never used           no-unused-vars
+   13:35  error  'useMemo' is defined but never used        no-unused-vars
+   19:8   error  'ButtonIcon' is defined but never used     no-unused-vars
+   30:3   error  'mergeClasses' is defined but never used   no-unused-vars
+  116:5   error  'type' is assigned a value but never used  no-unused-vars
+  199:45  error  '_' is defined but never used              no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Button\ButtonLoader.jsx
+   23:7   error  'MOTION_DURATION' is assigned a value but never used  no-unused-vars
+   35:7   error  'LOADER_VARIANTS' is assigned a value but never used  no-unused-vars
+  167:11  error  'iconSize' is assigned a value but never used         no-unused-vars
+  168:11  error  'iconSpacing' is assigned a value but never used      no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Button\ButtonSpinner.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Button\buttonUtils.jsx
+   73:9   error  'hoverStyles' is assigned a value but never used  no-unused-vars
+  327:65  error  'breakpoint' is assigned a value but never used   no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Button\buttonVariants.jsx
+  601:3  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  602:3  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  603:3  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  604:3  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  605:3  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  606:3  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  607:3  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  608:3  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Card\Card.jsx
+   26:3  error    'mergeClasses' is defined but never used                                                                        no-unused-vars
+   28:3  error    'isInteractiveCard' is defined but never used                                                                   no-unused-vars
+  176:8  warning  React Hook useMemo has a missing dependency: 'contentMotion'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Card\CardMedia.jsx
+   20:3   error  'getMediaAspectRatio' is defined but never used           no-unused-vars
+   21:3   error  'getImageClasses' is defined but never used               no-unused-vars
+   35:7   error  'aspectRatio' is assigned a value but never used          no-unused-vars
+   36:7   error  'objectFit' is assigned a value but never used            no-unused-vars
+   37:7   error  'objectPosition' is assigned a value but never used       no-unused-vars
+   38:7   error  'rounded' is assigned a value but never used              no-unused-vars
+  146:10  error  'resolveAspectRatioClasses' is defined but never used     no-unused-vars
+  156:10  error  'resolveRoundedClasses' is defined but never used         no-unused-vars
+  168:10  error  'resolveObjectFitClasses' is defined but never used       no-unused-vars
+  178:10  error  'resolveObjectPositionClasses' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Card\cardUtils.js
+   19:3  error  'CARD_STATUS_COLORS' is defined but never used   no-unused-vars
+   21:3  error  'CARD_HOVER_EFFECTS' is defined but never used   no-unused-vars
+   22:3  error  'CARD_ACTIVE_EFFECTS' is defined but never used  no-unused-vars
+  235:3  error  'radius' is defined but never used               no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Charts\AreaChart.jsx
+  35:3  error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+  78:7  error  'disabled' is assigned a value but never used         no-unused-vars
+  79:7  error  'loading' is assigned a value but never used          no-unused-vars
+  80:7  error  'responsive' is defined but never used                no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Charts\BarChart.jsx
+  33:3  error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+  77:7  error  'disabled' is assigned a value but never used         no-unused-vars
+  78:7  error  'loading' is assigned a value but never used          no-unused-vars
+  79:7  error  'responsive' is defined but never used                no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Charts\Chart.jsx
+   22:3   error  'mergeClasses' is defined but never used              no-unused-vars
+   23:3   error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+   85:7   error  'className' is assigned a value but never used        no-unused-vars
+  113:11  error  'isInteractive' is assigned a value but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Charts\LineChart.jsx
+  33:3  error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+  74:7  error  'stacked' is assigned a value but never used          no-unused-vars
+  75:7  error  'disabled' is assigned a value but never used         no-unused-vars
+  76:7  error  'loading' is assigned a value but never used          no-unused-vars
+  77:7  error  'responsive' is defined but never used                no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Charts\PieChart.jsx
+  31:3  error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+  71:7  error  'labelPosition' is assigned a value but never used    no-unused-vars
+  73:7  error  'disabled' is assigned a value but never used         no-unused-vars
+  74:7  error  'loading' is assigned a value but never used          no-unused-vars
+  75:7  error  'responsive' is defined but never used                no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Charts\chartUtils.js
+  301:3  error  'seriesCount' is assigned a value but never used  no-unused-vars
+  302:3  error  'dataPoints' is assigned a value but never used   no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Checkbox\Checkbox.jsx
+   15:60  error  'useEffect' is defined but never used             no-unused-vars
+   76:7   error  'responsive' is defined but never used            no-unused-vars
+  131:11  error  'interactive' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Checkbox\CheckboxGroup.jsx
+   15:60  error  'useEffect' is defined but never used          no-unused-vars
+   28:8   error  'CheckboxContainer' is defined but never used  no-unused-vars
+   80:7   error  'containerProps' is defined but never used     no-unused-vars
+  188:35  error  'index' is defined but never used              no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Checkbox\CheckboxLabel.jsx
+  18:3   error  'CHECKBOX_DEFAULTS' is defined but never used   no-unused-vars
+  79:11  error  'sizeClass' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Checkbox\CheckboxLoader.jsx
+  130:23  error  'useCallback' is not defined  no-undef
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Checkbox\checkboxUtils.js
+   19:3  error  'CHECKBOX_STATES' is defined but never used      no-unused-vars
+   20:3  error  'CHECKBOX_ICON_SIZES' is defined but never used  no-unused-vars
+  240:9  error  'sizeConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\ComponentShowcase\ComponentShowcase.jsx
+  21:3  error  'mergeClasses' is defined but never used              no-unused-vars
+  22:3  error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+  70:5  error  'Chart' is defined but never used                     no-unused-vars
+  97:7  error  'responsive' is defined but never used                no-unused-vars
+  98:7  error  'className' is assigned a value but never used        no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\ComponentShowcase\ComponentShowcase_FULL.jsx
+   1:8   error  'React' is defined but never used               no-unused-vars
+  55:10  error  'alertOpen' is assigned a value but never used  no-unused-vars
+  63:10  error  'fileValue' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\ComponentShowcase\ShowcaseCard.jsx
+  84:12  error  'isHovered' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\ComponentShowcase\ShowcaseHeader.jsx
+  14:37  error  'useCallback' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\ComponentShowcase\ShowcaseSection.jsx
+  76:7  error  'variant' is assigned a value but never used  no-unused-vars
+  77:7  error  'size' is assigned a value but never used     no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\ComponentShowcase\ShowcaseSidebar.jsx
+  71:7  error  'variant' is assigned a value but never used  no-unused-vars
+  72:7  error  'size' is assigned a value but never used     no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\ComponentShowcase\showcaseUtils.js
+  233:9  error  'variantConfig' is assigned a value but never used  no-unused-vars
+  234:9  error  'sizeConfig' is assigned a value but never used     no-unused-vars
+  333:3  error  'itemsCount' is assigned a value but never used     no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\DatePicker\DatePicker.jsx
+   58:7   error  'children' is defined but never used                  no-unused-vars
+   64:7   error  'format' is assigned a value but never used           no-unused-vars
+   89:7   error  'triggerProps' is defined but never used              no-unused-vars
+  101:12  error  'viewDate' is assigned a value but never used         no-unused-vars
+  238:11  error  'handleToday' is assigned a value but never used      no-unused-vars
+  386:11  error  'CalendarWrapper' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\DatePicker\DatePickerCalendar.jsx
+   40:7   error  'MONTHS_SHORT' is assigned a value but never used  no-unused-vars
+   46:7   error  'DAYS' is assigned a value but never used          no-unused-vars
+  125:7   error  'variant' is assigned a value but never used       no-unused-vars
+  129:7   error  'animation' is assigned a value but never used     no-unused-vars
+  132:7   error  'open' is assigned a value but never used          no-unused-vars
+  145:22  error  'setViewDate' is assigned a value but never used   no-unused-vars
+  184:11  error  'sizeConfig' is assigned a value but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\DatePicker\DatePickerDay.jsx
+  20:3  error  'getDatePickerSize' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\DatePicker\DatePickerHeader.jsx
+  14:37  error  'useCallback' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\DatePicker\DatePickerInput.jsx
+  66:7  error  'success' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\DatePicker\DatePickerLoader.jsx
+   41:7   error  'SKELETON_WIDTHS' is assigned a value but never used  no-unused-vars
+   88:7   error  'rows' is assigned a value but never used             no-unused-vars
+  122:11  error  'skeletonHeight' is assigned a value but never used   no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\DatePicker\DatePickerPortal.jsx
+  20:3  error  'DATE_PICKER_DEFAULTS' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\DatePicker\datePickerUtils.js
+   21:3  error  'DATE_PICKER_DAY_STATES' is defined but never used  no-unused-vars
+  162:9  error  'sizeConfig' is assigned a value but never used     no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Dialog\DialogBody.jsx
+  64:7   error  'variant' is assigned a value but never used     no-unused-vars
+  79:11  error  'sizeConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Dialog\DialogCloseButton.jsx
+  20:3   error  'getDialogSize' is defined but never used        no-unused-vars
+  82:7   error  'variant' is assigned a value but never used     no-unused-vars
+  96:11  error  'buttonSize' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Dialog\DialogContainer.jsx
+  17:18  error  'AnimatePresence' is defined but never used   no-unused-vars
+  22:3   error  'getDialogOverlay' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Dialog\DialogFooter.jsx
+   85:7   error  'divider' is assigned a value but never used        no-unused-vars
+   99:11  error  'sizeConfig' is assigned a value but never used     no-unused-vars
+  105:11  error  'variantConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Dialog\DialogHeader.jsx
+  75:7  error  'divider' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Dialog\DialogLoader.jsx
+  115:23  error    'useCallback' is not defined                                                                                                                        no-undef
+  158:8   warning  React Hook useCallback has missing dependencies: 'isAnimated', 'skeletonHeight', and 'variant'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Dialog\dialogUtils.js
+  318:9  error  'sizeConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Drawer\DrawerBody.jsx
+  64:7   error  'variant' is assigned a value but never used     no-unused-vars
+  79:11  error  'sizeConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Drawer\DrawerCloseButton.jsx
+  20:3   error  'getDrawerSize' is defined but never used        no-unused-vars
+  84:7   error  'variant' is assigned a value but never used     no-unused-vars
+  98:11  error  'buttonSize' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Drawer\DrawerContainer.jsx
+  17:18  error  'AnimatePresence' is defined but never used   no-unused-vars
+  22:3   error  'getDrawerOverlay' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Drawer\DrawerFooter.jsx
+   85:7   error  'divider' is assigned a value but never used        no-unused-vars
+   99:11  error  'sizeConfig' is assigned a value but never used     no-unused-vars
+  105:11  error  'variantConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Drawer\DrawerHeader.jsx
+  74:7  error  'position' is assigned a value but never used  no-unused-vars
+  76:7  error  'divider' is assigned a value but never used   no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Drawer\DrawerLoader.jsx
+  116:23  error    'useCallback' is not defined                                                                                                                        no-undef
+  159:8   warning  React Hook useCallback has missing dependencies: 'isAnimated', 'skeletonHeight', and 'variant'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Drawer\drawerUtils.js
+  330:9  error  'sizeConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Dropdown\Dropdown.jsx
+  250:11  error  'MenuWrapper' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Dropdown\DropdownLoader.jsx
+  107:23  error    'useCallback' is not defined                                                                                                                        no-undef
+  150:8   warning  React Hook useCallback has missing dependencies: 'isAnimated', 'skeletonHeight', and 'variant'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Dropdown\DropdownMenu.jsx
+   38:7  error  'MENU_MOTION' is assigned a value but never used  no-unused-vars
+  156:7  error  'variant' is assigned a value but never used      no-unused-vars
+  165:7  error  'open' is assigned a value but never used         no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Dropdown\DropdownPortal.jsx
+  20:3  error  'DROPDOWN_DEFAULTS' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Dropdown\DropdownTrigger.jsx
+   21:3   error    'useEffect' is defined but never used                                                                    no-unused-vars
+   97:12  error    'isHovered' is assigned a value but never used                                                           no-unused-vars
+   98:12  error    'isPressed' is assigned a value but never used                                                           no-unused-vars
+   98:23  error    'setIsPressed' is assigned a value but never used                                                        no-unused-vars
+  115:7   warning  React Hook useMemo has a missing dependency: 'radius'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  142:11  error    'openDropdown' is assigned a value but never used                                                        no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\EmptyState\EmptyState.jsx
+   22:3   error  'mergeClasses' is defined but never used              no-unused-vars
+   23:3   error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+   95:7   error  'responsive' is defined but never used                no-unused-vars
+   96:7   error  'className' is assigned a value but never used        no-unused-vars
+  127:11  error  'isInteractive' is assigned a value but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\EmptyState\EmptyStateAction.jsx
+  19:3  error  'EMPTYSTATE_DEFAULTS' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\EmptyState\EmptyStateContainer.jsx
+  112:11  error  'containerClasses' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\FileUpload\FileUpload.jsx
+   23:3   error  'resolveResponsiveClasses' is defined but never used    no-unused-vars
+   88:7   error  'responsive' is defined but never used                  no-unused-vars
+   90:7   error  'labelClassName' is assigned a value but never used     no-unused-vars
+   98:7   error  'onProgress' is defined but never used                  no-unused-vars
+  106:28  error  'setUploadProgress' is assigned a value but never used  no-unused-vars
+  258:11  error  'interactive' is assigned a value but never used        no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\FileUpload\FileUploadDropzone.jsx
+   90:7   error  'multiple' is assigned a value but never used       no-unused-vars
+  114:11  error  'variantConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\FileUpload\FileUploadLoader.jsx
+  167:23  error    'useCallback' is not defined                                                                                                                        no-undef
+  211:8   warning  React Hook useCallback has missing dependencies: 'isAnimated', 'skeletonHeight', and 'variant'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\FileUpload\FileUploadPreview.jsx
+  138:11  error  'sizeConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\FileUpload\fileUploadUtils.js
+   19:3  error  'FILE_UPLOAD_STATES' is defined but never used           no-unused-vars
+   20:3  error  'FILE_UPLOAD_PROGRESS_COLORS' is defined but never used  no-unused-vars
+  226:9  error  'sizeConfig' is assigned a value but never used          no-unused-vars
+  285:3  error  'value' is assigned a value but never used               no-unused-vars
+  287:9  error  'progressColor' is assigned a value but never used       no-unused-vars
+  307:3  error  'value' is assigned a value but never used               no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Input\Input.jsx
+  382:8  warning  React Hook useMemo has a missing dependency: 'counterId'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Input\InputField.jsx
+  35:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Modal\Modal.jsx
+  17:37  error  'useState' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Navbar\Navbar.jsx
+   20:3  error    'resolveResponsiveClasses' is defined but never used                                                           no-unused-vars
+   62:7  error    'responsive' is defined but never used                                                                         no-unused-vars
+  187:7  warning  React Hook useMemo has a missing dependency: 'handleToggle'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Navbar\NavbarContainer.jsx
+  68:7  error  'onOpenChange' is assigned a value but never used  no-unused-vars
+  69:7  error  'onClose' is assigned a value but never used       no-unused-vars
+  70:7  error  'onToggle' is assigned a value but never used      no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Navbar\NavbarItem.jsx
+  41:7  error  'ITEM_MOTION' is assigned a value but never used  no-unused-vars
+  78:7  error  'size' is assigned a value but never used         no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Navbar\NavbarMenu.jsx
+  178:7  error  'dark' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Navbar\NavbarToggle.jsx
+  82:7  error  'size' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Navbar\navbarUtils.js
+  278:3  error  'open' is assigned a value but never used        no-unused-vars
+  354:3  error  'itemsCount' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Pagination\Pagination.jsx
+   22:3  error  'mergeClasses' is defined but never used              no-unused-vars
+   23:3  error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+   28:8  error  'PaginationItem' is defined but never used            no-unused-vars
+  146:7  error  'responsive' is defined but never used                no-unused-vars
+  148:7  error  'itemClassName' is assigned a value but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Pagination\PaginationEllipsis.jsx
+  65:7  error  'loading' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Pagination\PaginationLoader.jsx
+   14:37  error    'useCallback' is defined but never used                                                                                      no-unused-vars
+  142:32  error    'width' is defined but never used                                                                                            no-unused-vars
+  215:8   warning  React Hook useMemo has missing dependencies: 'itemWidth' and 'navWidth'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Pagination\paginationUtils.js
+   18:3  error  'PAGINATION_STATES' is defined but never used    no-unused-vars
+  336:3  error  'totalPages' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Progress\Progress.jsx
+  22:3  error  'mergeClasses' is defined but never used              no-unused-vars
+  23:3  error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+  66:7  error  'responsive' is defined but never used                no-unused-vars
+  67:7  error  'className' is assigned a value but never used        no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Progress\ProgressValue.jsx
+  40:7  error  'FORMAT_TYPES' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Progress\progressUtils.js
+  140:3  error  'radius' is assigned a value but never used         no-unused-vars
+  145:9  error  'variantConfig' is assigned a value but never used  no-unused-vars
+  208:9  error  'percentage' is assigned a value but never used     no-unused-vars
+  250:9  error  'widthClass' is assigned a value but never used     no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Radio\Radio.jsx
+   78:7   error  'responsive' is defined but never used            no-unused-vars
+  130:11  error  'interactive' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Radio\RadioGroup.jsx
+   79:7   error  'containerProps' is defined but never used  no-unused-vars
+  165:35  error  'index' is defined but never used           no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Radio\RadioLabel.jsx
+  18:3   error  'RADIO_DEFAULTS' is defined but never used      no-unused-vars
+  79:11  error  'sizeClass' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Radio\RadioLoader.jsx
+  130:23  error  'useCallback' is not defined  no-undef
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Radio\radioUtils.js
+   19:3  error  'RADIO_STATES' is defined but never used           no-unused-vars
+   20:3  error  'RADIO_INDICATOR_SIZES' is defined but never used  no-unused-vars
+  232:9  error  'sizeConfig' is assigned a value but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Select\Select.jsx
+   28:8   error  'SelectOption' is defined but never used          no-unused-vars
+   92:7   error  'optionProps' is defined but never used           no-unused-vars
+  378:11  error  'MenuWrapper' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Select\SelectLabel.jsx
+  18:3   error  'SELECT_DEFAULTS' is defined but never used     no-unused-vars
+  77:11  error  'sizeClass' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Select\SelectLoader.jsx
+  107:23  error    'useCallback' is not defined                                                                                                                        no-undef
+  150:8   warning  React Hook useCallback has missing dependencies: 'isAnimated', 'skeletonHeight', and 'variant'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Select\SelectMenu.jsx
+   37:7   error  'MENU_MOTION' is assigned a value but never used  no-unused-vars
+  200:7   error  'searchable' is assigned a value but never used   no-unused-vars
+  201:7   error  'searchValue' is assigned a value but never used  no-unused-vars
+  202:7   error  'onSearchChange' is defined but never used        no-unused-vars
+  203:7   error  'variant' is assigned a value but never used      no-unused-vars
+  365:38  error  'index' is defined but never used                 no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Select\SelectPortal.jsx
+  20:3  error  'SELECT_DEFAULTS' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Select\selectUtils.js
+   21:3  error  'SELECT_OPTION_STATES' is defined but never used  no-unused-vars
+   22:3  error  'SELECT_ICON_SIZES' is defined but never used     no-unused-vars
+  168:9  error  'sizeConfig' is assigned a value but never used   no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Sidebar\Sidebar.jsx
+   19:3   error    'mergeClasses' is defined but never used                                                                       no-unused-vars
+   20:3   error    'resolveResponsiveClasses' is defined but never used                                                           no-unused-vars
+   60:7   error    'responsive' is defined but never used                                                                         no-unused-vars
+  153:21  error    '_onOpenChange' is assigned a value but never used                                                             no-unused-vars
+  154:25  error    '_onCollapseChange' is assigned a value but never used                                                         no-unused-vars
+  155:16  error    '_onClose' is assigned a value but never used                                                                  no-unused-vars
+  156:17  error    '_onToggle' is assigned a value but never used                                                                 no-unused-vars
+  231:7   warning  React Hook useMemo has a missing dependency: 'handleToggle'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Sidebar\SidebarContainer.jsx
+   76:7   error  'onOpenChange' is assigned a value but never used      no-unused-vars
+   77:7   error  'onCollapseChange' is assigned a value but never used  no-unused-vars
+   78:7   error  'onClose' is assigned a value but never used           no-unused-vars
+   79:7   error  'onToggle' is assigned a value but never used          no-unused-vars
+  121:11  error  'containerClasses' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Sidebar\SidebarGroup.jsx
+  56:7  error  'size' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Sidebar\SidebarHeader.jsx
+  144:11  error  'handleCollapse' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Sidebar\SidebarItem.jsx
+  59:7   error  'role' is assigned a value but never used  no-unused-vars
+  60:21  error  'ariaLabel' is defined but never used      no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Sidebar\sidebarUtils.js
+  350:3  error  'position' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Skeleton\Skeleton.jsx
+  23:3  error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+  33:8  error  'SkeletonLoader' is defined but never used            no-unused-vars
+  66:7  error  'circular' is assigned a value but never used         no-unused-vars
+  70:7  error  'responsive' is defined but never used                no-unused-vars
+  80:7  error  'loaderProps' is defined but never used               no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Skeleton\SkeletonAvatar.jsx
+  49:7  error  'DIMENSION_REGEX' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Skeleton\SkeletonCard.jsx
+  83:7  error  'contentClassName' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Skeleton\SkeletonContainer.jsx
+  19:3  error  'SKELETON_DEFAULTS' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Skeleton\skeletonUtils.js
+  264:3  error  'radius' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Spinner\Spinner.jsx
+   23:3   error  'resolveResponsiveClasses' is defined but never used    no-unused-vars
+   32:8   error  'SpinnerLoader' is defined but never used               no-unused-vars
+   63:7   error  'responsive' is defined but never used                  no-unused-vars
+   64:7   error  'className' is assigned a value but never used          no-unused-vars
+  190:11  error  'loaderPropsMerged' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Spinner\spinnerUtils.js
+  203:3  error  'strokeWidth' is assigned a value but never used    no-unused-vars
+  242:3  error  'dotCount' is assigned a value but never used       no-unused-vars
+  244:9  error  'variantConfig' is assigned a value but never used  no-unused-vars
+  246:9  error  'speedClass' is assigned a value but never used     no-unused-vars
+  249:9  error  'dotClass' is assigned a value but never used       no-unused-vars
+  279:3  error  'pulseCount' is assigned a value but never used     no-unused-vars
+  281:9  error  'variantConfig' is assigned a value but never used  no-unused-vars
+  283:9  error  'speedClass' is assigned a value but never used     no-unused-vars
+  285:9  error  'sizeClass' is assigned a value but never used      no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Switch\Switch.jsx
+   23:3   error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+   78:7   error  'responsive' is defined but never used                no-unused-vars
+  130:11  error  'interactive' is assigned a value but never used      no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Switch\SwitchLabel.jsx
+  18:3   error  'SWITCH_DEFAULTS' is defined but never used     no-unused-vars
+  79:11  error  'sizeClass' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Switch\SwitchLoader.jsx
+  130:23  error    'useCallback' is not defined                                                                                                                                      no-undef
+  206:8   warning  React Hook useCallback has missing dependencies: 'isAnimated', 'skeletonHeight', 'switchSize', and 'variant'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Switch\SwitchThumb.jsx
+  34:7  error  'THUMB_MOTION' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Switch\switchUtils.js
+  19:3  error  'SWITCH_STATES' is defined but never used       no-unused-vars
+  20:3  error  'SWITCH_THUMB_SIZES' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Table\Table.jsx
+  22:3  error  'mergeClasses' is defined but never used              no-unused-vars
+  23:3  error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+  80:7  error  'stickyHeader' is assigned a value but never used     no-unused-vars
+  90:7  error  'responsiveClasses' is defined but never used         no-unused-vars
+  91:7  error  'className' is assigned a value but never used        no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Table\TableBody.jsx
+  20:3  error  'TABLE_DEFAULTS' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Table\TableRow.jsx
+  40:7  error  'ROLE_MAP' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Table\tableUtils.js
+  152:9  error  'sizeConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Tabs\Tabs.jsx
+   22:3   error  'mergeClasses' is defined but never used              no-unused-vars
+   23:3   error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+   79:7   error  'responsive' is defined but never used                no-unused-vars
+  128:11  error  'isInteractive' is assigned a value but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Tabs\TabsContent.jsx
+  16:18  error  'AnimatePresence' is defined but never used      no-unused-vars
+  81:11  error  'sizeConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Tabs\tabsUtils.js
+  131:3  error  'radius' is assigned a value but never used         no-unused-vars
+  136:9  error  'variantConfig' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Textarea\Textarea.jsx
+   23:3   error  'resolveResponsiveClasses' is defined but never used  no-unused-vars
+   28:3   error  'getTextareaVariant' is defined but never used        no-unused-vars
+   29:3   error  'getTextareaSize' is defined but never used           no-unused-vars
+   97:7   error  'responsive' is defined but never used                no-unused-vars
+  200:11  error  'interactive' is assigned a value but never used      no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Textarea\TextareaCounter.jsx
+  18:3   error  'TEXTAREA_DEFAULTS' is defined but never used   no-unused-vars
+  81:11  error  'sizeClass' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Textarea\TextareaLabel.jsx
+  18:3   error  'TEXTAREA_DEFAULTS' is defined but never used   no-unused-vars
+  80:11  error  'sizeClass' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Textarea\TextareaLoader.jsx
+   95:11  error    'sizeConfig' is assigned a value but never used                                                                                                     no-unused-vars
+  139:23  error    'useCallback' is not defined                                                                                                                        no-undef
+  183:8   warning  React Hook useCallback has missing dependencies: 'isAnimated', 'skeletonHeight', and 'variant'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Textarea\textareaUtils.js
+   19:3  error  'TEXTAREA_STATES' is defined but never used    no-unused-vars
+  218:3  error  'required' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Toast\Toast.jsx
+  97:7  error  'role' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Toast\ToastCloseButton.jsx
+  34:7  error  'BUTTON_SIZES' is assigned a value but never used  no-unused-vars
+  43:7  error  'ICON_SIZES' is assigned a value but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Toast\ToastLoader.jsx
+  130:23  error    'useCallback' is not defined                                                                                                              no-undef
+  183:8   warning  React Hook useCallback has missing dependencies: 'isAnimated', 'size', and 'variant'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Tooltip\Tooltip.jsx
+  287:11  error  'TooltipWrapper' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Tooltip\TooltipContainer.jsx
+  96:7  error  'role' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Tooltip\TooltipLoader.jsx
+  115:23  error    'useCallback' is not defined                                                                                                                        no-undef
+  158:8   warning  React Hook useCallback has missing dependencies: 'isAnimated', 'skeletonHeight', and 'variant'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\components\ui\Tooltip\Tooltiportal.jsx
+  14:58  error  'useRef' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\context\AuthContext.jsx
+  31:22  error  'e' is defined but never used                                                                                                   no-unused-vars
+  53:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\context\ToastContext.jsx
+   1:8   error  'React' is defined but never used                                                                                               no-unused-vars
+  69:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\layouts\AdminLayout.jsx
+  1:8   error  'React' is defined but never used   no-unused-vars
+  8:36  error  'Sprout' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\layouts\AuthLayout.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\layouts\FarmerLayout.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\layouts\OperatorLayout.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\layouts\OwnerLayout.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\layouts\PublicLayout.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\Auth.jsx
+  1:8   error  'React' is defined but never used          no-unused-vars
+  3:57  error  'FiMapPin' is defined but never used       no-unused-vars
+  3:67  error  'FiChevronDown' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminActivityLogs.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminAiReports.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminBookings.jsx
+  1:8   error  'React' is defined but never used         no-unused-vars
+  2:10  error  'motion' is defined but never used        no-unused-vars
+  3:10  error  'CalendarDays' is defined but never used  no-unused-vars
+  3:24  error  'Filter' is defined but never used        no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminDashboard.jsx
+  1:8   error  'React' is defined but never used  no-unused-vars
+  5:19  error  'Store' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminEquipment.jsx
+  1:8   error  'React' is defined but never used        no-unused-vars
+  3:26  error  'Tractor' is defined but never used      no-unused-vars
+  3:35  error  'ShieldCheck' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminMarketplace.jsx
+  1:8   error  'React' is defined but never used        no-unused-vars
+  3:10  error  'ShoppingBag' is defined but never used  no-unused-vars
+  3:23  error  'Box' is defined but never used          no-unused-vars
+  3:28  error  'Store' is defined but never used        no-unused-vars
+  3:35  error  'Search' is defined but never used       no-unused-vars
+  3:43  error  'Filter' is defined but never used       no-unused-vars
+  3:51  error  'ShieldCheck' is defined but never used  no-unused-vars
+  3:78  error  'XCircle' is defined but never used      no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminNotifications.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminPayments.jsx
+  1:8   error  'React' is defined but never used           no-unused-vars
+  2:10  error  'motion' is defined but never used          no-unused-vars
+  3:36  error  'ArrowDownRight' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminProfile.jsx
+  1:8   error  'React' is defined but never used  no-unused-vars
+  2:10  error  'User' is defined but never used   no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminReports.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminReviews.jsx
+  1:8   error  'React' is defined but never used          no-unused-vars
+  2:16  error  'MessageSquare' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminSettings.jsx
+  1:8   error  'React' is defined but never used  no-unused-vars
+  3:34  error  'Bell' is defined but never used   no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminSupport.jsx
+  1:8   error  'React' is defined but never used        no-unused-vars
+  2:25  error  'AlertCircle' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\AdminVerifications.jsx
+   1:8   error  'React' is defined but never used               no-unused-vars
+   3:10  error  'Search' is defined but never used              no-unused-vars
+   3:18  error  'Filter' is defined but never used              no-unused-vars
+   3:26  error  'ShieldCheck' is defined but never used         no-unused-vars
+  13:10  error  'search' is assigned a value but never used     no-unused-vars
+  13:18  error  'setSearch' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\admin\UserManagement.jsx
+  1:8   error  'React' is defined but never used    no-unused-vars
+  3:67  error  'XCircle' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\auth\AdminLogin.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\auth\FarmerLogin.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\auth\FarmerRegister.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\auth\ForgotPasswordPage.jsx
+   1:8   error  'React' is defined but never used  no-unused-vars
+  46:14  error  'err' is defined but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\auth\LoginPage.jsx
+    1:8   error  'React' is defined but never used  no-unused-vars
+  106:14  error  'err' is defined but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\auth\OTPVerificationPage.jsx
+   1:8   error  'React' is defined but never used  no-unused-vars
+  51:14  error  'err' is defined but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\auth\OwnerLogin.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\auth\OwnerRegister.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\auth\RegisterPage.jsx
+    1:8   error    'React' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        no-unused-vars
+   92:23  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+  90 |   });
+  91 |
+> 92 |   const passwordVal = watch('password', '');
+     |                       ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  93 |   const getPasswordStrength = () => {
+  94 |     if (!passwordVal) return { label: '', color: 'w-0 bg-transparent' };
+  95 |     if (passwordVal.length < 6) return { label: 'Weak', color: 'w-1/3 bg-red-500' };  react-hooks/incompatible-library
+  109:14  error    'err' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\auth\ResetPasswordPage.jsx
+   1:8   error    'React' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 no-unused-vars
+   2:23  error    'Link' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  no-unused-vars
+  46:23  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+  44 |   });
+  45 |
+> 46 |   const passwordVal = watch('password', '');
+     |                       ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  47 |
+  48 |   // Requirements breakdown
+  49 |   const reqs = [  react-hooks/incompatible-library
+  70:27  error    'data' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  no-unused-vars
+  78:14  error    'err' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\auth\RoleSelectionPage.jsx
+  1:8   error  'React' is defined but never used   no-unused-vars
+  3:10  error  'motion' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\auth\VerifySuccessPage.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\AiDoctorHistory.jsx
+  1:8   error  'React' is defined but never used     no-unused-vars
+  5:46  error  'Calendar' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\AiDoctorHome.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\AiDoctorReport.jsx
+  1:8   error  'React' is defined but never used   no-unused-vars
+  3:42  error  'Share2' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\AiDoctorResult.jsx
+  1:8   error  'React' is defined but never used     no-unused-vars
+  6:24  error  'Sun' is defined but never used       no-unused-vars
+  6:66  error  'Bookmark' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\AiDoctorUpload.jsx
+  1:8   error  'React' is defined but never used         no-unused-vars
+  5:36  error  'ImageIcon' is defined but never used     no-unused-vars
+  5:47  error  'CheckCircle2' is defined but never used  no-unused-vars
+  6:22  error  'Loader2' is defined but never used       no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\BookingConfirm.jsx
+   1:8  error  'React' is defined but never used                 no-unused-vars
+  18:8  error  'api' is defined but never used                   no-unused-vars
+  49:9  error  'platformFee' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\BookingHistory.jsx
+   1:8  error  'React' is defined but never used     no-unused-vars
+   9:3  error  'Banknote' is defined but never used  no-unused-vars
+  10:3  error  'Tractor' is defined but never used   no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\CartPage.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\CheckoutPage.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\EditProfilePage.jsx
+  1:8   error  'React' is defined but never used     no-unused-vars
+  3:72  error  'FileText' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\EquipmentAvailabilityPage.jsx
+   1:8   error  'React' is defined but never used                  no-unused-vars
+   2:10  error  'motion' is defined but never used                 no-unused-vars
+   6:3   error  'ChevronLeft' is defined but never used            no-unused-vars
+   7:3   error  'ChevronRight' is defined but never used           no-unused-vars
+  10:3   error  'AlertCircle' is defined but never used            no-unused-vars
+  11:3   error  'XCircle' is defined but never used                no-unused-vars
+  34:10  error  'currentYear' is assigned a value but never used   no-unused-vars
+  35:10  error  'currentMonth' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\EquipmentDetail.jsx
+    1:8   error  'React' is defined but never used               no-unused-vars
+    2:10  error  'motion' is defined but never used              no-unused-vars
+   12:3   error  'ChevronRight' is defined but never used        no-unused-vars
+   14:3   error  'Clock' is defined but never used               no-unused-vars
+   15:3   error  'Sparkles' is defined but never used            no-unused-vars
+   20:3   error  'HarvesterEquipment' is defined but never used  no-unused-vars
+   23:3   error  'SeedDrillEquipment' is defined but never used  no-unused-vars
+   24:3   error  'CropSprayerService' is defined but never used  no-unused-vars
+  100:16  error  'err' is defined but never used                 no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\EquipmentSearch.jsx
+    1:8   error  'React' is defined but never used  no-unused-vars
+  145:16  error  'err' is defined but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\FarmerDashboard.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\FarmerProfilePage.jsx
+  1:8   error  'React' is defined but never used  no-unused-vars
+  5:3   error  'User' is defined but never used   no-unused-vars
+  7:37  error  'X' is defined but never used      no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\MarketplacePage.jsx
+  1:8   error  'React' is defined but never used            no-unused-vars
+  2:18  error  'AnimatePresence' is defined but never used  no-unused-vars
+  9:3   error  'MapPin' is defined but never used           no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\MyOrdersPage.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\NotificationsPage.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\OrderSuccessPage.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\PaymentPage.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\ProductDetail.jsx
+   1:8   error  'React' is defined but never used        no-unused-vars
+   6:3   error  'MapPin' is defined but never used       no-unused-vars
+   6:11  error  'Package' is defined but never used      no-unused-vars
+   7:31  error  'Award' is defined but never used        no-unused-vars
+  76:11  error  'id' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\RentalDurationPage.jsx
+   1:8   error  'React' is defined but never used     no-unused-vars
+   2:10  error  'motion' is defined but never used    no-unused-vars
+  11:3   error  'Banknote' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\ServiceBookingSuccessPage.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\ServiceBookingSummaryPage.jsx
+   1:8   error  'React' is defined but never used        no-unused-vars
+  13:11  error  'id' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\ServiceBookingTimePage.jsx
+  1:8   error  'React' is defined but never used            no-unused-vars
+  2:18  error  'AnimatePresence' is defined but never used  no-unused-vars
+  6:12  error  'Moon' is defined but never used             no-unused-vars
+  6:18  error  'Zap' is defined but never used              no-unused-vars
+  6:35  error  'IndianRupee' is defined but never used      no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\ServiceLocationPage.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\SettingsPage.jsx
+  1:8   error  'React' is defined but never used   no-unused-vars
+  6:20  error  'Trash2' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\SprayerDetail.jsx
+  1:8   error  'React' is defined but never used     no-unused-vars
+  1:17  error  'useState' is defined but never used  no-unused-vars
+  6:17  error  'Clock' is defined but never used     no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\SprayerHistoryPage.jsx
+  1:8   error  'React' is defined but never used  no-unused-vars
+  7:12  error  'Award' is defined but never used  no-unused-vars
+  7:19  error  'Zap' is defined but never used    no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\farmer\SprayerServices.jsx
+  1:8   error  'React' is defined but never used            no-unused-vars
+  2:18  error  'AnimatePresence' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\operator\OperatorCalendar.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\operator\OperatorCustomers.jsx
+  1:8   error  'React' is defined but never used         no-unused-vars
+  3:63  error  'ChevronRight' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\operator\OperatorDashboard.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\operator\OperatorEarnings.jsx
+  1:8   error  'React' is defined but never used        no-unused-vars
+  2:10  error  'motion' is defined but never used       no-unused-vars
+  4:3   error  'IndianRupee' is defined but never used  no-unused-vars
+  5:33  error  'Droplets' is defined but never used     no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\operator\OperatorEditProfile.jsx
+  1:8   error  'React' is defined but never used     no-unused-vars
+  3:35  error  'MapPin' is defined but never used    no-unused-vars
+  3:63  error  'Droplets' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\operator\OperatorJobDetails.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\operator\OperatorJobs.jsx
+  1:8   error  'React' is defined but never used         no-unused-vars
+  6:18  error  'CalendarDays' is defined but never used  no-unused-vars
+  6:32  error  'Clock' is defined but never used         no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\operator\OperatorNotifications.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\operator\OperatorProfile.jsx
+  1:8   error  'React' is defined but never used      no-unused-vars
+  2:10  error  'motion' is defined but never used     no-unused-vars
+  5:3   error  'User' is defined but never used       no-unused-vars
+  6:33  error  'Briefcase' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\operator\OperatorReviews.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\owner\AddEquipment.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+  7:3  error  'X' is defined but never used      no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\owner\BookingRequests.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\owner\EditEquipment.jsx
+  1:8   error  'React' is defined but never used        no-unused-vars
+  9:11  error  'id' is assigned a value but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\owner\FleetManagement.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\owner\OwnerBookings.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\owner\OwnerCalendar.jsx
+  1:8   error  'React' is defined but never used     no-unused-vars
+  1:17  error  'useState' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\owner\OwnerDashboard.jsx
+  1:8   error  'React' is defined but never used     no-unused-vars
+  6:3   error  'Settings' is defined but never used  no-unused-vars
+  6:49  error  'Wrench' is defined but never used    no-unused-vars
+  7:3   error  'Clock' is defined but never used     no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\owner\OwnerEarnings.jsx
+  1:8   error  'React' is defined but never used   no-unused-vars
+  2:10  error  'motion' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\owner\OwnerEditProfile.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\owner\OwnerEquipment.jsx
+  1:8  error  'React' is defined but never used    no-unused-vars
+  5:3  error  'Tractor' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\owner\OwnerNotifications.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\owner\OwnerProfile.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\owner\OwnerReviews.jsx
+  1:8  error  'React' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\public\ExplorePage.jsx
+   1:8  error  'React' is defined but never used  no-unused-vars
+  11:3  error  'Clock' is defined but never used  no-unused-vars
+
+C:\Users\DELL\OneDrive\Desktop\KisanO\frontend\src\pages\public\WelcomePage.jsx
+    1:8   error  'React' is defined but never used                no-unused-vars
+   10:3   error  'Microscope' is defined but never used           no-unused-vars
+   12:3   error  'ChevronRight' is defined but never used         no-unused-vars
+   14:3   error  'ClipboardList' is defined but never used        no-unused-vars
+  182:7   error  'CONTAINER' is assigned a value but never used   no-unused-vars
+  183:7   error  'SECTION_PY' is assigned a value but never used  no-unused-vars
+  186:10  error  'SectionHeader' is defined but never used        no-unused-vars
+
+✖ 623 problems (603 errors, 20 warnings)
+

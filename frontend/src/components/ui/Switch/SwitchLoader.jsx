@@ -127,7 +127,7 @@ const SwitchLoader = memo(
     }, [sizeConfig.gap, disabled, className, responsiveClasses]);
 
     // Render a single switch skeleton row.
-    const renderRow = (index) => {
+    const renderRow = useCallback((index) => {
       // Use varying widths for text rows.
       const widthClass = SKELETON_WIDTHS[index % SKELETON_WIDTHS.length];
 
@@ -203,12 +203,12 @@ const SwitchLoader = memo(
           </div>
         </motion.div>
       );
-    };
+    }, [isAnimated, skeletonHeight, switchSize, variant]);
 
     // Generate rows.
     const rowsToRender = useMemo(
       () => Array.from({ length: rows }, (_, i) => renderRow(i)),
-      [rows, size, variant, isAnimated, switchSize, skeletonHeight],
+      [rows, renderRow],
     );
 
     // Motion props - respect reduced motion.

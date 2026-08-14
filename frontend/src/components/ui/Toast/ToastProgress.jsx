@@ -136,11 +136,6 @@ const ToastProgress = memo(
       };
     }, [shouldAnimate, paused, duration]);
 
-    // If duration is 0 or less, don't render.
-    if (duration <= 0) {
-      return null;
-    }
-
     // Accessibility attributes.
     const ariaProps = useMemo(
       () => ({
@@ -151,8 +146,13 @@ const ToastProgress = memo(
         'aria-valuemax': 100,
         'aria-disabled': disabled || undefined,
       }),
-      [role, ariaLabel, paused, disabled],
+      [role, ariaLabel, disabled],
     );
+
+    // If duration is 0 or less, don't render.
+    if (duration <= 0) {
+      return null;
+    }
 
     return (
       <motion.div

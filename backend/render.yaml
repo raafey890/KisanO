@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: kisano-backend
+    env: docker
+    dockerfilePath: ./Dockerfile
+    region: singapore # Change this depending on where your client is
+    plan: free
+    branch: main
+    envVars:
+      - key: ENVIRONMENT
+        value: staging
+      - key: MONGODB_URL
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true

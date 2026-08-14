@@ -9,65 +9,21 @@ import {
 
 import userAvatar from '../../assets/ai/farmer_3d_icon.jpg';
 
-const TABS = ['Pending', 'Accepted', 'In Progress', 'Completed', 'Cancelled'];
+import { useOperatorJobs, useUpdateOperatorJobStatus } from '../../features/operator/hooks/useOperator';
 
-const MOCK_JOBS = [
-  {
-    id: 'JOB-8821',
-    status: 'Pending',
-    farmer: 'Suresh Patil',
-    crop: 'Sugarcane',
-    size: '5 Acres',
-    service: 'Pesticide Spraying',
-    date: '12 Sep 2026',
-    time: '09:00 AM',
-    duration: '4 Hours',
-    amount: 1200,
-    paymentStatus: 'Pending',
-    location: 'Village Khed, Pune',
-    avatar: userAvatar
-  },
-  {
-    id: 'JOB-8822',
-    status: 'Accepted',
-    farmer: 'Ramesh Kumar',
-    crop: 'Cotton',
-    size: '10 Acres',
-    service: 'Fertilizer Application',
-    date: '13 Sep 2026',
-    time: '10:30 AM',
-    duration: '8 Hours',
-    amount: 2500,
-    paymentStatus: 'Paid',
-    location: 'Village Shirur, Pune',
-    avatar: userAvatar
-  },
-  {
-    id: 'JOB-8823',
-    status: 'In Progress',
-    farmer: 'Anil Desai',
-    crop: 'Wheat',
-    size: '3 Acres',
-    service: 'Herbicide Spraying',
-    date: 'Today',
-    time: '08:00 AM',
-    duration: '2 Hours',
-    amount: 800,
-    paymentStatus: 'Pending',
-    location: 'Village Baramati, Pune',
-    avatar: userAvatar
-  }
-];
+const TABS = ['Pending', 'Accepted', 'In Progress', 'Completed', 'Cancelled'];
 
 export default function OperatorJobs() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('Pending');
-  const [jobs, setJobs] = useState(MOCK_JOBS);
+  
+  const { data: jobs = [], isLoading } = useOperatorJobs();
+  const { mutate: updateStatus } = useUpdateOperatorJobStatus();
 
   const filteredJobs = jobs.filter(j => j.status === activeTab);
 
   const handleStatusChange = (id, newStatus) => {
-    setJobs(prev => prev.map(j => j.id === id ? { ...j, status: newStatus } : j));
+    updateStatus({ id, status: newStatus });
   };
 
   return (
@@ -113,7 +69,11 @@ export default function OperatorJobs() {
       {/* 3. JOBS LIST */}
       <div className="space-y-6">
         <AnimatePresence mode="popLayout">
-          {filteredJobs.length > 0 ? (
+          {isLoading ? (
+            <div className="flex justify-center p-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>
+          ) : filteredJobs.length > 0 ? (
             filteredJobs.map((job) => (
               <motion.div 
                 key={job.id}

@@ -152,7 +152,7 @@ const SkeletonText = memo(
         );
       }
       return linesArray;
-    }, [size, variant, radius, animation, disabled, isLoading, lines, widthClass, lastWidthClass]);
+    }, [size, variant, radius, animation, disabled, isLoading, lines, widthClass, lastWidthClass, lastLineWidth, width]);
 
     // Motion props - respect reduced motion.
     const motionProps = useMemo(() => {

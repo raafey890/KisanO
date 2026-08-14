@@ -1,25 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { Phone, Lock, LogIn, Sprout, Tractor, Wind, ShieldCheck } from 'lucide-react';
-import { FormInput } from '../../components/ui/FormInput';
-import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
-
-// Zod Schema
-const loginSchema = z.object({
-  identifier: z
-    .string()
-    .min(1, 'Phone number or Email is required')
-    .refine(
-      (val) => /^[6-9]\d{9}$/.test(val) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
-      'Enter a valid 10-digit mobile number or email address'
-    ),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  rememberMe: z.boolean().optional(),
-});
+import { useLoginForm } from '../../features/auth/hooks/forms/useLoginForm';
+import { AuthInput, PasswordField, SubmitButton, FormError } from '../../features/auth/components/forms';
 
 const ROLE_MAP = {
   farmer: {
@@ -69,52 +53,29 @@ export default function LoginPage({ initialRole = 'farmer' }) {
   const roleQuery = searchParams.get('role') || initialRole;
   const roleConfig = ROLE_MAP[roleQuery] || ROLE_MAP.farmer;
 
-  const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
   const { showSuccess, showError } = useToast();
   const navigate = useNavigate();
 
   const {
     register,
-    handleSubmit,
+    onSubmit,
+    isSubmitting,
+    apiError,
     formState: { errors },
-  } = useForm({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      identifier: '',
-      password: '',
-      rememberMe: false,
-    },
-  });
-
-  const onSubmit = async (data) => {
-    setIsLoading(true);
-    try {
-      await new Promise((res) => setTimeout(res, 1200));
-
-      const mockUser = {
-        id: 'usr_' + Math.floor(Math.random() * 10000),
-        name: `${roleConfig.name} User`,
-        identifier: data.identifier,
-        role: roleConfig.roleKey,
-      };
-      const mockJwtToken = 'jwt_mock_token_' + Date.now();
-
-      login(mockUser, mockJwtToken);
+  } = useLoginForm({
+    onSuccess: () => {
       showSuccess(`Welcome back! Logged in as ${roleConfig.name}.`);
       navigate(roleConfig.redirect);
-    } catch (err) {
+    },
+    onError: () => {
       showError('Invalid credentials. Please check your details and try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+  });
 
   const IconComp = roleConfig.icon;
 
   return (
     <div className="bg-gray-900/90 border border-white/10 rounded-3xl pt-10 pb-10 px-8 sm:px-10 lg:px-12 backdrop-blur-xl shadow-2xl">
-      {/* Role Badge Row (Badge → Heading: 20px) */}
       <div className="flex items-center justify-between mb-[20px]">
         <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border ${roleConfig.badgeColor}`}>
           <IconComp className="w-4 h-4" />
@@ -129,7 +90,6 @@ export default function LoginPage({ initialRole = 'farmer' }) {
         </Link>
       </div>
 
-      {/* Header (Heading → Subtitle: 16px, Subtitle → First Field: 24px) */}
       <div className="mb-[24px]">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug mb-[16px]">
           Sign In to KisanO
@@ -139,36 +99,33 @@ export default function LoginPage({ initialRole = 'farmer' }) {
         </p>
       </div>
 
-      {/* Form (Input → Next Label: 20px) */}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        <FormInput
+      <form onSubmit={onSubmit} className="space-y-5">
+        <FormError error={apiError} />
+
+        <AuthInput
           label="Mobile Number or Email"
-          required
-          icon={Phone}
+          icon={<Phone className="h-5 w-5" />}
           placeholder="e.g. 9876543210 or user@kisano.in"
           error={errors.identifier}
-          disabled={isLoading}
+          disabled={isSubmitting}
           {...register('identifier')}
         />
 
-        <FormInput
+        <PasswordField
           label="Password"
-          required
-          type="password"
-          icon={Lock}
           placeholder="Enter your password"
           error={errors.password}
-          disabled={isLoading}
+          disabled={isSubmitting}
           {...register('password')}
         />
 
-        {/* Remember Me Row (Remember Row → Button: 24px) */}
         <div className="flex items-center justify-between text-xs font-semibold pt-1 mb-[24px]">
           <label className="flex items-center gap-3 text-gray-300 cursor-pointer select-none">
             <input
               type="checkbox"
               className="w-4 h-4 rounded bg-gray-900 border-white/20 text-green-500 focus:ring-green-500 focus:ring-offset-gray-950 shrink-0 focus-visible:ring-2 focus-visible:ring-green-500"
               {...register('rememberMe')}
+              disabled={isSubmitting}
             />
             <span>Remember me</span>
           </label>
@@ -181,24 +138,15 @@ export default function LoginPage({ initialRole = 'farmer' }) {
           </Link>
         </div>
 
-        {/* Submit Button (Button → Footer Link: 24px) */}
-        <button
-          type="submit"
-          disabled={isLoading}
-          className={`w-full h-[50px] ${roleConfig.btnColor} ${roleConfig.shadow} text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2 mt-6 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:outline-none`}
+        <SubmitButton
+          isLoading={isSubmitting}
+          className={`${roleConfig.btnColor} ${roleConfig.shadow}`}
         >
-          {isLoading ? (
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          ) : (
-            <>
-              <span>Sign In</span>
-              <LogIn className="w-4 h-4" />
-            </>
-          )}
-        </button>
+          <span>Sign In</span>
+          <LogIn className="w-4 h-4" />
+        </SubmitButton>
       </form>
 
-      {/* Footer Link (Button → Footer Link: 24px) */}
       {roleConfig.registerLink && (
         <div className="mt-6 pt-6 border-t border-white/10 text-center text-xs text-gray-400">
           Don't have an account yet?{' '}

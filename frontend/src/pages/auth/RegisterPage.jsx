@@ -1,28 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { useWatch } from 'react-hook-form';
 import { User, Phone, Mail, Lock, MapPin, ArrowRight, Sprout, Tractor, Wind } from 'lucide-react';
-import { FormInput } from '../../components/ui/FormInput';
 import { useToast } from '../../context/ToastContext';
-
-const registerSchema = z
-  .object({
-    fullName: z.string().min(2, 'Full name must be at least 2 characters'),
-    phone: z.string().regex(/^[6-9]\d{9}$/, 'Enter a valid 10-digit Indian phone number'),
-    email: z.string().email('Enter a valid email address').or(z.literal('')),
-    district: z.string().min(2, 'District is required'),
-    password: z.string().min(6, 'Password must be at least 6 characters'),
-    confirmPassword: z.string().min(6, 'Please confirm your password'),
-    agreeTerms: z.literal(true, {
-      errorMap: () => ({ message: 'You must agree to the Terms of Service' }),
-    }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ['confirmPassword'],
-  });
+import { useRegisterForm } from '../../features/auth/hooks/forms/useRegisterForm';
+import { AuthInput, PasswordField, SubmitButton, FormError } from '../../features/auth/components/forms';
 
 const DISTRICTS = [
   'Ahmednagar', 'Akola', 'Amravati', 'Aurangabad', 'Beed', 'Bhandara', 'Buldhana',
@@ -67,29 +49,27 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
   const roleQuery = searchParams.get('role') || initialRole;
   const roleConfig = ROLE_MAP[roleQuery] || ROLE_MAP.farmer;
 
-  const [isLoading, setIsLoading] = useState(false);
   const { showSuccess, showError } = useToast();
   const navigate = useNavigate();
 
   const {
     register,
-    handleSubmit,
-    watch,
+    onSubmit,
+    control,
+    isSubmitting,
+    apiError,
     formState: { errors },
-  } = useForm({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      fullName: '',
-      phone: '',
-      email: '',
-      district: '',
-      password: '',
-      confirmPassword: '',
-      agreeTerms: false,
+  } = useRegisterForm(roleConfig.roleKey, {
+    onSuccess: (data) => {
+      showSuccess(`OTP sent to +91 ${data.phone}. Please verify to complete registration.`);
+      navigate(`/auth/verify-otp?phone=${encodeURIComponent(data.phone)}&mode=register&role=${roleConfig.roleKey}`);
+    },
+    onError: () => {
+      showError('Registration failed. Please check your information and try again.');
     },
   });
 
-  const passwordVal = watch('password', '');
+  const passwordVal = useWatch({ control, name: 'password', defaultValue: '' });
   const getPasswordStrength = () => {
     if (!passwordVal) return { label: '', color: 'w-0 bg-transparent' };
     if (passwordVal.length < 6) return { label: 'Weak', color: 'w-1/3 bg-red-500' };
@@ -98,26 +78,10 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
   };
 
   const strength = getPasswordStrength();
-
-  const onSubmit = async (data) => {
-    setIsLoading(true);
-    try {
-      await new Promise((res) => setTimeout(res, 1200));
-
-      showSuccess(`OTP sent to +91 ${data.phone}. Please verify to complete registration.`);
-      navigate(`/auth/verify-otp?phone=${encodeURIComponent(data.phone)}&mode=register&role=${roleConfig.roleKey}`);
-    } catch (err) {
-      showError('Registration failed. Please check your information and try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const IconComp = roleConfig.icon;
 
   return (
     <div className="bg-gray-900/90 border border-white/10 rounded-3xl p-8 sm:p-10 lg:p-12 backdrop-blur-xl shadow-2xl">
-      {/* Role Badge Row */}
       <div className="flex items-center justify-between mb-6">
         <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border ${roleConfig.badgeColor}`}>
           <IconComp className="w-4 h-4" />
@@ -129,7 +93,6 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
         </Link>
       </div>
 
-      {/* Header & Subtitle */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
           Create KisanO Account
@@ -139,42 +102,38 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
         </p>
       </div>
 
-      {/* Registration Form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Full Name */}
-        <FormInput
+      <form onSubmit={onSubmit} className="space-y-6">
+        <FormError error={apiError} />
+
+        <AuthInput
           label="Full Name"
-          required
-          icon={User}
+          icon={<User className="h-5 w-5" />}
           placeholder="e.g. Ramesh Patil"
           error={errors.fullName}
-          disabled={isLoading}
+          disabled={isSubmitting}
           {...register('fullName')}
         />
 
-        {/* Mobile & Email Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <FormInput
+          <AuthInput
             label="Mobile Number"
-            required
-            icon={Phone}
+            icon={<Phone className="h-5 w-5" />}
             placeholder="10-digit mobile number"
             error={errors.phone}
-            disabled={isLoading}
+            disabled={isSubmitting}
             {...register('phone')}
           />
 
-          <FormInput
+          <AuthInput
             label="Email Address"
-            icon={Mail}
+            icon={<Mail className="h-5 w-5" />}
             placeholder="Optional email"
             error={errors.email}
-            disabled={isLoading}
+            disabled={isSubmitting}
             {...register('email')}
           />
         </div>
 
-        {/* District Select */}
         <div className="flex flex-col">
           <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
             District <span className="text-green-400">*</span>
@@ -184,13 +143,13 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
               <MapPin className="w-5 h-5" />
             </div>
             <select
-              disabled={isLoading}
+              disabled={isSubmitting}
               style={{ paddingLeft: '48px', paddingRight: '40px' }}
               className={`w-full h-[50px] bg-gray-900/90 text-white text-sm font-medium rounded-xl border appearance-none ${
                 errors.district
                   ? 'border-red-500/60 focus:border-red-500'
-                  : 'border-white/10 focus:border-green-500/60'
-              } outline-none transition-all`}
+                  : 'border-white/10 focus:border-[#4ADE80]'
+              } focus:outline-none focus:ring-1 focus:ring-[#4ADE80]/50 transition-colors`}
               {...register('district')}
             >
               <option value="" disabled className="bg-gray-900 text-gray-500">
@@ -204,21 +163,17 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
             </select>
           </div>
           {errors.district && (
-            <span className="text-xs font-medium text-red-400 mt-1.5">{errors.district.message}</span>
+            <span className="text-sm text-red-400 mt-1.5">{errors.district.message}</span>
           )}
         </div>
 
-        {/* Password & Confirm Password Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
           <div className="flex flex-col">
-            <FormInput
+            <PasswordField
               label="Password"
-              required
-              type="password"
-              icon={Lock}
               placeholder="Create password"
               error={errors.password}
-              disabled={isLoading}
+              disabled={isSubmitting}
               {...register('password')}
             />
             {passwordVal && (
@@ -231,25 +186,22 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
             )}
           </div>
 
-          <FormInput
+          <PasswordField
             label="Confirm Password"
-            required
-            type="password"
-            icon={Lock}
             placeholder="Confirm password"
             error={errors.confirmPassword}
-            disabled={isLoading}
+            disabled={isSubmitting}
             {...register('confirmPassword')}
           />
         </div>
 
-        {/* Terms Checkbox */}
         <div className="pt-3 pb-1">
           <label className="flex items-start gap-3.5 text-xs text-gray-300 cursor-pointer select-none">
             <input
               type="checkbox"
               className="mt-0.5 w-4 h-4 rounded bg-gray-900 border-white/20 text-green-500 focus:ring-green-500 focus:ring-offset-gray-950 shrink-0"
               {...register('agreeTerms')}
+              disabled={isSubmitting}
             />
             <span className="leading-relaxed">
               I agree to KisanO's{' '}
@@ -264,28 +216,19 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
             </span>
           </label>
           {errors.agreeTerms && (
-            <span className="text-xs font-medium text-red-400 block mt-2">{errors.agreeTerms.message}</span>
+            <span className="text-sm text-red-400 block mt-2">{errors.agreeTerms.message}</span>
           )}
         </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={isLoading}
-          className={`w-full h-[52px] ${roleConfig.btnColor} ${roleConfig.shadow} text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2 mt-7 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed`}
+        <SubmitButton
+          isLoading={isSubmitting}
+          className={`${roleConfig.btnColor} ${roleConfig.shadow}`}
         >
-          {isLoading ? (
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          ) : (
-            <>
-              <span>Proceed to Verification</span>
-              <ArrowRight className="w-4 h-4" />
-            </>
-          )}
-        </button>
+          <span>Proceed to Verification</span>
+          <ArrowRight className="w-4 h-4" />
+        </SubmitButton>
       </form>
 
-      {/* Footer Link */}
       <div className="mt-8 pt-6 border-t border-white/10 text-center text-xs text-gray-400">
         Already have an account?{' '}
         <Link to={roleConfig.loginLink} className="text-green-400 font-bold hover:underline">

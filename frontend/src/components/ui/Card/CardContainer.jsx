@@ -67,7 +67,7 @@ const CardContainer = memo(
         className,
       }),
       className
-    ), [resolvedProps, radius, elevation, status, disabled, interactive, loading, className]);
+    ), [resolvedProps, status, className]);
     
    const tabIndex = useMemo(
   () =>
@@ -86,7 +86,7 @@ const CardContainer = memo(
       role: 'article',
       
       tabIndex,
-    }), [resolvedProps.disabled, resolvedProps.loading, tabIndex]);
+    }), [tabIndex]);
     
     const motionProps = useMemo(() => {
       const baseMotion = {

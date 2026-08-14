@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiPlus, FiPhone, FiX, FiMapPin, FiPackage } from 'react-icons/fi';
-import api from '../services/api';
+import { useNaruuListings, useCreateNaruu, useDeleteNaruu } from '../features/marketplace/hooks/useNaruu';
 
 const stagger = {
   container: { animate: { transition: { staggerChildren: 0.08 } } },
@@ -9,7 +9,6 @@ const stagger = {
 };
 
 export default function Marketplace({ user }) {
-  const [listings, setListings] = useState([]);
   const [district, setDistrict] = useState('');
   const [village, setVillage] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -18,46 +17,46 @@ export default function Marketplace({ user }) {
   const [cropName, setCropName] = useState('Paddy Seedlings (Naruu)');
   const [qty, setQty] = useState('');
   const [price, setPrice] = useState('');
-  const [phone, setPhone] = useState(user.mobileNumber || '');
-  const [vInput, setVInput] = useState(user.village || '');
-  const [dInput, setDInput] = useState(user.district || '');
-  const [sInput, setSInput] = useState(user.state || '');
-  const [loading, setLoading] = useState(false);
+  const [phone, setPhone] = useState(user?.mobileNumber || '');
+  const [vInput, setVInput] = useState(user?.village || '');
+  const [dInput, setDInput] = useState(user?.district || '');
+  const [sInput, setSInput] = useState(user?.state || '');
 
-  useEffect(() => { fetch(); }, [district, village]);
-
-  const fetch = async () => {
-    try {
-      const res = await api.get('/naruu', { params: { district: district || undefined, village: village || undefined } });
-      if (res.success) setListings(res.data.items);
-    } catch (_) {}
-  };
+  const { data: listings = [], isLoading, isError, refetch } = useNaruuListings(district, village);
+  const createNaruu = useCreateNaruu();
+  const deleteNaruu = useDeleteNaruu();
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await api.post('/naruu', {
-        cropName, quantity: parseInt(qty), price: parseFloat(price),
-        village: vInput, district: dInput, state: sInput, contactPhone: phone,
-      });
-      if (res.success) { setShowModal(false); fetch(); resetForm(); }
-    } catch (err) { alert(err.message); }
-    finally { setLoading(false); }
+    createNaruu.mutate({
+      cropName, 
+      qty: parseInt(qty).toString(), 
+      price: parseFloat(price).toString(),
+      village: vInput, 
+      district: dInput, 
+      state: sInput, 
+      phone,
+    }, {
+      onSuccess: () => {
+        setShowModal(false);
+        resetForm();
+      },
+      onError: (err) => {
+        alert(err.message);
+      }
+    });
   };
 
-  const handleSold = async (id) => {
-    try {
-      await api.delete(`/naruu/${id}`);
-      fetch();
-    } catch (err) { alert(err.message); }
+  const handleSold = (id) => {
+    deleteNaruu.mutate(id, {
+      onError: (err) => alert(err.message)
+    });
   };
 
   const resetForm = () => { setQty(''); setPrice(''); };
 
   return (
     <div className="flex flex-col gap-6">
-
       {/* Filter + CTA bar */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
         className="card p-4 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
@@ -71,7 +70,14 @@ export default function Marketplace({ user }) {
       </motion.div>
 
       {/* Grid */}
-      {listings.length === 0 ? (
+      {isLoading ? (
+        <div className="flex justify-center p-12">Loading seedlings...</div>
+      ) : isError ? (
+        <div className="flex flex-col items-center p-12 text-red-500">
+          <p>Failed to load seedlings.</p>
+          <button onClick={() => refetch()} className="btn btn-outline mt-4">Retry</button>
+        </div>
+      ) : listings.length === 0 ? (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
           className="card p-20 flex flex-col items-center gap-4" style={{ color: '#a1a1aa' }}>
           <motion.span animate={{ y: [0, -8, 0] }} transition={{ duration: 3, repeat: Infinity }} className="text-5xl">🌱</motion.span>
@@ -82,17 +88,17 @@ export default function Marketplace({ user }) {
         <motion.div variants={stagger.container} initial="initial" animate="animate"
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {listings.map(lst => (
-            <motion.div key={lst.id} variants={stagger.item} className="card card-hover p-5 flex flex-col">
+            <motion.div key={lst._id || lst.id} variants={stagger.item} className="card card-hover p-5 flex flex-col">
               <div className="flex items-start justify-between mb-3">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style={{ background: '#f0fdf4' }}>🌾</div>
-                <span className={`badge ${lst.listingStatus === 'Active' ? 'badge-green' : 'badge-grey'}`}>{lst.listingStatus}</span>
+                <span className={`badge ${lst.listingStatus === 'Active' ? 'badge-green' : 'badge-grey'}`}>{lst.listingStatus || 'Active'}</span>
               </div>
               <h3 className="font-black text-sm mb-1">{lst.cropName}</h3>
               <div className="flex items-center gap-1.5 text-xs mb-3" style={{ color: '#71717a' }}>
                 <FiMapPin size={11} />{lst.village}, {lst.district}
               </div>
               <div className="flex items-center gap-3 text-xs mb-4" style={{ color: '#52525b' }}>
-                <div className="flex items-center gap-1"><FiPackage size={11} /> {lst.quantity} bundles</div>
+                <div className="flex items-center gap-1"><FiPackage size={11} /> {lst.qty || lst.quantity} bundles</div>
               </div>
               <div className="divider" />
               <div className="flex items-center justify-between pt-3">
@@ -100,10 +106,12 @@ export default function Marketplace({ user }) {
                   <span className="font-black text-lg">₹{lst.price}</span>
                   <span className="text-xs ml-1" style={{ color: '#a1a1aa' }}>/bundle</span>
                 </div>
-                {lst.sellerId === user.id ? (
-                  <button onClick={() => handleSold(lst.id)} className="btn btn-danger btn-sm">Mark Sold</button>
+                {lst.sellerId === user?.id ? (
+                  <button onClick={() => handleSold(lst._id || lst.id)} disabled={deleteNaruu.isPending} className="btn btn-danger btn-sm">
+                    {deleteNaruu.isPending ? 'Deleting...' : 'Mark Sold'}
+                  </button>
                 ) : (
-                  <a href={`tel:${lst.contactPhone}`} className="btn btn-green btn-sm">
+                  <a href={`tel:${lst.phone || lst.contactPhone}`} className="btn btn-green btn-sm">
                     <FiPhone size={12} /> Call
                   </a>
                 )}
@@ -146,8 +154,8 @@ export default function Marketplace({ user }) {
                 </div>
                 <div className="modal-footer">
                   <button type="button" onClick={() => setShowModal(false)} className="btn btn-ghost flex-1">Cancel</button>
-                  <motion.button type="submit" disabled={loading} className="btn btn-black flex-1" whileTap={{ scale: 0.97 }}>
-                    {loading ? 'Posting...' : 'Post Listing'}
+                  <motion.button type="submit" disabled={createNaruu.isPending} className="btn btn-black flex-1" whileTap={{ scale: 0.97 }}>
+                    {createNaruu.isPending ? 'Posting...' : 'Post Listing'}
                   </motion.button>
                 </div>
               </form>

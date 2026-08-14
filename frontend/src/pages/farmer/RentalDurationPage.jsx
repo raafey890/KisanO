@@ -31,8 +31,10 @@ export default function RentalDurationPage() {
   };
 
   // State: Start Date, Duration Days, Start Time
-  const tomorrowStr = new Date(Date.now() + 86400000).toISOString().split('T')[0];
-  const [startDate, setStartDate] = useState(state?.date || tomorrowStr);
+  const [startDate, setStartDate] = useState(() => {
+    if (state?.date) return state.date;
+    return new Date(Date.now() + 86400000).toISOString().split('T')[0];
+  });
   const [numDays, setNumDays] = useState(2);
   const [startTime, setStartTime] = useState('08:00 AM');
 

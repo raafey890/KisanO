@@ -22,6 +22,8 @@ import {
   mergeClasses,
   resolveResponsiveClasses,
   resolveDefaultProps,
+  getSkeletonRadius,
+  getSkeletonAnimation,
 } from './skeletonUtils';
 
 import SkeletonContainer from './SkeletonContainer';

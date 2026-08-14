@@ -156,11 +156,6 @@ const Alert = memo(
       setInternalLoading(loading);
     }, [loading]);
 
-    // If not visible, render nothing.
-    if (!isVisible) {
-      return null;
-    }
-
     // Determine if we should show loader.
     const showLoader = resolved.loading;
 
@@ -227,6 +222,11 @@ const Alert = memo(
       }
       return null;
     }, [actions, resolved.size, resolved.disabled, resolved.loading, actionsProps]);
+
+    // If not visible, render nothing.
+    if (!isVisible) {
+      return null;
+    }
 
     // Container props.
     const containerProps = {

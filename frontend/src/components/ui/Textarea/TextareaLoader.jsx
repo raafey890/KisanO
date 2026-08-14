@@ -136,7 +136,7 @@ const TextareaLoader = memo(
     }, [textareaSize, isAnimated, variant]);
 
     // Render a single skeleton row.
-    const renderRow = (index) => {
+    const renderRow = useCallback((index) => {
       // Use varying widths for text rows.
       const widthClass = SKELETON_WIDTHS[index % SKELETON_WIDTHS.length];
 
@@ -180,12 +180,12 @@ const TextareaLoader = memo(
           {textShimmer}
         </motion.div>
       );
-    };
+    }, [isAnimated, skeletonHeight, variant]);
 
     // Generate rows.
     const rowsToRender = useMemo(
       () => Array.from({ length: rows }, (_, i) => renderRow(i)),
-      [rows, size, variant, isAnimated, skeletonHeight],
+      [rows, renderRow],
     );
 
     // Shimmer overlay for the entire textarea skeleton.

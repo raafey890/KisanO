@@ -3,14 +3,19 @@ import { motion } from 'framer-motion';
 import { Search, Filter, ShieldCheck, FileText, CheckCircle2, XCircle } from 'lucide-react';
 import userAvatar from '../../assets/ai/farmer_3d_icon.jpg';
 
-const VERIFICATIONS = [
-  { id: 'VR-101', name: 'Suresh Patil', role: 'Equipment Owner', type: 'Aadhar Card', status: 'Pending', date: '29 Jul 2026' },
-  { id: 'VR-102', name: 'Ramesh Kumar', role: 'Sprayer Operator', type: 'Sprayer License', status: 'Pending', date: '29 Jul 2026' },
-  { id: 'VR-103', name: 'Anil Desai', role: 'Marketplace Seller', type: 'GST Certificate', status: 'Pending', date: '28 Jul 2026' },
-];
+import { useAdminVerifications, useApproveVerification, useRejectVerification } from '../../features/admin/hooks/useAdmin';
 
 export default function AdminVerifications() {
   const [search, setSearch] = useState('');
+
+  const { data: verifications = [], isLoading } = useAdminVerifications();
+  const { mutate: approveVerification } = useApproveVerification();
+  const { mutate: rejectVerification } = useRejectVerification();
+
+  const filteredVerifications = verifications.filter(item => 
+    item.name.toLowerCase().includes(search.toLowerCase()) ||
+    item.role.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 font-sans pb-32 pt-6 px-4 sm:px-6 lg:px-8">
@@ -24,8 +29,13 @@ export default function AdminVerifications() {
       </div>
 
       {/* VERIFICATIONS LIST */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {VERIFICATIONS.map((item) => (
+      {isLoading ? (
+        <div className="flex justify-center p-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {filteredVerifications.map((item) => (
           <motion.div 
             key={item.id}
             whileHover={{ y: -4 }}
@@ -55,16 +65,23 @@ export default function AdminVerifications() {
             </div>
 
             <div className="mt-auto flex gap-2">
-              <button className="flex-1 py-2.5 bg-green-500 hover:bg-green-600 text-white font-bold text-sm rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+              <button 
+                onClick={() => approveVerification(item.id)}
+                className="flex-1 py-2.5 bg-green-500 hover:bg-green-600 text-white font-bold text-sm rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+              >
                 <CheckCircle2 className="w-4 h-4" /> Approve
               </button>
-              <button className="flex-1 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold text-sm rounded-xl transition-colors flex items-center justify-center gap-1.5 border border-red-200">
+              <button 
+                onClick={() => rejectVerification(item.id)}
+                className="flex-1 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold text-sm rounded-xl transition-colors flex items-center justify-center gap-1.5 border border-red-200"
+              >
                 <XCircle className="w-4 h-4" /> Reject
               </button>
             </div>
           </motion.div>
         ))}
-      </div>
+        </div>
+      )}
 
     </div>
   );

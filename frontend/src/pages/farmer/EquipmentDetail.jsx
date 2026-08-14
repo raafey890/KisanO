@@ -23,7 +23,7 @@ import {
   SeedDrillEquipment,
   CropSprayerService,
 } from '../../assets/images';
-import api from '../../services/api';
+import { useEquipmentDetail } from '../../features/farmer/hooks/useEquipment';
 
 const MOCK_EQUIPMENT_DATA = {
   id: 'eq-1',
@@ -83,26 +83,32 @@ export default function EquipmentDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [equipment, setEquipment] = useState(MOCK_EQUIPMENT_DATA);
+  const { data, isLoading, isError } = useEquipmentDetail(id);
+
+  const equipment = React.useMemo(() => {
+    if (data) {
+      return {
+        ...MOCK_EQUIPMENT_DATA,
+        ...data,
+        id: data._id || data.id,
+        equipmentName: data.name || data.equipmentName || MOCK_EQUIPMENT_DATA.equipmentName,
+        equipmentType: data.category || data.equipmentType || MOCK_EQUIPMENT_DATA.equipmentType,
+        image: data.image || TractorEquipment,
+        dailyRate: data.rate || data.dailyRate || MOCK_EQUIPMENT_DATA.dailyRate,
+      };
+    }
+    return MOCK_EQUIPMENT_DATA;
+  }, [data]);
+
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  useEffect(() => {
-    const fetchDetail = async () => {
-      try {
-        const res = await api.get(`/equipment/${id}`);
-        if (res.data?.success && res.data.data) {
-          setEquipment({
-            ...MOCK_EQUIPMENT_DATA,
-            ...res.data.data,
-            image: res.data.data.image || TractorEquipment,
-          });
-        }
-      } catch (err) {
-        // Fallback to mock data if offline
-      }
-    };
-    fetchDetail();
-  }, [id]);
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
 
   const handleRentNow = () => {
     navigate(`/farmer/equipment/${id}/availability`, {

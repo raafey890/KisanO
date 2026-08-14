@@ -15,7 +15,8 @@ import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   mergeClasses, 
- 
+  getIconSize,
+  getIconSpacing
 } from './buttonUtils';
 /* ---------------------------------- */
 /* Motion Presets */

@@ -1,0 +1,268 @@
+[
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Accordion\\Accordion.jsx",
+    "line": 271,
+    "rule": "no-undef",
+    "message": "'loaderPropsMerged' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Breadcrumb\\Breadcrumb.jsx",
+    "line": 208,
+    "rule": "no-undef",
+    "message": "'loaderPropsMerged' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Button\\ButtonLoader.jsx",
+    "line": 166,
+    "rule": "no-undef",
+    "message": "'getIconSize' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Button\\ButtonLoader.jsx",
+    "line": 167,
+    "rule": "no-undef",
+    "message": "'getIconSpacing' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Card\\CardMedia.jsx",
+    "line": 57,
+    "rule": "no-undef",
+    "message": "'resolvedProps' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Card\\CardMedia.jsx",
+    "line": 66,
+    "rule": "no-undef",
+    "message": "'resolvedProps' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Card\\CardMedia.jsx",
+    "line": 122,
+    "rule": "no-undef",
+    "message": "'resolvedProps' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\AreaChart.jsx",
+    "line": 117,
+    "rule": "no-undef",
+    "message": "'labels' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\AreaChart.jsx",
+    "line": 160,
+    "rule": "no-undef",
+    "message": "'Defs' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\AreaChart.jsx",
+    "line": 165,
+    "rule": "no-undef",
+    "message": "'LinearGradient' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\AreaChart.jsx",
+    "line": 173,
+    "rule": "no-undef",
+    "message": "'Stop' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\AreaChart.jsx",
+    "line": 174,
+    "rule": "no-undef",
+    "message": "'Stop' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\BarChart.jsx",
+    "line": 111,
+    "rule": "no-undef",
+    "message": "'labels' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\ChartLegend.jsx",
+    "line": 151,
+    "rule": "no-undef",
+    "message": "'useCallback' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\ChartTooltip.jsx",
+    "line": 146,
+    "rule": "no-undef",
+    "message": "'useCallback' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\LineChart.jsx",
+    "line": 109,
+    "rule": "no-undef",
+    "message": "'labels' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\PieChart.jsx",
+    "line": 116,
+    "rule": "no-undef",
+    "message": "'labels' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\chartUtils.js",
+    "line": 144,
+    "rule": "no-undef",
+    "message": "'getChartRadius' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\chartUtils.js",
+    "line": 144,
+    "rule": "no-undef",
+    "message": "'radius' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\chartUtils.js",
+    "line": 145,
+    "rule": "no-undef",
+    "message": "'getChartShadow' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Charts\\chartUtils.js",
+    "line": 145,
+    "rule": "no-undef",
+    "message": "'shadow' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\ComponentShowcase\\ComponentShowcase_FULL.jsx",
+    "line": 949,
+    "rule": "no-undef",
+    "message": "'ComponentShowcase_FULL' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Pagination\\Pagination.jsx",
+    "line": 373,
+    "rule": "no-undef",
+    "message": "'loaderPropsMerged' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Select\\SelectMenu.jsx",
+    "line": 225,
+    "rule": "no-undef",
+    "message": "'useState' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Select\\SelectSearch.jsx",
+    "line": 76,
+    "rule": "no-undef",
+    "message": "'useState' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Skeleton\\Skeleton.jsx",
+    "line": 155,
+    "rule": "no-undef",
+    "message": "'getSkeletonRadius' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Skeleton\\Skeleton.jsx",
+    "line": 156,
+    "rule": "no-undef",
+    "message": "'getSkeletonAnimation' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Skeleton\\Skeleton.jsx",
+    "line": 157,
+    "rule": "no-undef",
+    "message": "'getSkeletonAnimation' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Skeleton\\Skeleton.jsx",
+    "line": 176,
+    "rule": "no-undef",
+    "message": "'getSkeletonAnimation' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Skeleton\\Skeleton.jsx",
+    "line": 177,
+    "rule": "no-undef",
+    "message": "'getSkeletonAnimation' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Table\\TableBody.jsx",
+    "line": 111,
+    "rule": "no-undef",
+    "message": "'React' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Textarea\\textareaUtils.js",
+    "line": 162,
+    "rule": "no-undef",
+    "message": "'getRadiusClasses' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Toast\\ToastLoader.jsx",
+    "line": 106,
+    "rule": "no-undef",
+    "message": "'getToastSize' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Toast\\ToastLoader.jsx",
+    "line": 146,
+    "rule": "no-undef",
+    "message": "'isIcon' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Toast\\ToastLoader.jsx",
+    "line": 147,
+    "rule": "no-undef",
+    "message": "'isIcon' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\components\\ui\\Tooltip\\TooltipTrigger.jsx",
+    "line": 91,
+    "rule": "Parsing Error",
+    "message": "Parsing error: Unexpected token ;",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\AiDoctorResult.jsx",
+    "line": 227,
+    "rule": "no-undef",
+    "message": "'CheckCircle2' is not defined.",
+    "source": ""
+  },
+  {
+    "file": "C:\\Users\\DELL\\OneDrive\\Desktop\\KisanO\\frontend\\src\\pages\\farmer\\AiDoctorResult.jsx",
+    "line": 245,
+    "rule": "no-undef",
+    "message": "'CheckCircle2' is not defined.",
+    "source": ""
+  }
+]

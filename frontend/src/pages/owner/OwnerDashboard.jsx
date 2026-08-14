@@ -6,6 +6,7 @@ import {
   Settings, Bell, Plus, CalendarDays, Activity, Wrench,
   Clock, CheckCircle2, ChevronRight, User
 } from 'lucide-react';
+import { useOwnerDashboard } from '../../features/owner/hooks/useOwnerDashboard';
 
 import ownerAvatar from '../../assets/ai/farmer_3d_icon.jpg';
 
@@ -30,6 +31,15 @@ const ACTIVITIES = [
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
+  const { isLoading, isError } = useOwnerDashboard();
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 font-sans pb-32">

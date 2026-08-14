@@ -184,7 +184,7 @@ const Navbar = memo(
         onClick: handleToggle,
         ...toggleProps,
       }),
-      [resolved.size, isOpen, resolved.collapsed, loading, toggleProps],
+      [resolved.size, isOpen, resolved.collapsed, loading, toggleProps, handleToggle],
     );
 
     const loaderPropsMerged = useMemo(

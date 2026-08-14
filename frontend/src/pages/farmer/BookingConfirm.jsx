@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { TractorEquipment } from '../../assets/images';
-import api from '../../services/api';
+import { useConfirmBooking } from '../../features/booking/hooks/useBookings';
 
 export default function BookingConfirm() {
   const { id } = useParams();
@@ -23,9 +23,11 @@ export default function BookingConfirm() {
   const location = useLocation();
   const state = location.state;
 
-  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(true);
+  const [bookingId, setBookingId] = useState('');
+
+  const { mutate: confirmBooking, isPending: loading } = useConfirmBooking();
 
   // Safely extract equipment data
   const equipment = state?.equipment || {
@@ -40,30 +42,36 @@ export default function BookingConfirm() {
 
   // Safely extract rental state
   const startDate = state?.startDate || new Date().toISOString().split('T')[0];
-  const endDate = state?.endDate || new Date(Date.now() + 86400000).toISOString().split('T')[0];
+  const [endDate] = useState(() => state?.endDate || new Date(Date.now() + 86400000).toISOString().split('T')[0]);
   const numDays = state?.numDays || 2;
   const startTime = state?.startTime || '08:00 AM';
   const dailyRate = state?.dailyRate || equipment.dailyRate || 4500;
   const totalAmount = state?.totalAmount || (dailyRate * numDays);
   const platformFee = 0; // Keeping "No hidden charges" promise
 
-  const handleConfirmBooking = async () => {
+  const handleConfirmBooking = () => {
     if (!agreedToTerms) return;
     
-    setLoading(true);
-    try {
-      // Simulate backend API delay
-      await new Promise((res) => setTimeout(res, 1500));
-      setSuccess(true);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
+    confirmBooking(
+      {
+        equipmentId: equipment.id,
+        startDate,
+        endDate,
+        totalAmount,
+      },
+      {
+        onSuccess: (data) => {
+          setBookingId(data.id);
+          setSuccess(true);
+        },
+        onError: (err) => {
+          console.error(err);
+        }
+      }
+    );
   };
 
   if (success) {
-    const mockBookingId = `BKG-${Math.floor(1000 + Math.random() * 9000)}`;
 
     return (
       <motion.div
@@ -123,7 +131,7 @@ export default function BookingConfirm() {
         >
           <div className="flex flex-col sm:flex-row justify-between sm:items-center text-gray-700 gap-1 sm:gap-4">
             <span className="font-bold text-xs uppercase tracking-wider text-gray-500">Booking ID:</span>
-            <span className="font-black text-gray-900 text-sm sm:text-base">{mockBookingId}</span>
+            <span className="font-black text-gray-900 text-sm sm:text-base">{bookingId}</span>
           </div>
           <div className="flex flex-col sm:flex-row justify-between sm:items-center text-gray-700 gap-1 sm:gap-4">
             <span className="font-bold text-xs uppercase tracking-wider text-gray-500">Rental Dates:</span>

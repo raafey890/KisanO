@@ -186,11 +186,6 @@ const DialogHeader = memo(
     const hasIcon = Boolean(icon);
     const hasActions = Boolean(actions);
 
-    // If no content, render nothing.
-    if (!hasTitle && !hasIcon && !hasActions) {
-      return null;
-    }
-
     // Accessibility attributes.
     const ariaProps = useMemo(
       () => ({
@@ -201,6 +196,11 @@ const DialogHeader = memo(
       }),
       [role, ariaLevel, disabled, loading],
     );
+
+    // If no content, render nothing.
+    if (!hasTitle && !hasIcon && !hasActions) {
+      return null;
+    }
 
     return (
       <motion.header

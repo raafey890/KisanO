@@ -126,7 +126,6 @@ class EquipmentBookingService:
         
         is_admin = user_role in ["Admin", "SuperAdmin"]
         is_owner = booking["ownerSnapshot"]["ownerId"] == user_id
-        is_farmer = booking["farmerSnapshot"]["farmerId"] == user_id
         
         # 1. Use Core Workflow Engine to validate FSM
         workflow.validate_transition(current_status, new_status, is_admin)

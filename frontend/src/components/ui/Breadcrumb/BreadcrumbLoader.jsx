@@ -123,7 +123,7 @@ const BreadcrumbLoader = memo(
     }, [sizeConfig.gap, disabled, className, responsiveClasses]);
 
     // Render a single breadcrumb skeleton item.
-    const renderItem = (index) => {
+    const renderItem = useCallback((index) => {
       const isLast = index === items - 1;
 
       return (
@@ -194,12 +194,12 @@ const BreadcrumbLoader = memo(
           )}
         </motion.div>
       );
-    };
+    }, [isAnimated, itemWidth, items, skeletonHeight, variant]);
 
     // Generate items.
     const itemsToRender = useMemo(
       () => Array.from({ length: items }, (_, i) => renderItem(i)),
-      [items, size, variant, isAnimated, itemWidth, skeletonHeight],
+      [items, renderItem],
     );
 
     // Motion props - respect reduced motion.

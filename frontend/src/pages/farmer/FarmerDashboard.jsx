@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Sun, Tractor, Store, Droplet, Bell, CloudRain, Wind, Activity } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import api from '../../services/api';
+import { useAuthStore } from '../../features/auth';
+import { useFarmerDashboard } from '../../features/farmer/hooks/useFarmerDashboard';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -47,32 +47,32 @@ const AnimatedCounter = ({ target }) => {
 };
 
 export default function FarmerDashboard() {
-  const { user } = useAuth();
+  const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
-  const [stats, setStats] = useState({ activeBookingsCount: 0, totalExpenses: 0 });
-  const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading, isError, error } = useFarmerDashboard();
 
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        const response = await api.get('/dashboards/farmer');
-        if (response.data?.success) {
-          setStats({
-            activeBookingsCount: response.data.data.activeBookingsCount || 0,
-            totalExpenses: response.data.data.totalExpenses || 0
-          });
-          setNotifications(response.data.data.recentNotifications || []);
-        }
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
 
-    fetchDashboard();
-  }, []);
+  if (isError) {
+    return (
+      <div className="p-8 text-center text-red-600">
+        <h2 className="text-xl font-bold mb-2">Error Loading Dashboard</h2>
+        <p>{error?.message || 'Something went wrong.'}</p>
+      </div>
+    );
+  }
+
+  const stats = {
+    activeBookingsCount: data?.stats?.activeRentals || 0,
+    totalExpenses: data?.stats?.walletBalance || 0 // Assuming walletBalance mapping based on mock
+  };
+  const notifications = data?.recentActivities || [];
 
   return (
     <motion.div 
@@ -109,21 +109,21 @@ export default function FarmerDashboard() {
           <div className="absolute top-0 right-0 p-4 opacity-10"><Activity className="w-16 h-16" /></div>
           <h3 className="text-gray-500 font-bold mb-2">Active Bookings</h3>
           <div className="text-4xl font-black text-gray-900">
-            {!loading && <AnimatedCounter target={stats.activeBookingsCount} />}
+            <AnimatedCounter target={stats.activeBookingsCount} />
           </div>
         </motion.div>
         <motion.div variants={itemVariants} className="stat-card card-hover bg-white relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-10"><Tractor className="w-16 h-16" /></div>
           <h3 className="text-gray-500 font-bold mb-2">Total Expenses</h3>
           <div className="text-4xl font-black text-green-600 flex items-center">
-            ₹{!loading && <AnimatedCounter target={stats.totalExpenses} />}
+            ₹<AnimatedCounter target={stats.totalExpenses} />
           </div>
         </motion.div>
         <motion.div variants={itemVariants} className="stat-card card-hover bg-white relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-10"><Bell className="w-16 h-16" /></div>
           <h3 className="text-gray-500 font-bold mb-2">Notifications</h3>
           <div className="text-4xl font-black text-gray-900">
-            {!loading && <AnimatedCounter target={notifications.length} />}
+            <AnimatedCounter target={notifications.length} />
           </div>
         </motion.div>
       </motion.div>

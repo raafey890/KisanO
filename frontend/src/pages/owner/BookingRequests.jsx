@@ -1,48 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, User, Check, X, CheckCircle, SearchX } from 'lucide-react';
-import api from '../../services/api';
+import { useBookings, useUpdateBookingStatus } from '../../features/owner/hooks/useBookings';
 
 const BookingRequests = () => {
-  const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: bookings = [], isLoading: loading } = useBookings();
+  const { mutate: updateStatus } = useUpdateBookingStatus();
+  
   const [filter, setFilter] = useState('Pending');
   const [actionLoading, setActionLoading] = useState(null);
   const [feedbackMessage, setFeedbackMessage] = useState(null);
 
-  const fetchBookings = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get('/bookings');
-      if (response.data?.success) {
-        setBookings(response.data.data);
-      }
-    } catch (error) {
-      console.error("Error fetching bookings", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchBookings();
-  }, []);
-
-  const handleStatusChange = async (id, newStatus) => {
-    try {
-      setActionLoading(id);
-      const response = await api.put(`/bookings/${id}/status`, { status: newStatus });
-      if (response.data?.success) {
+  const handleStatusChange = (id, newStatus) => {
+    setActionLoading(id);
+    updateStatus({ id, status: newStatus }, {
+      onSuccess: () => {
         setFeedbackMessage(`Booking ${newStatus.toLowerCase()} successfully`);
         setTimeout(() => setFeedbackMessage(null), 3000);
-        await fetchBookings();
+      },
+      onError: (error) => {
+        console.error(`Error updating status to ${newStatus}`, error);
+        alert('Failed to update booking status');
+      },
+      onSettled: () => {
+        setActionLoading(null);
       }
-    } catch (error) {
-      console.error(`Error updating status to ${newStatus}`, error);
-      alert('Failed to update booking status');
-    } finally {
-      setActionLoading(null);
-    }
+    });
   };
 
   const filteredBookings = filter === 'All' 

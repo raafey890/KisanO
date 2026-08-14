@@ -74,6 +74,7 @@ const PieChart = memo(
       loading = false,
       responsive,
       className = '',
+      labels = [],
       ...rest
     },
     ref,
@@ -119,7 +120,7 @@ const PieChart = memo(
       }
 
       return data;
-    }, [data]);
+    }, [data, labels]);
 
     // Calculate inner radius for donut chart.
     const calculatedInnerRadius = useMemo(() => {

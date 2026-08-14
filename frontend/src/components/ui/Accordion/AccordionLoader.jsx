@@ -11,7 +11,7 @@
  * @module components/ui/Accordion/AccordionLoader
  */
 
-import { forwardRef, memo, useMemo } from 'react';
+import { forwardRef, memo, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { motion, useReducedMotion } from 'framer-motion';
 
@@ -116,7 +116,7 @@ const AccordionLoader = memo(
     }, [sizeConfig.gap, disabled, className, responsiveClasses]);
 
     // Render a single accordion item skeleton.
-    const renderItem = (itemIndex) => {
+    const renderItem = useCallback((itemIndex) => {
       return (
         <motion.div
           key={itemIndex}
@@ -194,12 +194,12 @@ const AccordionLoader = memo(
           )}
         </motion.div>
       );
-    };
+    }, [isAnimated, variant, sizeConfig, skeletonHeight, rows]);
 
     // Generate items.
     const itemsToRender = useMemo(
       () => Array.from({ length: items }, (_, i) => renderItem(i)),
-      [items, size, variant, isAnimated, rows, skeletonHeight, sizeConfig.padding],
+      [items, renderItem],
     );
 
     // Motion props - respect reduced motion.

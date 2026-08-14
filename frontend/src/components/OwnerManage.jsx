@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiPlus, FiX, FiCheck, FiXCircle } from 'react-icons/fi';
 import api from '../services/api';
@@ -24,18 +24,18 @@ export default function OwnerManage({ user }) {
   const [model, setModel] = useState('');
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => { loadData(); }, []);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       const [eqRes, bkRes] = await Promise.all([
         api.get('/equipment'),
         api.get('/bookings'),
       ]);
-      if (eqRes.success) setMyEquipment(eqRes.data.items.filter(e => e.ownerId === user.id));
+      if (eqRes.success) setMyEquipment(eqRes.data.items.filter(e => e.ownerId === user?.id));
       if (bkRes.success) setRequests(bkRes.data.items);
     } catch (_) {}
-  };
+  }, [user]);
+
+  useEffect(() => { setTimeout(() => loadData(), 0); }, [loadData]);
 
   const handleAddEq = async (e) => {
     e.preventDefault();

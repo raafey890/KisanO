@@ -127,14 +127,6 @@ const ToastBody = memo(
       return BODY_MOTION;
     }, [prefersReducedMotion]);
 
-    // Determine if body has content.
-    const hasContent = Boolean(title || message || children);
-
-    // If no content, render nothing.
-    if (!hasContent) {
-      return null;
-    }
-
     // Accessibility attributes.
     const ariaProps = useMemo(
       () => ({
@@ -145,6 +137,14 @@ const ToastBody = memo(
       }),
       [role, ariaLabel, title, disabled, loading],
     );
+
+    // Determine if body has content.
+    const hasContent = Boolean(title || message || children);
+
+    // If no content, render nothing.
+    if (!hasContent) {
+      return null;
+    }
 
     return (
       <motion.div

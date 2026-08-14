@@ -235,9 +235,9 @@ class AuthService:
         await otp_repository.store_otp(identifier, hashed_otp, expires_at)
         
         # MOCK DELIVERY (As requested: Print in terminal, do not integrate external provider yet)
-        print(f"\n======================================")
+        print("\n======================================")
         print(f"MOCK OTP DELIVERY FOR {identifier}: {otp}")
-        print(f"======================================\n")
+        print("======================================\n")
         
         await login_history_repository.log_event(identifier, "OTP_REQUEST", ip, "Unknown", "Unknown", "Unknown", True)
 

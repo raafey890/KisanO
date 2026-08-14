@@ -18,7 +18,7 @@ import {
   Sprout,
   X,
 } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
+import { useAuthStore, authActions } from '../../features/auth';
 import { useToast } from '../../context/ToastContext';
 
 const NAV_ITEMS = [
@@ -35,7 +35,8 @@ const NAV_ITEMS = [
 ];
 
 export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) {
-  const { user, logout } = useAuth();
+  const user = useAuthStore((state) => state.user);
+  const { logout } = authActions;
   const { showInfo } = useToast();
   const navigate = useNavigate();
 

@@ -11,68 +11,11 @@ import sprayerPerson1Img from '../../assets/services/sprayer_person1.jpg';
 import sprayerPerson2Img from '../../assets/services/sprayer_person2.jpg';
 import sprayerPerson3Img from '../../assets/services/sprayer_person3.jpg';
 
+import { useSprayerProviders } from '../../features/operator/hooks/useOperator';
+
 const CATEGORIES = [
   'All', 'Pesticide Spraying', 'Fertilizer Spraying', 
   'Herbicide Spraying', 'Drone Spraying', 'Organic Spraying'
-];
-
-const MOCK_PROVIDERS = [
-  {
-    id: 's1',
-    name: 'Ramesh Kumar',
-    serviceType: 'Pesticide Spraying',
-    startingPrice: 500,
-    priceUnit: 'per acre',
-    experience: 8,
-    rating: 4.9,
-    jobsCompleted: 342,
-    distance: '2.5 km',
-    availableToday: true,
-    image: sprayerPerson1Img,
-    isFeatured: true
-  },
-  {
-    id: 's2',
-    name: 'AeroTech AgriDrones',
-    serviceType: 'Drone Spraying',
-    startingPrice: 1200,
-    priceUnit: 'per acre',
-    experience: 3,
-    rating: 4.8,
-    jobsCompleted: 890,
-    distance: '15 km',
-    availableToday: false,
-    image: sprayerDroneImg,
-    isFeatured: true
-  },
-  {
-    id: 's3',
-    name: 'Suresh Patil',
-    serviceType: 'Fertilizer Spraying',
-    startingPrice: 450,
-    priceUnit: 'per acre',
-    experience: 12,
-    rating: 4.7,
-    jobsCompleted: 1250,
-    distance: '4.2 km',
-    availableToday: true,
-    image: sprayerPerson2Img,
-    isFeatured: true
-  },
-  {
-    id: 's4',
-    name: 'GreenLife Naturals',
-    serviceType: 'Organic Spraying',
-    startingPrice: 600,
-    priceUnit: 'per acre',
-    experience: 5,
-    rating: 4.6,
-    jobsCompleted: 215,
-    distance: '8.0 km',
-    availableToday: true,
-    image: sprayerPerson3Img,
-    isFeatured: true
-  }
 ];
 
 export default function SprayerServices() {
@@ -81,14 +24,16 @@ export default function SprayerServices() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('Recommended');
 
-  const filteredProviders = MOCK_PROVIDERS.filter(provider => {
+  const { data: providers = [], isLoading } = useSprayerProviders();
+
+  const filteredProviders = providers.filter(provider => {
     const matchesCat = activeCategory === 'All' || provider.serviceType === activeCategory;
     const matchesSearch = provider.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           provider.serviceType.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCat && matchesSearch;
   });
 
-  const featuredProviders = MOCK_PROVIDERS.filter(p => p.isFeatured);
+  const featuredProviders = providers.filter(p => p.isFeatured);
 
   const ProviderCard = ({ provider }) => (
     <motion.div 

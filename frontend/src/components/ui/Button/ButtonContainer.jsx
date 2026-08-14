@@ -261,6 +261,10 @@ const ButtonContainer = memo(
       handleBlur,
       handleMouseEnter,
       handleMouseLeave,
+      onFocus,
+      onBlur,
+      onMouseEnter,
+      onMouseLeave,
     ]);
 
     return (
