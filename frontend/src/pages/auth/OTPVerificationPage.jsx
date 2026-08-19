@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { ShieldCheck, RefreshCw, ArrowRight, ArrowLeft } from 'lucide-react';
+import { ShieldCheck, RefreshCw, ArrowLeft, ArrowRight } from 'lucide-react';
 import OTPInput from '../../components/auth/OTPInput';
 import { useToast } from '../../context/ToastContext';
 import { useOTPForm } from '../../features/auth/hooks/forms/useOTPForm';
+import { SubmitButton } from '../../features/auth/components/forms';
 
 export default function OTPVerificationPage() {
   const [searchParams] = useSearchParams();
@@ -56,16 +57,19 @@ export default function OTPVerificationPage() {
   const formattedTimer = `00:${String(timer).padStart(2, '0')}`;
 
   return (
-    <div className="bg-gray-900/90 border border-white/10 rounded-3xl pt-10 pb-10 px-8 sm:px-10 lg:px-12 backdrop-blur-xl shadow-2xl">
-      <div className="w-12 h-12 rounded-2xl bg-green-500/20 border border-green-500/30 flex items-center justify-center mb-[20px]">
+    <div
+      className="rounded-2xl p-8 sm:p-10 w-full"
+      style={{ background: 'var(--auth-card-bg)', border: '1px solid var(--auth-card-border)', boxShadow: 'var(--auth-card-shadow)' }}
+    >
+      <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6" style={{ background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)' }}>
         <ShieldCheck className="w-6 h-6 text-green-400" />
       </div>
 
-      <div className="mb-[24px]">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug mb-[16px]">
+      <div className="mb-8">
+        <h1 className="text-[36px] sm:text-[40px] font-black text-white leading-none tracking-tight mb-2">
           Verify OTP
         </h1>
-        <p className="text-xs sm:text-sm text-gray-400 font-medium leading-relaxed">
+        <p className="text-[15px]" style={{ color: 'var(--auth-text-secondary)' }}>
           Enter the 6-digit One-Time Password (OTP) sent to your registered mobile number or email address.
         </p>
       </div>
@@ -94,25 +98,25 @@ export default function OTPVerificationPage() {
         </button>
       </div>
 
-      <button
+      <SubmitButton
         onClick={handleVerify}
         disabled={isSubmitting || otpValue.length !== 6}
-        className="w-full h-[50px] bg-green-500 hover:bg-green-400 text-white font-bold text-sm rounded-xl transition-all shadow-[0_0_25px_rgba(34,197,94,0.3)] flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-45 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:outline-none"
+        isLoading={isSubmitting}
+        variant="primary"
+        className="mt-6"
       >
-        {isSubmitting ? (
-          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-        ) : (
-          <>
-            <span>Verify OTP</span>
-            <ArrowRight className="w-4 h-4" />
-          </>
-        )}
-      </button>
+        <span>Verify OTP</span>
+        <ArrowRight className="w-4 h-4" />
+      </SubmitButton>
 
-      <div className="mt-6 pt-6 border-t border-white/10 text-center">
+      <div
+        className="mt-8 pt-6 text-center text-[14px]"
+        style={{ borderTop: '1px solid var(--auth-card-border)', color: 'var(--auth-text-muted)' }}
+      >
         <Link
           to="/auth/login"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-gray-400 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:outline-none rounded px-2 py-1"
+          className="inline-flex items-center gap-2 font-bold transition-colors auth-focus-ring rounded px-2 py-1"
+          style={{ color: 'var(--auth-text-accent)' }}
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Sign In</span>

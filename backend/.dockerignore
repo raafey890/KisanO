@@ -1,30 +1,35 @@
-# Git
+# =============================================================================
+# KisanO — .dockerignore
+# Prevents secrets, dev artifacts, and large directories from the build context
+# =============================================================================
+
+# --- Version Control ---
 .git
 .gitignore
+.gitattributes
 
-# Python
+# --- Python Artifacts ---
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.pyc
+*.pyd
 .Python
-env/
-build/
-develop-eggs/
+*.egg-info/
+*.egg
 dist/
-downloads/
+build/
 eggs/
 .eggs/
+develop-eggs/
 lib/
 lib64/
 parts/
 sdist/
 var/
-*.egg-info/
-.installed.cfg
-*.egg
 
-# Environments
+# --- Virtual Environments ---
 .env
 .venv
 env/
@@ -32,10 +37,78 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.tox/
 
-# Logs
+# --- Environment / Secrets — NEVER include in image ---
+.env.*
+!.env.example
+!.env.production.example
+*.pem
+*.key
+*.crt
+firebase-service-account.json
+secrets/
+
+# --- Testing ---
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+tests/
+pytest.ini
+setup.cfg
+.flake8
+
+# --- Development / IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*.DS_Store
+
+# --- Logs ---
 logs/
 *.log
+log/
 
-# Docker
-docker-compose.override.yml
+# --- Node.js (not needed in Python image) ---
+node_modules/
+npm-debug.log*
+package.json
+package-lock.json
+yarn.lock
+
+# --- Docker ---
+docker-compose*.yml
+Dockerfile*
+.dockerignore
+
+# --- CI/CD ---
+.github/
+
+# --- Documentation ---
+docs/
+*.md
+CHANGELOG.md
+CONTRIBUTING.md
+SECURITY.md
+ROADMAP.md
+README.md
+
+# --- Deployment scripts (mounted separately) ---
+deployment/
+monitoring/
+nginx/
+
+# --- Backups ---
+backups/
+
+# --- Miscellaneous ---
+*.zip
+*.tar.gz
+nodejs_reference/
+scripts/seed_db.py
+fix_empty_routers.py
+generate_routers.py
+refactor_routers.py
+restore_routers.py

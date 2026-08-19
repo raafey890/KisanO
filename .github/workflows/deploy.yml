@@ -1,0 +1,53 @@
+name: Production Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /opt/kisano
+            echo "Starting Deployment..."
+            
+            # Backup current state for rollback
+            echo "Tagging current images for potential rollback..."
+            docker tag kisano-backend:latest kisano-backend:previous || true
+            
+            # Pull latest changes
+            git pull origin main
+            
+            # Build and deploy
+            echo "Rebuilding and deploying containers..."
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml build
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+            
+            # Verify deployment
+            echo "Running deployment verification..."
+            chmod +x backend/scripts/verify_deployment.sh
+            if ! ./backend/scripts/verify_deployment.sh; then
+              echo "🚨 DEPLOYMENT FAILED! INITIATING ROLLBACK 🚨"
+              
+              # Rollback to previous images
+              docker tag kisano-backend:previous kisano-backend:latest || true
+              docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+              
+              echo "Rollback completed. Please check server logs."
+              exit 1
+            fi
+            
+            echo "✅ Deployment Successful!"

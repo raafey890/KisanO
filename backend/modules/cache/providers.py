@@ -54,24 +54,44 @@ class InMemoryCacheProvider(BaseCacheProvider):
         return True
 
 
+from core.redis_client import get_redis
+
 class RedisCacheProvider(BaseCacheProvider):
     def __init__(self):
-        self._connected = False
-        # In a real app: self.redis = redis.asyncio.Redis.from_url(...)
+        # The connection pool is managed globally in core.redis_client
+        pass
+
+    @property
+    def redis(self):
+        return get_redis()
 
     async def get(self, key: str) -> Optional[Any]:
-        # Mock Redis Miss
-        return None
+        if not self.redis: return None
+        return await self.redis.get(key)
 
     async def set(self, key: str, value: Any, ttl_seconds: int = None):
-        pass
+        if not self.redis: return
+        if ttl_seconds:
+            await self.redis.setex(key, ttl_seconds, value)
+        else:
+            await self.redis.set(key, value)
 
     async def delete(self, key: str):
-        pass
+        if not self.redis: return
+        await self.redis.delete(key)
 
     async def clear_pattern(self, pattern: str):
-        pass
+        if not self.redis: return
+        # Handle async cursor scanning
+        cursor = '0'
+        while cursor != 0:
+            cursor, keys = await self.redis.scan(cursor=cursor, match=pattern, count=100)
+            if keys:
+                await self.redis.delete(*keys)
 
     async def ping(self) -> bool:
-        # Mock failure for MVP testing of fallback logic
-        return False
+        if not self.redis: return False
+        try:
+            return await self.redis.ping()
+        except:
+            return False

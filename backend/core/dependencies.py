@@ -1,6 +1,7 @@
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt, JWTError
+import jwt
+from jwt.exceptions import PyJWTError
 from core.config import settings
 from core.exceptions import UnauthorizedException, ForbiddenException
 from modules.auth.repository import user_repository
@@ -20,7 +21,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         if payload.get("type") != "access":
             raise UnauthorizedException(message="Invalid token type. Access token required.")
             
-    except JWTError:
+    except PyJWTError:
         raise UnauthorizedException(message="Could not validate credentials")
 
     user = await user_repository.get_by_id(user_id)

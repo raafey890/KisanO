@@ -8,9 +8,11 @@ class JobPriority(str, Enum):
     BACKGROUND = "BACKGROUND"
 
 class JobState(str, Enum):
+    PENDING = "PENDING"
     QUEUED = "QUEUED"
     SCHEDULED = "SCHEDULED"
     RUNNING = "RUNNING"
+    SUCCESS = "SUCCESS"
     COMPLETED = "COMPLETED"
     FAILED = "FAILED"
     CANCELLED = "CANCELLED"

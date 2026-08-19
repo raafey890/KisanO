@@ -5,6 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class BaseNotificationQueue(ABC):
     @abstractmethod
     async def enqueue(self, job_data: Dict[str, Any]) -> None:
@@ -17,7 +18,7 @@ class BaseNotificationQueue(ABC):
 
 class InMemoryQueue(BaseNotificationQueue):
     """
-    Mock implementation using asyncio. 
+    Mock implementation using asyncio.
     In production, this is swapped with a Celery/RabbitMQ implementation.
     """
     def __init__(self):
@@ -46,6 +47,11 @@ class InMemoryQueue(BaseNotificationQueue):
                 break
             except Exception as e:
                 logger.error(f"Error processing job in InMemoryQueue: {str(e)}")
+
+    async def shutdown(self):
+        if self._task:
+            self._task.cancel()
+
 
 # Global Singleton
 notification_queue = InMemoryQueue()

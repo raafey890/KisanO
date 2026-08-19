@@ -1,8 +1,20 @@
-version: '3.8'
+# =============================================================================
+# KisanO — docker-compose.prod.yml
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+# Purpose: Production overrides — multi-replica, Certbot SSL, security hardening
+# =============================================================================
+version: '3.9'
 
 services:
+  # ---------------------------------------------------------------------------
+  # Backend API — Production
+  # ---------------------------------------------------------------------------
   backend:
     restart: always
+    environment:
+      ENVIRONMENT: production
+      DEBUG: "false"
+      WORKER_MODE: standalone
     deploy:
       replicas: 3
       resources:
@@ -12,36 +24,225 @@ services:
         reservations:
           cpus: '0.5'
           memory: 512M
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 5
+        window: 120s
+    # Security hardening: drop all capabilities, no new privileges
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    # Tmpfs mounts for ephemeral data (avoids write to app filesystem)
+    tmpfs:
+      - /tmp:size=64M,noexec,nosuid
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: "20m"
+        max-file: "5"
+        tag: "kisano-prod-backend"
 
+  # ---------------------------------------------------------------------------
+  # Background Worker — Production
+  # ---------------------------------------------------------------------------
   worker:
     restart: always
+    environment:
+      ENVIRONMENT: production
+      DEBUG: "false"
     deploy:
       replicas: 2
       resources:
         limits:
           cpus: '1.0'
           memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 5
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+        tag: "kisano-prod-worker"
+
+  # ---------------------------------------------------------------------------
+  # Scheduler — Production (ALWAYS 1 replica to prevent duplicate crons)
+  # ---------------------------------------------------------------------------
+  scheduler:
+    restart: always
+    environment:
+      ENVIRONMENT: production
+      DEBUG: "false"
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
+        tag: "kisano-prod-scheduler"
 
-  scheduler:
+  # ---------------------------------------------------------------------------
+  # NGINX — Production with SSL termination
+  # ---------------------------------------------------------------------------
+  nginx:
+    image: nginx:1.27-alpine
     restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - letsencrypt_certs:/etc/letsencrypt:ro
+      - certbot_webroot:/var/www/certbot:ro
+      - nginx_cache:/var/cache/nginx
+    networks:
+      - backend-network
+    depends_on:
+      - backend
     deploy:
-      replicas: 1 # Important: Only 1 scheduler to avoid duplicate cron jobs
       resources:
         limits:
+          cpus: '0.5'
+          memory: 256M
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETUID
+      - SETGID
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+        tag: "kisano-prod-nginx"
+
+  # ---------------------------------------------------------------------------
+  # Certbot — Let's Encrypt Certificate Manager
+  # Runs once to issue certs, then renews via cron
+  # ---------------------------------------------------------------------------
+  certbot:
+    image: certbot/certbot:latest
+    restart: "no"
+    volumes:
+      - letsencrypt_certs:/etc/letsencrypt
+      - certbot_webroot:/var/www/certbot
+    entrypoint: >
+      /bin/sh -c "trap exit TERM;
+      while :; do
+        certbot renew --webroot -w /var/www/certbot --quiet --no-eff-email;
+        echo 'Certbot: certificates checked/renewed.';
+        sleep 12h & wait $${!};
+      done"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+  # ---------------------------------------------------------------------------
+  # MongoDB — Production
+  # ---------------------------------------------------------------------------
+  mongodb:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
           cpus: '0.5'
           memory: 512M
     logging:
       driver: "json-file"
       options:
+        max-size: "20m"
+        max-file: "5"
+        tag: "kisano-prod-mongodb"
+
+  # ---------------------------------------------------------------------------
+  # DB Backup — Daily mongodump Sidecar
+  # ---------------------------------------------------------------------------
+  db-backup:
+    image: mongo:6.0
+    restart: always
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/
+    volumes:
+      - db_backups:/backups
+    entrypoint: >
+      /bin/sh -c "
+      while :; do
+        sleep 86400;
+        echo 'Starting daily backup...';
+        mongodump --uri=\"$$MONGODB_URI\" --out=/backups/$$(date +%Y-%m-%d) --gzip;
+        echo 'Backup completed.';
+        find /backups -type d -mtime +7 -exec rm -rf {} +;
+      done"
+    networks:
+      - internal-network
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------------------
+  # Redis — Production
+  # ---------------------------------------------------------------------------
+  redis:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
         max-size: "10m"
         max-file: "3"
+        tag: "kisano-prod-redis"
+
+# ---------------------------------------------------------------------------
+# Additional volumes for production
+# ---------------------------------------------------------------------------
+volumes:
+  letsencrypt_certs:
+    name: kisano_letsencrypt_certs
+  certbot_webroot:
+    name: kisano_certbot_webroot
+  nginx_cache:
+    name: kisano_nginx_cache
+  db_backups:
+    name: kisano_db_backups

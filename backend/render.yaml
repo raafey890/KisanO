@@ -1,15 +1,140 @@
+# =============================================================================
+# KisanO — render.yaml (Render.com Platform Configuration)
+# Hardened with: env groups, health checks, scaling, secret injection
+# =============================================================================
+# HOW TO USE:
+#   1. Create an Env Group named "kisano-secrets" in Render Dashboard
+#   2. Add all sensitive keys (MONGODB_URL, SECRET_KEY, etc.) there
+#   3. Push this render.yaml to trigger auto-provisioning
+# =============================================================================
+
+envVarGroups:
+  # Secrets group — configured once in Render Dashboard, shared across services
+  - name: kisano-secrets
+    envVars:
+      # These will be OVERRIDDEN by the Render Dashboard "Env Group" secrets.
+      # Listing them here documents what is required.
+      - key: MONGODB_URL
+        sync: false      # Must be set manually in Dashboard
+      - key: SECRET_KEY
+        generateValue: true  # Render auto-generates a secure random value
+      - key: REDIS_URL
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false
+      - key: MSG91_AUTH_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_USERNAME
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+
 services:
+  # ---------------------------------------------------------------------------
+  # 1. Backend API Web Service
+  # ---------------------------------------------------------------------------
   - type: web
     name: kisano-backend
     env: docker
-    dockerfilePath: ./Dockerfile
-    region: singapore # Change this depending on where your client is
-    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    region: singapore          # Closest to India; switch to frankfurt for EU
+    plan: standard             # Upgrade from free for production (always-on)
     branch: main
+    numInstances: 1            # Increase to 2+ for production HA
+    healthCheckPath: /health   # Render uses this to verify deployment success
     envVars:
       - key: ENVIRONMENT
-        value: staging
-      - key: MONGODB_URL
-        sync: false
-      - key: SECRET_KEY
-        generateValue: true
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: WORKER_MODE
+        value: standalone
+      - key: APP_NAME
+        value: "KisanO Backend"
+      - key: MONGODB_DB_NAME
+        value: kisano_production
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+      - key: REFRESH_TOKEN_EXPIRE_DAYS
+        value: "7"
+      - key: ENABLE_METRICS
+        value: "true"
+      - key: BACKGROUND_WORKERS_COUNT
+        value: "3"
+      - key: MAX_JOB_RETRIES
+        value: "3"
+      - key: RETRY_DELAY_SECONDS
+        value: "5"
+      - key: CLEANUP_INTERVAL_HOURS
+        value: "24"
+      - key: ANALYTICS_REFRESH_HOURS
+        value: "6"
+      - key: SESSION_EXPIRY_DAYS
+        value: "30"
+      - key: WEBHOOK_LOG_RETENTION_DAYS
+        value: "90"
+      - fromGroup: kisano-secrets  # Inject all secrets from env group
+    # Auto-deploy on push to main
+    autoDeploy: true
+
+  # ---------------------------------------------------------------------------
+  # 2. Background Worker Service
+  # ---------------------------------------------------------------------------
+  - type: worker
+    name: kisano-worker
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerCommand: "python -m modules.jobs.worker_runner"
+    region: singapore
+    plan: standard
+    branch: main
+    numInstances: 1
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: WORKER_MODE
+        value: standalone
+      - key: MONGODB_DB_NAME
+        value: kisano_production
+      - fromGroup: kisano-secrets
+
+  # ---------------------------------------------------------------------------
+  # 3. Scheduler Service (exactly 1 instance to prevent duplicate cron jobs)
+  # ---------------------------------------------------------------------------
+  - type: worker
+    name: kisano-scheduler
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerCommand: "python -m modules.jobs.scheduler_runner"
+    region: singapore
+    plan: standard
+    branch: main
+    numInstances: 1            # ALWAYS 1 for scheduler — do NOT scale this
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: WORKER_MODE
+        value: standalone
+      - key: MONGODB_DB_NAME
+        value: kisano_production
+      - fromGroup: kisano-secrets

@@ -21,8 +21,10 @@ class BaseNotificationProvider(ABC):
 
 class MockNotificationProvider(BaseNotificationProvider):
     async def send(self, recipient: str, title: str, body: str, payload: Dict[str, Any]) -> Tuple[bool, str]:
+        import asyncio
         logger.info(f"[MOCK NOTIFICATION] To: {recipient} | Title: {title} | Body: {body}")
         # Simulate network delay
+        await asyncio.sleep(0.5)
         return True, "mock-delivery-id-12345"
         
     @property

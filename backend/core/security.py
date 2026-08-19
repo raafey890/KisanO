@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict, Any
 from passlib.context import CryptContext
-from jose import jwt
+import jwt
 from core.config import settings
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -28,8 +28,6 @@ def create_access_token(user_id: str, role: str, phone: str, session_id: str, ex
         "session_id": session_id,
         "type": "access"
     }
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
-    return encoded_jwt
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
 

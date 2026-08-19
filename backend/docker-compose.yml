@@ -71,7 +71,7 @@ services:
     env_file:
       - .env
     # Override CMD to run the worker instead of the API
-    command: ["python", "-m", "modules.jobs.worker_runner"]
+    command: ["python", "-m", "workers.main"]
     networks:
       - internal-network
     depends_on:
@@ -88,7 +88,7 @@ services:
     env_file:
       - .env
     # Override CMD to run the scheduler
-    command: ["python", "-m", "modules.jobs.scheduler_runner"]
+    command: ["python", "-m", "modules.jobs.scheduler"]
     networks:
       - internal-network
     depends_on:

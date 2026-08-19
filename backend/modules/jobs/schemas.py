@@ -25,3 +25,9 @@ class JobStats(BaseModel):
     completed: int
     failed: int
     dead_letter: int
+
+class WorkerStatus(BaseModel):
+    worker_id: str
+    status: str
+    last_heartbeat: datetime
+    current_job_id: Optional[str] = None

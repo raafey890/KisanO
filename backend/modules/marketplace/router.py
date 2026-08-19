@@ -40,7 +40,11 @@ async def upload_image_route():
     # Auto-generated placeholder for upload_image
     return success_response(message="Success", data={})
 
+from fastapi import Request
+from modules.cache.decorators import cache
+
 @router.get("/search")
-async def search_route():
+@cache(expire=300)
+async def search_route(request: Request):
     # Auto-generated placeholder for search
     return success_response(message="Success", data={})

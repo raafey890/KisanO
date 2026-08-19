@@ -5,8 +5,8 @@ from datetime import datetime
 from core.exceptions import NotFoundException
 from modules.notifications.repository import notification_repo, preference_repo, audit_repo
 from modules.notifications.constants import NotificationChannel, NotificationType, NotificationStatus
-from modules.notifications.queue import notification_queue
-from modules.notifications.dispatcher import dispatcher
+from modules.jobs.job_engine import job_engine
+from modules.jobs.constants import JobPriority
 
 from modules.users.repository import user_repository
 
@@ -15,12 +15,7 @@ logger = logging.getLogger(__name__)
 class NotificationService:
     @staticmethod
     async def initialize():
-        """
-        Bootstraps the internal JobQueue by binding it to the Dispatcher.
-        Called on application startup.
-        """
-        notification_queue.set_worker(dispatcher.process_job)
-        logger.info("Notification Queue Worker initialized.")
+        pass
 
     @staticmethod
     async def create_notification(
@@ -63,8 +58,12 @@ class NotificationService:
         
         await audit_repo.log({"notificationId": notif_id, "action": "QUEUED"})
         
-        # Enqueue for Background Processing
-        await notification_queue.enqueue(notif_doc)
+        # Enqueue for Background Processing via JobEngine
+        await job_engine.enqueue(
+            worker_name="notification_worker",
+            args={"notif_doc": notif_doc},
+            priority=JobPriority.HIGH
+        )
         
         return notif_id
 

@@ -1,13 +1,21 @@
+from core.config import settings
+
+
 class RetryEngine:
     @staticmethod
-    def calculate_backoff(retry_count: int, base_delay: int = 5) -> int:
+    def calculate_backoff(retry_count: int, base_delay: int = None) -> int:
         """
-        Calculates exponential backoff: base_delay * (2 ^ retry_count)
+        Calculates exponential backoff based on settings.
         """
-        return base_delay * (2 ** retry_count)
-        
+        if base_delay is None:
+            base_delay = settings.RETRY_DELAY_SECONDS
+        return int(base_delay * (settings.BACKOFF_MULTIPLIER ** retry_count))
+
     @staticmethod
-    def should_retry(retry_count: int, max_retries: int = 3) -> bool:
+    def should_retry(retry_count: int, max_retries: int = None) -> bool:
+        if max_retries is None:
+            max_retries = settings.MAX_JOB_RETRIES
         return retry_count < max_retries
+
 
 retry_engine = RetryEngine()

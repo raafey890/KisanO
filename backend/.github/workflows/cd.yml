@@ -8,45 +8,148 @@ on:
     branches:
       - main
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
+  # ============================================================
+  # JOB 1: Deploy to Staging
+  # ============================================================
   deploy-staging:
+    name: Deploy → Staging
     runs-on: ubuntu-latest
-    # Only run if Docker build was successful
+    timeout-minutes: 15
+    # Only run if Docker build succeeded
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    environment: staging
-    
+    environment:
+      name: staging
+      url: https://staging.kisano.in
+
     steps:
-      - name: Deploy to Staging Environment
-        run: |
-          echo "[+] Triggering Staging Webhook or SSH script"
-          # Mock hook. Replace with actual deployment logic (e.g., helm upgrade, terraform apply, ssh)
-          echo "Deployed Git SHA ${{ github.sha }} to Staging."
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Run Smoke Tests on Staging
-        run: |
-          echo "[+] Hitting staging /health endpoint to verify deployment"
-          # curl -f https://staging.kisano.com/health || exit 1
-          echo "Smoke tests passed."
+      - name: Deploy to Staging via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          port: ${{ secrets.STAGING_PORT || 22 }}
+          script_stop: true
+          script: |
+            set -euo pipefail
+            cd /opt/kisano
 
+            echo "[+] Logging in to GHCR..."
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            echo "[+] Pulling latest images (SHA: ${{ github.sha }})..."
+            docker compose -f docker-compose.yml -f docker-compose.staging.yml pull
+
+            echo "[+] Deploying with zero-downtime rolling restart..."
+            docker compose -f docker-compose.yml -f docker-compose.staging.yml \
+              up -d --remove-orphans --wait
+
+            echo "[+] Cleaning up unused images..."
+            docker image prune -f
+
+            echo "[+] Running post-deployment health validation..."
+            bash scripts/health_check.sh https://staging.kisano.in
+
+            echo "[✓] Staging deployment complete! SHA: ${{ github.sha }}"
+
+      - name: Post Deployment Summary
+        if: success()
+        run: |
+          echo "### ✅ Staging Deployment Successful" >> $GITHUB_STEP_SUMMARY
+          echo "**SHA:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** https://staging.kisano.in" >> $GITHUB_STEP_SUMMARY
+
+  # ============================================================
+  # JOB 2: Deploy to Production (requires manual approval)
+  # ============================================================
   deploy-production:
-    needs: deploy-staging
+    name: Deploy → Production
     runs-on: ubuntu-latest
-    # Uses GitHub Environment Protection Rules (Requires Manual Approval defined in Settings > Environments)
-    environment: production
-    
+    timeout-minutes: 20
+    needs: deploy-staging
+    # GitHub Environment Protection Rules enforce manual approval
+    environment:
+      name: production
+      url: https://api.kisano.in
+
     steps:
-      - name: Deploy to Production Environment
-        run: |
-          echo "[+] Manual Approval granted. Triggering Production Deployment."
-          # Mock hook. 
-          echo "Deployed Git SHA ${{ github.sha }} to Production."
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Zero-Downtime Deploy to Production via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_PORT || 22 }}
+          script_stop: true
+          script: |
+            set -euo pipefail
+            cd /opt/kisano
+
+            # --- Step 1: Tag current state for rollback ---
+            CURRENT_SHA=$(docker compose -f docker-compose.yml -f docker-compose.prod.yml \
+              ps --format json 2>/dev/null | head -1 | jq -r '.Image // "unknown"')
+            echo "ROLLBACK_IMAGE=$CURRENT_SHA" > /tmp/kisano-rollback.env
+            echo "[+] Rollback reference saved: $CURRENT_SHA"
+
+            # --- Step 2: Log in to GHCR ---
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # --- Step 3: Pull new images (does NOT affect running containers) ---
+            echo "[+] Pulling new images (SHA: ${{ github.sha }})..."
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+
+            # --- Step 4: Rolling restart — Docker handles traffic cutover after health check ---
+            echo "[+] Starting zero-downtime rolling restart..."
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml \
+              up -d --remove-orphans --wait --wait-timeout 120
+
+            # --- Step 5: Post-deployment validation ---
+            echo "[+] Running post-deployment health validation..."
+            if bash scripts/health_check.sh https://api.kisano.in; then
+                echo "[✓] All health checks passed!"
+            else
+                echo "[ERROR] Health checks FAILED. Initiating automatic rollback..."
+                bash scripts/rollback.sh
+                exit 1
+            fi
+
+            # --- Step 6: Cleanup old images ---
+            docker image prune -f
+
+            echo "[✓] Production deployment complete! SHA: ${{ github.sha }}"
 
       - name: Notify Success
         if: success()
         run: |
-          echo "[+] Triggering Slack/Teams success webhook"
+          echo "### 🚀 Production Deployment Successful" >> $GITHUB_STEP_SUMMARY
+          echo "**SHA:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** https://api.kisano.in" >> $GITHUB_STEP_SUMMARY
+          # TODO: Add Slack/Teams notification webhook here
+          # curl -X POST -H 'Content-type: application/json' \
+          #   --data '{"text":"✅ Production deployed: ${{ github.sha }}"}' \
+          #   ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: Trigger Automatic Rollback
+      - name: Auto-Rollback on Failure
         if: failure()
-        run: |
-          echo "[-] Deployment Failed. Triggering Rollback webhook."
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_PORT || 22 }}
+          script: |
+            cd /opt/kisano
+            echo "[!] Deployment failed — executing automatic rollback..."
+            bash scripts/rollback.sh
+            echo "[✓] Rollback complete."

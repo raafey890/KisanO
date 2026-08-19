@@ -37,29 +37,29 @@ export default function ResetPasswordPage() {
     { label: 'One special character', met: /[^A-Za-z0-9]/.test(passwordVal) },
   ];
 
-  const getPasswordStrength = () => {
-    if (!passwordVal) return { label: '', color: 'w-0 bg-transparent' };
-    const metCount = reqs.filter((r) => r.met).length;
-
-    if (metCount <= 2) return { label: 'Weak', color: 'w-1/4 bg-red-500' };
-    if (metCount === 3) return { label: 'Medium', color: 'w-2/4 bg-amber-500' };
-    if (metCount === 4) return { label: 'Strong', color: 'w-3/4 bg-green-500' };
-    return { label: 'Very Strong', color: 'w-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.5)]' };
-  };
-
-  const strength = getPasswordStrength();
+  // Compute strength score (0=none, 1=weak, 2=medium, 3=strong) – UI only
+  const metCount = reqs.filter((r) => r.met).length;
+  const strengthScore = !passwordVal ? 0
+    : metCount <= 2 ? 1
+    : metCount === 3 ? 2
+    : 3;
+  const strengthLabel = ['', 'Weak', 'Medium', 'Strong'][strengthScore] || '';
+  const strengthObj = passwordVal ? { score: strengthScore, label: strengthLabel } : undefined;
 
   return (
-    <div className="bg-gray-900/90 border border-white/10 rounded-3xl pt-10 pb-10 px-8 sm:px-10 lg:px-12 backdrop-blur-xl shadow-2xl">
-      <div className="w-12 h-12 rounded-2xl bg-green-500/20 border border-green-500/30 flex items-center justify-center mb-[20px]">
+    <div
+      className="rounded-2xl p-8 sm:p-10 w-full"
+      style={{ background: 'var(--auth-card-bg)', border: '1px solid var(--auth-card-border)', boxShadow: 'var(--auth-card-shadow)' }}
+    >
+      <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6" style={{ background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)' }}>
         <Lock className="w-6 h-6 text-green-400" />
       </div>
 
-      <div className="mb-[24px]">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug mb-[16px]">
-          Create New Password
+      <div className="mb-8">
+        <h1 className="text-[36px] sm:text-[40px] font-black text-white leading-none tracking-tight mb-2">
+          New Password
         </h1>
-        <p className="text-xs sm:text-sm text-gray-400 font-medium leading-relaxed">
+        <p className="text-[15px]" style={{ color: 'var(--auth-text-secondary)' }}>
           Your identity has been verified. Create a strong password to secure your KisanO account.
         </p>
       </div>
@@ -73,19 +73,10 @@ export default function ResetPasswordPage() {
             placeholder="Enter new password"
             error={errors.password}
             disabled={isSubmitting}
+            strength={strengthObj}
+            autoComplete="new-password"
             {...register('password')}
           />
-
-          {passwordVal && (
-            <div className="mt-2.5 flex items-center gap-2.5">
-              <div className="flex-1 h-1.5 bg-gray-800 rounded-full overflow-hidden">
-                <div className={`h-full ${strength.color} transition-all duration-300`} />
-              </div>
-              <span className="text-[10px] font-bold text-gray-300 uppercase tracking-wider min-w-[70px] text-right">
-                {strength.label}
-              </span>
-            </div>
-          )}
         </div>
 
         <PasswordField
@@ -119,7 +110,8 @@ export default function ResetPasswordPage() {
         <SubmitButton
           isLoading={isSubmitting}
           disabled={!isValid}
-          className="bg-green-500 hover:bg-green-400 shadow-[0_0_25px_rgba(34,197,94,0.3)] mt-6"
+          variant="primary"
+          className="mt-6"
         >
           <span>Reset Password</span>
           <ArrowRight className="w-4 h-4" />

@@ -2,10 +2,15 @@ from typing import Dict, Any, List
 from shared.base_repository import BaseRepository
 from datetime import datetime, timezone
 from modules.jobs.constants import JobState
+from bson import ObjectId
 
 class JobsRepository(BaseRepository):
     def __init__(self):
         super().__init__("jobs")
+
+    async def setup_indexes(self):
+        await self.collection.create_index("idempotency_key")
+        await self.collection.create_index("state")
 
     async def generate_job_number(self) -> str:
         # MVP generation: In production use Redis INCR or MongoDB atomic counters
@@ -26,6 +31,25 @@ class JobsRepository(BaseRepository):
             "failed": failed,
             "dead_letter": dlq
         }
+
+    async def find_by_idempotency_key(self, key: str) -> Dict[str, Any]:
+        return await self.collection.find_one({
+            "idempotency_key": key,
+            "state": {"$in": [JobState.QUEUED.value, JobState.RUNNING.value, JobState.PENDING.value]}
+        })
+
+    async def claim_job(self, job_id: str) -> bool:
+        """Atomically claim a job by setting its state to RUNNING if it's QUEUED or PENDING."""
+        result = await self.collection.update_one(
+            {"_id": ObjectId(job_id), "state": {"$in": [JobState.QUEUED.value, JobState.PENDING.value]}},
+            {
+                "$set": {
+                    "state": JobState.RUNNING.value,
+                    "started_at": datetime.now(timezone.utc)
+                }
+            }
+        )
+        return result.modified_count > 0
 
 class JobHistoryRepository(BaseRepository):
     def __init__(self):

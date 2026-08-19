@@ -11,6 +11,7 @@ from core.exceptions import (
     global_exception_handler
 )
 from db.mongodb import db_manager
+from core.redis_client import redis_manager
 from middleware.cors import setup_cors
 from middleware.request_id import RequestIDMiddleware
 from middleware.logging_middleware import LoggingMiddleware
@@ -29,9 +30,11 @@ async def lifespan(app: FastAPI):
     # Startup
     logger.info("Starting up KisanO Backend Application...")
     await db_manager.connect()
+    await redis_manager.connect()
     yield
     # Shutdown
     logger.info("Shutting down KisanO Backend Application...")
+    await redis_manager.disconnect()
     await db_manager.disconnect()
 
 def create_app() -> FastAPI:

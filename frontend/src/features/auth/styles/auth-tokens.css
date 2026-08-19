@@ -1,0 +1,106 @@
+/* ============================================================
+   KisanO Auth Design Tokens
+   Enterprise Authentication UI – v1.0
+   ============================================================ */
+
+:root {
+  /* Background palette */
+  --auth-bg:             #08130D;
+  --auth-panel-bg:       #0D1A12;
+  --auth-card-bg:        #111827;
+  --auth-card-border:    rgba(255, 255, 255, 0.08);
+  --auth-card-shadow:    0 24px 64px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.06);
+
+  /* Brand green */
+  --auth-primary:        #22C55E;
+  --auth-primary-hover:  #16A34A;
+  --auth-primary-muted:  rgba(34, 197, 94, 0.12);
+  --auth-primary-border: rgba(34, 197, 94, 0.3);
+
+  /* Input */
+  --auth-input-bg:       rgba(15, 23, 42, 0.8);
+  --auth-input-border:   rgba(255, 255, 255, 0.1);
+  --auth-input-focus:    #22C55E;
+  --auth-input-error:    #ef4444;
+  --auth-input-success:  #22C55E;
+
+  /* Text */
+  --auth-text-primary:   #F8FAFC;
+  --auth-text-secondary: #94A3B8;
+  --auth-text-muted:     #64748B;
+  --auth-text-accent:    #22C55E;
+
+  /* Left panel */
+  --auth-panel-grad-start: #0F2818;
+  --auth-panel-grad-end:   #061409;
+
+  /* Animation */
+  --auth-duration-fast:  150ms;
+  --auth-duration:       250ms;
+  --auth-duration-slow:  400ms;
+  --auth-ease:           cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Radius */
+  --auth-radius-sm:  0.5rem;
+  --auth-radius:     0.75rem;
+  --auth-radius-lg:  1rem;
+  --auth-radius-xl:  1.5rem;
+  --auth-radius-pill: 9999px;
+
+  /* Spacing */
+  --auth-input-pl:   3rem;   /* left padding for icon-equipped inputs */
+  --auth-input-pr:   3rem;   /* right padding for toggle icons */
+}
+
+/* Input glow effect */
+.auth-input-glow:focus {
+  box-shadow: 0 0 0 3px var(--auth-primary-muted), 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Focus ring for accessibility */
+.auth-focus-ring:focus-visible {
+  outline: 2px solid var(--auth-primary);
+  outline-offset: 2px;
+}
+
+/* Shimmer for loading state */
+@keyframes auth-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.auth-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(34,197,94,0.08) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: auth-shimmer 1.5s infinite;
+}
+
+/* Floating animation for decorative elements */
+@keyframes auth-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%       { transform: translateY(-10px) rotate(2deg); }
+}
+.auth-float { animation: auth-float 6s ease-in-out infinite; }
+.auth-float-delay { animation: auth-float 6s ease-in-out 2s infinite; }
+
+/* Pulse for background orbs */
+@keyframes auth-pulse-orb {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 0.7; transform: scale(1.05); }
+}
+.auth-orb { animation: auth-pulse-orb 8s ease-in-out infinite; }
+
+/* Reduced motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  .auth-float,
+  .auth-float-delay,
+  .auth-orb,
+  .auth-shimmer {
+    animation: none;
+  }
+}

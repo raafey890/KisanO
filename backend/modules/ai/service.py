@@ -34,7 +34,7 @@ class AIService:
 
     @staticmethod
     async def process_disease_detection(farmer_id: str, data: ConsultationRequest) -> Dict[str, Any]:
-        provider_name = getattr(settings, "DEFAULT_AI_PROVIDER", AIProvider.OPENAI)
+        provider_name = getattr(settings, "DEFAULT_AI_PROVIDER", "GEMINI")
         ai = get_ai_provider(provider_name)
         
         if not data.images:
@@ -55,7 +55,7 @@ class AIService:
             "images": data.images,
             "question": data.question,
             "aiProvider": provider_name,
-            "aiModel": "gpt-4-vision-preview", # or dynamic
+            "aiModel": "gemini-1.5-flash",
             "diseaseReport": None,
             "status": ConsultationStatus.PENDING,
             "isFavourite": False,
@@ -91,7 +91,7 @@ class AIService:
 
     @staticmethod
     async def process_crop_advisory(farmer_id: str, data: ConsultationRequest) -> Dict[str, Any]:
-        provider_name = getattr(settings, "DEFAULT_AI_PROVIDER", AIProvider.OPENAI)
+        provider_name = getattr(settings, "DEFAULT_AI_PROVIDER", "GEMINI")
         ai = get_ai_provider(provider_name)
         
         user_prompt = f"Crop: {data.cropName}. Age: {data.cropAgeDays} days. Location: {data.location}. Farm Size: {data.farmSizeAcres} acres. Question: {data.question}"
@@ -105,7 +105,7 @@ class AIService:
             "location": data.location,
             "question": data.question,
             "aiProvider": provider_name,
-            "aiModel": "gpt-4-turbo",
+            "aiModel": "gemini-1.5-flash",
             "advisoryReport": None,
             "status": ConsultationStatus.PENDING,
             "isFavourite": False,
@@ -138,7 +138,7 @@ class AIService:
 
     @staticmethod
     async def process_chat(farmer_id: str, data: ChatRequest) -> Dict[str, Any]:
-        provider_name = getattr(settings, "DEFAULT_AI_PROVIDER", AIProvider.OPENAI)
+        provider_name = getattr(settings, "DEFAULT_AI_PROVIDER", "GEMINI")
         ai = get_ai_provider(provider_name)
         
         messages = [m.model_dump() for m in data.messages]
@@ -153,7 +153,7 @@ class AIService:
                 "consultationType": ConsultationType.GENERAL_QA,
                 "question": messages[-1]["content"] if messages else "",
                 "aiProvider": provider_name,
-                "aiModel": "gpt-3.5-turbo",
+                "aiModel": "gemini-1.5-flash",
                 "generalAnswer": response_text,
                 "status": ConsultationStatus.COMPLETED,
                 "isFavourite": False,

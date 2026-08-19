@@ -12,6 +12,7 @@ from modules.auth.schemas import (
 )
 from modules.auth.service import AuthService
 from modules.auth.dependencies import get_current_user
+from middleware.rate_limit import RateLimiter
 
 router = APIRouter()
 
@@ -28,7 +29,7 @@ def _get_ip(request: Request) -> str:
 
 # ─── Public Endpoints ────────────────────────────────────────────────────────
 
-@router.post("/register", status_code=status.HTTP_201_CREATED)
+@router.post("/register", status_code=status.HTTP_201_CREATED, dependencies=[Depends(RateLimiter(times=5, seconds=300))])
 async def register(data: UserRegister, request: Request):
     ip = _get_ip(request)
     result = await AuthService.register_user(
@@ -41,7 +42,7 @@ async def register(data: UserRegister, request: Request):
     return success_response(message="User registered successfully", data=result)
 
 
-@router.post("/login")
+@router.post("/login", dependencies=[Depends(RateLimiter(times=10, seconds=300))])
 async def login(data: LoginRequest, request: Request):
     ip = _get_ip(request)
     result = await AuthService.login_user(data, ip=ip)
@@ -55,7 +56,7 @@ async def refresh_token(data: RefreshTokenRequest, request: Request):
     return success_response(message="Token refreshed", data=result)
 
 
-@router.post("/forgot-password")
+@router.post("/forgot-password", dependencies=[Depends(RateLimiter(times=3, seconds=300))])
 async def forgot_password(data: ForgotPasswordRequest, request: Request):
     ip = _get_ip(request)
     await AuthService.request_otp(data.identifier, ip=ip)
@@ -64,7 +65,7 @@ async def forgot_password(data: ForgotPasswordRequest, request: Request):
     )
 
 
-@router.post("/verify-otp")
+@router.post("/verify-otp", dependencies=[Depends(RateLimiter(times=5, seconds=300))])
 async def verify_otp(data: VerifyOTPRequest, request: Request):
     ip = _get_ip(request)
     result = await AuthService.verify_otp(data.identifier, data.otp, ip=ip)

@@ -1,6 +1,7 @@
 from fastapi import Depends, HTTPException, status
 from typing import List, Dict, Any, Callable
-from jose import JWTError, jwt
+import jwt
+from jwt.exceptions import PyJWTError
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from core.config import settings
 from modules.auth.repository import user_repository, session_repository
@@ -18,7 +19,7 @@ async def get_current_user_and_session(credentials: HTTPAuthorizationCredentials
         if user_id is None or token_type != "access" or session_id is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
             
-    except JWTError:
+    except PyJWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials")
 
     user = await user_repository.get_by_id(user_id)

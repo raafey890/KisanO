@@ -6,38 +6,48 @@ from db.mongodb import db_manager
 from modules.jobs.engines.worker_engine import worker_engine
 
 # Need to import modules that register jobs
-import modules.jobs.events 
+import modules.jobs.events  # noqa: F401
+
+from modules.jobs.workers.ai_doctor_worker import process_ai_diagnosis
+from modules.jobs.workers.scheduler_worker import process_scheduled_job
+from modules.notifications.worker import process_notification
+
+import sys
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("worker_runner")
 
-async def startup():
+
+async def main():
     logger.info("Starting Background Worker Node...")
     await db_manager.connect()
     
-    # In a real Celery/RQ setup, this starts the consumer.
-    # For our AsyncJobProvider MVP, we start the internal loop.
-    await worker_engine.start_workers(num_workers=5)
+    # Register workers
+    worker_engine.provider.register_worker("process_ai_diagnosis", process_ai_diagnosis)
+    worker_engine.provider.register_worker("process_scheduled_job", process_scheduled_job)
+    worker_engine.provider.register_worker("notification_worker", process_notification)
+    
+    await worker_engine.start_workers(num_workers=settings.BACKGROUND_WORKERS_COUNT)
 
-async def shutdown():
-    logger.info("Shutting down Worker Node...")
-    await db_manager.disconnect()
+    stop_event = asyncio.Event()
 
-def handle_sigint(signum, frame):
-    logger.info("Received termination signal.")
-    # Graceful shutdown logic would go here
-    exit(0)
+    def handle_sigint():
+        logger.info("Received termination signal.")
+        stop_event.set()
+
+    if sys.platform != "win32":
+        loop = asyncio.get_running_loop()
+        for sig in (signal.SIGINT, signal.SIGTERM):
+            loop.add_signal_handler(sig, handle_sigint)
+
+    try:
+        await stop_event.wait()
+    except KeyboardInterrupt:
+        logger.info("Received KeyboardInterrupt.")
+    finally:
+        logger.info("Shutting down Worker Node...")
+        await worker_engine.provider.shutdown()
+        await db_manager.disconnect()
 
 if __name__ == "__main__":
-    signal.signal(signal.SIGINT, handle_sigint)
-    signal.signal(signal.SIGTERM, handle_sigint)
-    
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(startup())
-    try:
-        loop.run_forever()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        loop.run_until_complete(shutdown())
-        loop.close()
+    asyncio.run(main())

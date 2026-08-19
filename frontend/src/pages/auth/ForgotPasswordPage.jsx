@@ -26,16 +26,19 @@ export default function ForgotPasswordPage() {
   });
 
   return (
-    <div className="bg-gray-900/90 border border-white/10 rounded-3xl pt-10 pb-10 px-8 sm:px-10 lg:px-12 backdrop-blur-xl shadow-2xl">
-      <div className="w-12 h-12 rounded-2xl bg-green-500/20 border border-green-500/30 flex items-center justify-center mb-[20px]">
+    <div
+      className="rounded-2xl p-8 sm:p-10 w-full"
+      style={{ background: 'var(--auth-card-bg)', border: '1px solid var(--auth-card-border)', boxShadow: 'var(--auth-card-shadow)' }}
+    >
+      <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6" style={{ background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)' }}>
         <KeyRound className="w-6 h-6 text-green-400" />
       </div>
 
-      <div className="mb-[24px]">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug mb-[16px]">
-          Forgot Your Password?
+      <div className="mb-8">
+        <h1 className="text-[36px] sm:text-[40px] font-black text-white leading-none tracking-tight mb-2">
+          Forgot Password?
         </h1>
-        <p className="text-xs sm:text-sm text-gray-400 font-medium leading-relaxed">
+        <p className="text-[15px]" style={{ color: 'var(--auth-text-secondary)' }}>
           Enter your registered mobile number or email address. We'll send you a One-Time Password (OTP) to securely reset your password.
         </p>
       </div>
@@ -55,17 +58,22 @@ export default function ForgotPasswordPage() {
         <SubmitButton
           isLoading={isSubmitting}
           disabled={!isValid}
-          className="bg-green-500 hover:bg-green-400 shadow-[0_0_25px_rgba(34,197,94,0.3)] mt-6"
+          variant="primary"
+          className="mt-2"
         >
           <span>Send OTP</span>
           <ArrowRight className="w-4 h-4" />
         </SubmitButton>
       </form>
 
-      <div className="mt-6 pt-6 border-t border-white/10 text-center">
+      <div
+        className="mt-8 pt-6 text-center text-[14px]"
+        style={{ borderTop: '1px solid var(--auth-card-border)', color: 'var(--auth-text-muted)' }}
+      >
         <Link
           to="/auth/login"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-gray-400 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:outline-none rounded px-2 py-1"
+          className="inline-flex items-center gap-2 font-bold transition-colors auth-focus-ring rounded px-2 py-1"
+          style={{ color: 'var(--auth-text-accent)' }}
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Sign In</span>

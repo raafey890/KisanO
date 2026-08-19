@@ -140,15 +140,16 @@ class AuthService:
 
     @staticmethod
     async def rotate_refresh_token(old_refresh_token: str, ip: str) -> Dict[str, Any]:
-        from jose import jwt, JWTError
+        import jwt
+        from jwt.exceptions import PyJWTError
         try:
             payload = jwt.decode(old_refresh_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
             user_id = payload.get("sub")
             session_id = payload.get("session_id")
             if not user_id or not session_id or payload.get("type") != "refresh":
                 raise UnauthorizedException(message="Invalid token")
-        except JWTError:
-            raise UnauthorizedException(message="Invalid token")
+        except PyJWTError:
+            raise UnauthorizedException("Invalid refresh token")
 
         # Verify session and token validity in DB
         db_token = await refresh_token_repository.get_valid_token(session_id)

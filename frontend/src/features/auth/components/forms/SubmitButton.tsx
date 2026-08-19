@@ -1,33 +1,76 @@
 import React from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface SubmitButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  /** Override label shown while loading. Default: "Processing…" */
+  loadingLabel?: string;
+  /** If true, only the icon is shown (icon-only button) */
+  iconOnly?: boolean;
+  /** Variant: 'primary' | 'outlined'. Default: 'primary' */
+  variant?: 'primary' | 'outlined';
 }
 
-export const SubmitButton: React.FC<SubmitButtonProps> = ({ 
-  isLoading, 
-  children, 
-  disabled, 
-  className = '', 
-  ...props 
+/**
+ * Enterprise SubmitButton
+ * ------------------------
+ * - Full-width, large green gradient primary button.
+ * - Outlined variant for secondary actions (e.g., "Login with OTP").
+ * - Loading state: disables all input, shows spinner.
+ * - Framer Motion scale/lift on hover + tap.
+ * - Uses CSS design tokens.
+ */
+export const SubmitButton: React.FC<SubmitButtonProps> = ({
+  isLoading,
+  children,
+  loadingLabel = 'Processing…',
+  variant = 'primary',
+  disabled,
+  className = '',
+  ...props
 }) => {
+  const isPrimary = variant === 'primary';
+
+  const baseClasses = [
+    'relative w-full flex items-center justify-center gap-2',
+    'py-3.5 px-6 rounded-[var(--auth-radius)]',
+    'text-[16px] font-semibold tracking-wide',
+    'transition-all duration-[var(--auth-duration)] ease-[var(--auth-ease)]',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--auth-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--auth-card-bg)]',
+    'disabled:opacity-50 disabled:cursor-not-allowed',
+    isPrimary
+      ? 'bg-gradient-to-r from-[var(--auth-primary)] to-[var(--auth-primary-hover)] text-white shadow-lg shadow-green-900/30'
+      : 'bg-transparent border border-[var(--auth-primary-border)] text-[var(--auth-primary)] hover:bg-[var(--auth-primary-muted)]',
+    className,
+  ].join(' ');
+
   return (
-    <button
+    <motion.button
       type="submit"
       disabled={isLoading || disabled}
-      className={`w-full bg-gradient-to-r from-[#4ADE80] to-[#22c55e] hover:from-[#22c55e] hover:to-[#16a34a] text-white rounded-xl py-3.5 font-semibold transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#4ADE80]/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-2 ${className}`}
-      {...props}
+      className={baseClasses}
+      whileHover={!isLoading && !disabled ? { scale: 1.02, y: -1 } : {}}
+      whileTap={!isLoading && !disabled ? { scale: 0.98 } : {}}
+      transition={{ duration: 0.15 }}
+      {...(props as any)}
     >
       {isLoading ? (
         <>
-          <Loader2 className="h-5 w-5 animate-spin" />
-          <span>Processing...</span>
+          <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+          <span>{loadingLabel}</span>
         </>
       ) : (
-        children
+        <>
+          {children ?? (
+            <>
+              <span>Sign In</span>
+              <ArrowRight size={18} aria-hidden="true" />
+            </>
+          )}
+        </>
       )}
-    </button>
+    </motion.button>
   );
 };

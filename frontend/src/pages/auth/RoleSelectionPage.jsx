@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sprout, Tractor, Wind, ShieldCheck, ArrowRight } from 'lucide-react';
 import RoleCard from '../../components/auth/RoleCard';
+import { SubmitButton } from '../../features/auth/components/forms';
 
 const ROLES = [
   {
@@ -62,15 +63,18 @@ export default function RoleSelectionPage() {
   const activeRoleObj = ROLES.find((r) => r.id === selectedRole) || ROLES[0];
 
   return (
-    <div className="bg-gray-900/80 border border-white/10 rounded-3xl p-8 sm:p-10 backdrop-blur-xl shadow-2xl">
+    <div
+      className="rounded-2xl p-8 sm:p-10 w-full"
+      style={{ background: 'var(--auth-card-bg)', border: '1px solid var(--auth-card-border)', boxShadow: 'var(--auth-card-shadow)' }}
+    >
       <div className="text-center mb-8">
         <span className="text-xs font-black uppercase tracking-widest text-green-400 bg-green-500/10 px-4 py-1.5 rounded-full border border-green-500/20 mb-3 inline-block">
           Welcome to KisanO
         </span>
-        <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+        <h1 className="text-[36px] sm:text-[40px] font-black text-white leading-none tracking-tight mb-2">
           Select Your Role
         </h1>
-        <p className="text-xs sm:text-sm text-gray-400 font-medium mt-2">
+        <p className="text-[15px]" style={{ color: 'var(--auth-text-secondary)' }}>
           Choose how you would like to use KisanO to customize your experience.
         </p>
       </div>
@@ -87,28 +91,39 @@ export default function RoleSelectionPage() {
         ))}
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row items-center gap-4">
-        <button
+      <div className="flex flex-col sm:flex-row items-center gap-4 mt-8">
+        <SubmitButton
           onClick={() => navigate(activeRoleObj.loginPath)}
-          className="w-full sm:w-1/2 py-4 px-6 bg-green-500 hover:bg-green-400 text-white font-black text-sm rounded-xl transition-all shadow-[0_0_25px_rgba(34,197,94,0.3)] flex items-center justify-center gap-2 hover:scale-[1.02]"
+          type="button"
+          variant="primary"
+          className="w-full sm:w-1/2"
         >
-          Sign In as {activeRoleObj.title} <ArrowRight className="w-4 h-4" />
-        </button>
+          <span>Sign In as {activeRoleObj.title}</span>
+          <ArrowRight className="w-4 h-4" />
+        </SubmitButton>
 
         {activeRoleObj.id !== 'ADMIN' && (
-          <button
+          <SubmitButton
             onClick={() => navigate(activeRoleObj.registerPath)}
-            className="w-full sm:w-1/2 py-4 px-6 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-sm rounded-xl transition-all hover:scale-[1.02]"
+            type="button"
+            variant="outlined"
+            className="w-full sm:w-1/2"
           >
             Create New Account
-          </button>
+          </SubmitButton>
         )}
       </div>
 
-      <div className="mt-6 text-center text-xs text-gray-500">
+      <div
+        className="mt-8 pt-6 text-center text-[14px]"
+        style={{ borderTop: '1px solid var(--auth-card-border)', color: 'var(--auth-text-muted)' }}
+      >
         Need help deciding?{' '}
-        <Link to="/" className="text-green-400 font-semibold hover:underline">
+        <Link
+          to="/"
+          className="font-bold transition-colors auth-focus-ring rounded px-0.5"
+          style={{ color: 'var(--auth-text-accent)' }}
+        >
           Explore features
         </Link>
       </div>

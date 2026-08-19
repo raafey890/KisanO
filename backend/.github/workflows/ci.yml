@@ -2,43 +2,118 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: ["main", "develop"]
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: ["main", "develop"]
 
 jobs:
-  build-and-test:
+  # ============================================================
+  # JOB 1: Code Quality & Tests
+  # ============================================================
+  test:
+    name: Lint, Type Check & Test
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 20
+
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.11"
-        cache: 'pip'
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
 
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install black isort ruff pytest pytest-cov bandit safety
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install black isort ruff mypy pytest pytest-cov pytest-asyncio bandit
 
-    - name: Enforce Code Quality (Linting)
-      run: |
-        chmod +x scripts/lint.sh
-        ./scripts/lint.sh
+      - name: Code Formatting Check (black)
+        run: black --check --diff .
 
-    - name: Run Unit & Integration Tests
-      run: |
-        chmod +x scripts/test.sh
-        ./scripts/test.sh
+      - name: Import Sorting Check (isort)
+        run: isort --check-only --diff .
 
-    - name: Upload Coverage Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: coverage.xml
-        retention-days: 7
+      - name: Linting (ruff)
+        run: ruff check . --output-format=github
+
+      - name: Run Unit & Integration Tests
+        env:
+          ENVIRONMENT: test
+          MONGODB_URL: mongodb://localhost:27017/
+          MONGODB_DB_NAME: kisano_test
+          REDIS_URL: redis://localhost:6379/0
+          SECRET_KEY: test-secret-key-for-ci-only
+        run: |
+          chmod +x scripts/test.sh
+          ./scripts/test.sh
+
+      - name: Upload Coverage to GitHub Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-${{ github.sha }}
+          path: coverage.xml
+          retention-days: 7
+
+  # ============================================================
+  # JOB 2: Dependency Vulnerability Scan (Safety)
+  # ============================================================
+  dependency-scan:
+    name: Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Safety
+        run: pip install safety
+
+      - name: Scan Python Dependencies for CVEs
+        # Fail if any HIGH or CRITICAL vulnerabilities found
+        run: safety check -r requirements.txt --full-report
+
+  # ============================================================
+  # JOB 3: SAST (Bandit — Static Application Security Testing)
+  # ============================================================
+  sast:
+    name: Static Security Analysis (Bandit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Run Bandit SAST Scan
+        run: |
+          bandit -r . \
+            --exclude ./venv,./tests,./.github \
+            --severity-level medium \
+            --confidence-level medium \
+            --format sarif \
+            --output bandit-results.sarif || true
+
+      - name: Upload SAST Results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: bandit-results.sarif

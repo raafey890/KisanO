@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { SubmitButton } from '../../features/auth/components/forms';
 
 
 export default function VerifySuccessPage() {
@@ -33,7 +34,10 @@ export default function VerifySuccessPage() {
   }, [isReset, countdown, navigate]);
 
   return (
-    <div className="bg-gray-900/90 border border-white/10 rounded-3xl pt-10 pb-10 px-8 sm:px-10 lg:px-12 backdrop-blur-xl shadow-2xl text-center flex flex-col items-center">
+    <div
+      className="rounded-2xl p-8 sm:p-10 w-full text-center flex flex-col items-center"
+      style={{ background: 'var(--auth-card-bg)', border: '1px solid var(--auth-card-border)', boxShadow: 'var(--auth-card-shadow)' }}
+    >
       {/* Animated Success Checkmark Badge */}
       <motion.div
         initial={{ scale: 0 }}
@@ -45,12 +49,12 @@ export default function VerifySuccessPage() {
       </motion.div>
 
       {/* Title */}
-      <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug mb-3">
+      <h1 className="text-[36px] sm:text-[40px] font-black text-white leading-none tracking-tight mb-4">
         {isReset ? 'Password Reset Successful' : 'Account Verified & Activated!'}
       </h1>
 
       {/* Subtitle */}
-      <p className="text-xs sm:text-sm text-gray-400 font-medium leading-relaxed max-w-sm mb-5">
+      <p className="text-[15px] max-w-sm mb-6" style={{ color: 'var(--auth-text-secondary)' }}>
         {isReset
           ? 'Your password has been updated successfully. You can now sign in using your new password.'
           : 'Congratulations! Your KisanO account has been fully verified and activated.'}
@@ -64,14 +68,14 @@ export default function VerifySuccessPage() {
       )}
 
       {/* Primary Action Button */}
-      <div className="w-full mt-6 pt-6 border-t border-white/10">
-        <button
+      <div className="w-full mt-6 pt-6" style={{ borderTop: '1px solid var(--auth-card-border)' }}>
+        <SubmitButton
           onClick={handleProceed}
-          className="w-full h-[50px] bg-green-500 hover:bg-green-400 text-white font-bold text-sm rounded-xl transition-all shadow-[0_0_25px_rgba(34,197,94,0.35)] flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:outline-none"
+          variant="primary"
         >
           <span>{isReset ? 'Go to Login' : 'Go to Dashboard'}</span>
           <ArrowRight className="w-4 h-4" />
-        </button>
+        </SubmitButton>
       </div>
     </div>
   );

@@ -57,7 +57,7 @@ class PaymentService:
         order = await gateway.create_order(data.amount, "INR", receipt)
         
         gateway_snapshot = {
-            "provider": "MockRazorpay",
+            "provider": "Razorpay",
             "gatewayOrderId": order["id"]
         }
         
@@ -148,20 +148,31 @@ class PaymentService:
         new_snapshot["gatewayPaymentId"] = gateway_payment_id
         new_snapshot["gatewaySignature"] = signature
         
-        # Perform Optimistic Update to SUCCESS
-        success = await payment_repository.update_payment_optimistic(
-            str(payment["_id"]),
-            payment["version"],
-            {
-                "gatewaySnapshot": new_snapshot,
-                "paymentMethod": PaymentMethod.UPI.value, # Mock assuming UPI
-                "paymentStatus": PaymentStatus.SUCCESS.value
-            }
-        )
-        if not success:
-            raise AppException("Concurrency conflict while verifying payment", 409)
-            
-        await audit_repository.log_action(payment_id, "VERIFICATION_SUCCESS", PaymentStatus.SUCCESS.value, "Payment verified via API")
+        # Use MongoDB Transaction
+        from db.mongodb import db_manager
+        async with await db_manager.client.start_session() as session:
+            async with session.start_transaction():
+                # Perform Update
+                success = await payment_repository.collection.update_one(
+                    {"_id": payment["_id"], "version": payment["version"]},
+                    {"$set": {
+                        "gatewaySnapshot": new_snapshot,
+                        "paymentMethod": PaymentMethod.UPI.value, # Mock assuming UPI
+                        "paymentStatus": PaymentStatus.SUCCESS.value
+                    }, "$inc": {"version": 1}},
+                    session=session
+                )
+                if success.modified_count == 0:
+                    raise AppException("Concurrency conflict while verifying payment", 409)
+                    
+                await audit_repository.collection.insert_one({
+                    "paymentId": payment_id,
+                    "action": "VERIFICATION_SUCCESS",
+                    "status": PaymentStatus.SUCCESS.value,
+                    "notes": "Payment verified via API",
+                    "timestamp": __import__('datetime').datetime.utcnow()
+                }, session=session)
+        
         
         # Publish Domain Event for other modules to consume
         await payment_events.publish(PaymentEvents.PAYMENT_SUCCEEDED, {

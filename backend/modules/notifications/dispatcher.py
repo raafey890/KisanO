@@ -6,14 +6,15 @@ from modules.notifications.repository import notification_repo, preference_repo,
 from modules.notifications.constants import NotificationStatus
 from modules.notifications.providers import get_provider
 from modules.notifications.templates import template_engine
-from core.exceptions import AppException
 
 logger = logging.getLogger(__name__)
 
+
 class NotificationDispatcher:
     def __init__(self):
-        self.max_retries = 3
-        self.base_delay = 2 # seconds
+        from core.config import settings
+        self.max_retries = settings.MAX_JOB_RETRIES
+        self.base_delay = settings.RETRY_DELAY_SECONDS
 
     async def process_job(self, job_data: Dict[str, Any]):
         """
@@ -71,9 +72,14 @@ class NotificationDispatcher:
         for attempt in range(1, self.max_retries + 1):
             try:
                 await notification_repo.update_status(notification_id, NotificationStatus.SENDING.value)
-                success, msg = await provider.send(recipient, subject, body, payload)
+                success, msg = await asyncio.wait_for(
+                    provider.send(recipient, subject, body, payload),
+                    timeout=5.0
+                )
                 if success:
                     return True
+            except asyncio.TimeoutError:
+                logger.warning(f"Delivery attempt {attempt} timed out for provider {provider.provider_name}")
             except Exception as e:
                 logger.warning(f"Delivery attempt {attempt} failed: {str(e)}")
                 

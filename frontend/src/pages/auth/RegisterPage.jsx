@@ -70,18 +70,21 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
   });
 
   const passwordVal = useWatch({ control, name: 'password', defaultValue: '' });
-  const getPasswordStrength = () => {
-    if (!passwordVal) return { label: '', color: 'w-0 bg-transparent' };
-    if (passwordVal.length < 6) return { label: 'Weak', color: 'w-1/3 bg-red-500' };
-    if (passwordVal.length < 10) return { label: 'Medium', color: 'w-2/3 bg-amber-500' };
-    return { label: 'Strong', color: 'w-full bg-green-500' };
-  };
 
-  const strength = getPasswordStrength();
+  // Compute strength score (0=none, 1=weak, 2=medium, 3=strong) – UI only
+  const strengthScore = !passwordVal ? 0
+    : passwordVal.length < 6 ? 1
+    : passwordVal.length < 10 ? 2
+    : 3;
+  const strengthLabel = ['', 'Weak', 'Medium', 'Strong'][strengthScore] || '';
+  const strengthObj = passwordVal ? { score: strengthScore, label: strengthLabel } : undefined;
   const IconComp = roleConfig.icon;
 
   return (
-    <div className="bg-gray-900/90 border border-white/10 rounded-3xl p-8 sm:p-10 lg:p-12 backdrop-blur-xl shadow-2xl">
+    <div
+      className="rounded-2xl p-8 sm:p-10 w-full"
+      style={{ background: 'var(--auth-card-bg)', border: '1px solid var(--auth-card-border)', boxShadow: 'var(--auth-card-shadow)' }}
+    >
       <div className="flex items-center justify-between mb-6">
         <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border ${roleConfig.badgeColor}`}>
           <IconComp className="w-4 h-4" />
@@ -94,11 +97,11 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
       </div>
 
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
-          Create KisanO Account
+        <h1 className="text-[36px] sm:text-[40px] font-black text-white leading-none tracking-tight">
+          Create Account
         </h1>
-        <p className="text-xs sm:text-sm text-gray-400 font-medium mt-2 leading-relaxed">
-          Join thousands of farmers & equipment providers across Maharashtra.
+        <p className="mt-2 text-[15px]" style={{ color: 'var(--auth-text-secondary)' }}>
+          Join thousands of farmers &amp; equipment providers across Maharashtra.
         </p>
       </div>
 
@@ -174,16 +177,10 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
               placeholder="Create password"
               error={errors.password}
               disabled={isSubmitting}
+              strength={strengthObj}
+              autoComplete="new-password"
               {...register('password')}
             />
-            {passwordVal && (
-              <div className="mt-2.5 flex items-center gap-2">
-                <div className="flex-1 h-1.5 bg-gray-800 rounded-full overflow-hidden">
-                  <div className={`h-full ${strength.color} transition-all duration-300`} />
-                </div>
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{strength.label}</span>
-              </div>
-            )}
           </div>
 
           <PasswordField
@@ -229,9 +226,16 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
         </SubmitButton>
       </form>
 
-      <div className="mt-8 pt-6 border-t border-white/10 text-center text-xs text-gray-400">
+      <div
+        className="mt-8 pt-6 text-center text-[14px]"
+        style={{ borderTop: '1px solid var(--auth-card-border)', color: 'var(--auth-text-muted)' }}
+      >
         Already have an account?{' '}
-        <Link to={roleConfig.loginLink} className="text-green-400 font-bold hover:underline">
+        <Link
+          to={roleConfig.loginLink}
+          className="font-bold auth-focus-ring rounded px-0.5"
+          style={{ color: 'var(--auth-text-accent)' }}
+        >
           Sign in here
         </Link>
       </div>

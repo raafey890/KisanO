@@ -45,7 +45,11 @@ async def log_maintenance_route():
     # Auto-generated placeholder for log_maintenance
     return success_response(message="Success", data={})
 
+from fastapi import Request
+from modules.cache.decorators import cache
+
 @router.get("/search")
-async def search_route():
+@cache(expire=300)
+async def search_route(request: Request):
     # Auto-generated placeholder for search
     return success_response(message="Success", data={})
