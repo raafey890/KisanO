@@ -10,6 +10,7 @@ class SuccessResponse(BaseModel, Generic[T]):
 
 class ErrorResponse(BaseModel):
     success: bool = False
+    code: str = "UNKNOWN_ERROR"
     message: str
     errors: Optional[List[Any]] = None
 
@@ -17,6 +18,6 @@ def success_response(message: str, data: Any = None) -> SuccessResponse:
     """Standardize successful API responses."""
     return SuccessResponse(success=True, message=message, data=data)
 
-def error_response(message: str, errors: List[Any] = None) -> ErrorResponse:
+def error_response(message: str, code: str = "UNKNOWN_ERROR", errors: List[Any] = None) -> ErrorResponse:
     """Standardize error API responses."""
-    return ErrorResponse(success=False, message=message, errors=errors)
+    return ErrorResponse(success=False, code=code, message=message, errors=errors)

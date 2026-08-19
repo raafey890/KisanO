@@ -81,8 +81,8 @@ export default function LoginPage({ initialRole = 'farmer' }) {
       showSuccess(`Welcome back! Logged in as ${roleConfig.name}.`);
       navigate(roleConfig.redirect);
     },
-    onError: () => {
-      showError('Invalid credentials. Please check your details and try again.');
+    onError: (err) => {
+      showError(err?.message || 'Invalid credentials. Please check your details and try again.');
     },
   });
 

@@ -1,3 +1,4 @@
+from shared.error_codes import ErrorCode
 from fastapi import APIRouter, Depends
 from typing import Dict, Any, List
 from shared.responses import success_response, SuccessResponse

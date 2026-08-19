@@ -1,5 +1,6 @@
 import logging
 from typing import Dict, Any, List
+from shared.error_codes import ErrorCode
 from core.exceptions import NotFoundException, AppException, UnauthorizedException
 
 from modules.payments.repository import payment_repository, audit_repository

@@ -4,6 +4,7 @@ import string
 from datetime import datetime, timezone, timedelta
 from typing import Dict, Any, Optional
 
+from shared.error_codes import ErrorCode
 from core.exceptions import UnauthorizedException, AppException
 from core.security import verify_password, get_password_hash, create_access_token, create_refresh_token
 from modules.auth.schemas import UserRegister, LoginRequest, ChangePasswordRequest
@@ -24,12 +25,12 @@ class AuthService:
         # 1. Check for duplicates
         existing = await user_repository.get_by_phone(data.phone)
         if existing:
-            raise AppException(message="Phone number is already registered.", status_code=400)
+            raise AppException(message="Phone number is already registered.", status_code=409, code=ErrorCode.AUTH_DUPLICATE_PHONE.value)
             
         if data.email:
             existing_email = await user_repository.get_by_email(data.email)
             if existing_email:
-                raise AppException(message="Email is already registered.", status_code=400)
+                raise AppException(message="Email is already registered.", status_code=409, code=ErrorCode.AUTH_DUPLICATE_EMAIL.value)
 
         # 2. Hash Password
         hashed_password = get_password_hash(data.password)
@@ -68,13 +69,13 @@ class AuthService:
         user = await user_repository.get_by_identifier(data.identifier)
         if not user:
             await login_history_repository.log_event(data.identifier, "LOGIN", ip, data.deviceInfo or "Unknown", data.os or "Unknown", data.browser or "Unknown", False)
-            raise UnauthorizedException(message="Invalid credentials")
+            raise UnauthorizedException(message="Invalid phone number or password. Please try again.", code=ErrorCode.AUTH_INVALID_CREDENTIALS.value)
             
         user_id_str = str(user["_id"])
 
         # 2. Check Account Lockout
         if user.get("lockoutUntil") and user["lockoutUntil"] > datetime.now(timezone.utc):
-            raise UnauthorizedException(message="Account is temporarily locked due to too many failed attempts.")
+            raise UnauthorizedException(message="Your account is temporarily locked due to too many failed attempts. Please try again later.", code=ErrorCode.AUTH_ACCOUNT_LOCKED.value)
 
         # 3. Verify password
         if not verify_password(data.password, user.get("passwordHash")):
@@ -88,12 +89,12 @@ class AuthService:
             
             await user_repository.update(user_id_str, update_data)
             await login_history_repository.log_event(data.identifier, "FAILED_LOGIN", ip, data.deviceInfo or "Unknown", data.os or "Unknown", data.browser or "Unknown", False)
-            raise UnauthorizedException(message="Invalid credentials")
+            raise UnauthorizedException(message="Invalid phone number or password. Please try again.", code=ErrorCode.AUTH_INVALID_CREDENTIALS.value)
 
         # 4. Check Status
         status = user.get("status", "ACTIVE")
         if status in ["SUSPENDED", "BLOCKED", "DELETED"]:
-            raise UnauthorizedException(message=f"Account {status.lower()}. Contact support.")
+            raise UnauthorizedException(message=f"Your account has been {status.lower()}. Please contact support for assistance.", code=ErrorCode.AUTH_ACCOUNT_SUSPENDED.value)
             
         # 5. Reset failed attempts
         if user.get("failedLoginAttempts", 0) > 0 or user.get("lockoutUntil"):
@@ -147,9 +148,9 @@ class AuthService:
             user_id = payload.get("sub")
             session_id = payload.get("session_id")
             if not user_id or not session_id or payload.get("type") != "refresh":
-                raise UnauthorizedException(message="Invalid token")
+                raise UnauthorizedException(message="Your session has expired. Please log in again.", code=ErrorCode.AUTH_TOKEN_INVALID.value)
         except PyJWTError:
-            raise UnauthorizedException("Invalid refresh token")
+            raise UnauthorizedException(message="Your session has expired. Please log in again.", code=ErrorCode.AUTH_TOKEN_INVALID.value)
 
         # Verify session and token validity in DB
         db_token = await refresh_token_repository.get_valid_token(session_id)
@@ -157,15 +158,15 @@ class AuthService:
             # Token reuse detected! Invalidate all tokens for this session
             await refresh_token_repository.revoke_token(session_id)
             await session_repository.invalidate_session(session_id)
-            raise UnauthorizedException(message="Refresh token invalid or revoked")
+            raise UnauthorizedException(message="Your session is no longer active. Please log in again.", code=ErrorCode.AUTH_TOKEN_INVALID.value)
             
         if not verify_password(old_refresh_token, db_token["hashedToken"]):
-            raise UnauthorizedException(message="Refresh token mismatch")
+            raise UnauthorizedException(message="Your session is no longer active. Please log in again.", code=ErrorCode.AUTH_TOKEN_INVALID.value)
             
         # Verify user
         user = await user_repository.get_by_id(user_id)
         if not user or user.get("status") != "ACTIVE":
-            raise UnauthorizedException(message="User inactive")
+            raise UnauthorizedException(message="Your account is inactive.", code=ErrorCode.AUTH_ACCOUNT_SUSPENDED.value)
             
         # Revoke old token
         await refresh_token_repository.revoke_token(session_id)
@@ -246,15 +247,15 @@ class AuthService:
     async def verify_otp(identifier: str, otp: str, ip: str) -> bool:
         otp_doc = await otp_repository.get_active_otp(identifier)
         if not otp_doc:
-            raise AppException("Invalid or expired OTP", status_code=400)
+            raise AppException(message="The OTP you entered is invalid or has expired.", status_code=400, code=ErrorCode.AUTH_INVALID_OTP.value)
             
         if otp_doc["attempts"] >= 5:
             await otp_repository.invalidate_otp(str(otp_doc["_id"]))
-            raise AppException("Maximum attempts reached. Request a new OTP.", status_code=400)
+            raise AppException(message="Maximum attempts reached. Please request a new OTP.", status_code=429, code=ErrorCode.AUTH_TOO_MANY_REQUESTS.value)
             
         if not verify_password(otp, otp_doc["hashedOtp"]):
             await otp_repository.increment_attempts(str(otp_doc["_id"]))
-            raise AppException("Invalid OTP", status_code=400)
+            raise AppException(message="The OTP you entered is incorrect.", status_code=400, code=ErrorCode.AUTH_INVALID_OTP.value)
             
         await otp_repository.invalidate_otp(str(otp_doc["_id"]))
         await login_history_repository.log_event(identifier, "OTP_VERIFY", ip, "Unknown", "Unknown", "Unknown", True)
@@ -278,7 +279,7 @@ class AuthService:
     async def change_password(user_id: str, data: ChangePasswordRequest, ip: str) -> None:
         user = await user_repository.get_by_id(user_id)
         if not verify_password(data.oldPassword, user["passwordHash"]):
-            raise UnauthorizedException("Incorrect old password")
+            raise UnauthorizedException(message="The old password you entered is incorrect.", code=ErrorCode.AUTH_INVALID_CREDENTIALS.value)
             
         hashed_pw = get_password_hash(data.newPassword)
         await user_repository.update(user_id, {

@@ -25,9 +25,12 @@ export const useRegisterForm = (defaultRole: keyof typeof USER_ROLES = 'FARMER',
     try {
       await register(data);
       options?.onSuccess?.(data);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Register form submission failed', err);
-      options?.onError?.(err as Error);
+      // Pass the backend message directly
+      if (options?.onError) {
+        options.onError(err);
+      }
     }
   };
 

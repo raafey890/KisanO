@@ -19,9 +19,11 @@ export const useLoginForm = (options?: { onSuccess?: () => void; onError?: (err:
     try {
       await login(data);
       options?.onSuccess?.();
-    } catch (err) {
+    } catch (err: any) {
       console.error('Login form submission failed', err);
-      options?.onError?.(err as Error);
+      if (options?.onError) {
+        options.onError(err);
+      }
     }
   };
 

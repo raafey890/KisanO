@@ -2,13 +2,15 @@ import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from core.config import settings
 from core.exceptions import (
     AppException,
     app_exception_handler,
     validation_exception_handler,
-    global_exception_handler
+    global_exception_handler,
+    starlette_http_exception_handler
 )
 from db.mongodb import db_manager
 from core.redis_client import redis_manager
@@ -58,6 +60,7 @@ def create_app() -> FastAPI:
     # 2. Register Global Exception Handlers
     app.add_exception_handler(AppException, app_exception_handler)
     app.add_exception_handler(RequestValidationError, validation_exception_handler)
+    app.add_exception_handler(StarletteHTTPException, starlette_http_exception_handler)
     app.add_exception_handler(Exception, global_exception_handler)
 
     # 3. Register Modular Routers

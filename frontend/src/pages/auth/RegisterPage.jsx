@@ -64,8 +64,8 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
       showSuccess(`OTP sent to +91 ${data.phone}. Please verify to complete registration.`);
       navigate(`/auth/verify-otp?phone=${encodeURIComponent(data.phone)}&mode=register&role=${roleConfig.roleKey}`);
     },
-    onError: () => {
-      showError('Registration failed. Please check your information and try again.');
+    onError: (err) => {
+      showError(err?.message || 'Registration failed. Please check your information and try again.');
     },
   });
 
