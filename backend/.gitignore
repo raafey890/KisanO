@@ -1,0 +1,57 @@
+﻿# =============================================================================
+# KisanO Backend — .gitignore
+# =============================================================================
+
+# --- Secrets & Environment --- NEVER commit these
+.env
+.env.local
+.env.test
+.env.*.local
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+
+# --- Virtual Environments ---
+venv/
+env/
+.venv/
+ENV/
+
+# --- Distribution / Packaging ---
+*.egg-info/
+dist/
+build/
+*.egg
+*.whl
+
+# --- Testing ---
+.pytest_cache/
+.coverage
+htmlcov/
+*.xml
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Temp / Download artifacts ---
+*.zip
+*.msi
+*.tar.gz
+
+# --- Node (legacy JS files in repo) ---
+node_modules/
+
+# --- Logs ---
+*.log
+logs/
+
+# --- MongoDB / Docker volumes ---
+data/

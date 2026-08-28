@@ -1,4 +1,5 @@
 from typing import List, Optional
+from pydantic import Field, AliasChoices
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -12,7 +13,7 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000"]
 
     # MongoDB Setup
-    MONGODB_URI: str
+    MONGODB_URI: str = Field(validation_alias=AliasChoices('MONGODB_URI', 'MONGODB_URL'))
     DATABASE_NAME: str = "kisano_db"
 
     # Redis Setup

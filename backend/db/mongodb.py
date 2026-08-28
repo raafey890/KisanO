@@ -1,6 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from core.config import settings
 import logging
+import certifi
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +14,11 @@ class DatabaseManager:
         """Initialize MongoDB Connection."""
         logger.info("Connecting to MongoDB Atlas...")
         try:
-            cls.client = AsyncIOMotorClient(settings.MONGODB_URI)
+            # tlsCAFile=certifi.where() fixes SSL handshake on Python 3.14/Windows
+            cls.client = AsyncIOMotorClient(
+                settings.MONGODB_URI,
+                tlsCAFile=certifi.where()
+            )
             cls.db = cls.client[settings.DATABASE_NAME]
             # Verify connection
             await cls.client.admin.command('ping')
