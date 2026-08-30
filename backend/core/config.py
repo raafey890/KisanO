@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000"]
 
     # MongoDB Setup
-    MONGODB_URI: str = Field(validation_alias=AliasChoices('MONGODB_URI', 'MONGODB_URL'))
+    MONGODB_URI: str
     DATABASE_NAME: str = "kisano_db"
 
     # Redis Setup
@@ -97,23 +97,34 @@ settings = Settings()
 def validate_production_environment():
     if settings.ENVIRONMENT == "production":
         import sys
-        missing = []
-        required = [
-            "SECRET_KEY", "MONGODB_URI", 
-            "CLOUDINARY_API_KEY", "RAZORPAY_KEY_ID"
+        missing_required = []
+        required = ["SECRET_KEY", "MONGODB_URI"]
+        
+        missing_optional = []
+        optional = [
+            "REDIS_URL", "CLOUDINARY_API_KEY", "RAZORPAY_KEY_ID", 
+            "MSG91_AUTH_KEY", "GEMINI_API_KEY", "FIREBASE_CREDENTIALS_JSON_PATH"
         ]
         
         for key in required:
-            # We check the raw env or settings attribute
-            val = getattr(settings, key, None)
-            if not val:
-                missing.append(key)
+            if not getattr(settings, key, None):
+                missing_required.append(key)
                 
-        if missing:
+        for key in optional:
+            if not getattr(settings, key, None):
+                missing_optional.append(key)
+                
+        if missing_optional:
+            print("⚠️ WARNING: The following optional providers are not configured:")
+            for m in missing_optional:
+                print(f"  - {m}")
+            print("⚠️ Features relying on these providers will be disabled or fall back to mock implementations.")
+                
+        if missing_required:
             print("=====================================================")
             print("🔥 CRITICAL: FAILED FAST DURING STARTUP 🔥")
             print("The following REQUIRED environment variables are missing in production:")
-            for m in missing:
+            for m in missing_required:
                 print(f"  - {m}")
             print("=====================================================")
             sys.exit(1)
