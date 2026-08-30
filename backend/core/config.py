@@ -99,8 +99,8 @@ def validate_production_environment():
         import sys
         missing = []
         required = [
-            "SECRET_KEY", "MONGODB_URI", "REDIS_URL", 
-            "CLOUDINARY_API_KEY", "RAZORPAY_KEY_ID", "MSG91_AUTH_KEY"
+            "SECRET_KEY", "MONGODB_URI", 
+            "CLOUDINARY_API_KEY", "RAZORPAY_KEY_ID"
         ]
         
         for key in required:
