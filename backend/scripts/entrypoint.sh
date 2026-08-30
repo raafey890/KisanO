@@ -10,7 +10,7 @@ echo "[+] Starting KisanO Container Entrypoint..."
 if [ "$ENVIRONMENT" = "production" ]; then
     echo "[+] Validating Production Environment Variables..."
     missing=0
-    for var in SECRET_KEY MONGODB_URI REDIS_URL CLOUDINARY_API_KEY RAZORPAY_KEY_ID MSG91_AUTH_KEY; do
+    for var in SECRET_KEY MONGODB_URI CLOUDINARY_API_KEY RAZORPAY_KEY_ID; do
         if [ -z "$(eval echo \$$var)" ]; then
             echo "🔥 CRITICAL: Missing $var"
             missing=1
