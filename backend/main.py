@@ -123,6 +123,18 @@ def create_app() -> FastAPI:
     async def liveness_check():
         return {"status": "alive"}
 
+    @app.get("/", tags=["System"])
+    async def root():
+        return {
+            "message": "KisanO backend is running",
+            "health": "/health",
+            "ready": "/ready",
+            "live": "/live",
+            "docs": "/docs",
+            "redoc": "/redoc",
+            "openapi": "/openapi.json"
+        }
+
     return app
 
 app = create_app()
