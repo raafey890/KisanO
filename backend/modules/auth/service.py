@@ -53,13 +53,22 @@ class AuthService:
         }
 
         created_user = await user_repository.create(user_doc)
+        user_id_str = str(created_user["_id"])
         
         # Audit Log
         await login_history_repository.log_event(
             data.phone, "REGISTRATION", ip, device, os, browser, True
         )
         
-        return created_user
+        return {
+            "id": user_id_str,
+            "fullName": created_user["fullName"],
+            "phone": created_user["phone"],
+            "email": created_user.get("email"),
+            "role": created_user["role"],
+            "status": created_user["status"],
+            "verificationStatus": created_user["verificationStatus"]
+        }
 
     @staticmethod
     async def login_user(data: LoginRequest, ip: str) -> Dict[str, Any]:
