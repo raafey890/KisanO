@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const envSchema = z.object({
   // Vite specific variables (Vite uses import.meta.env)
-  VITE_API_URL: z.string().url().default('http://localhost:3000/api'),
+  VITE_API_BASE_URL: z.string().url().default('http://localhost:8000/api/v1'),
   VITE_APP_ENV: z.enum(['development', 'production', 'test']).default('development'),
   // Add other required public variables here. NEVER add secrets to the frontend env config.
 });

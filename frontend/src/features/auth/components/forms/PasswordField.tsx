@@ -68,7 +68,7 @@ export const PasswordField = React.forwardRef<HTMLInputElement, PasswordFieldPro
             ref={ref}
             type={showPassword ? 'text' : 'password'}
             disabled={disabled}
-            style={{ paddingLeft: 'var(--auth-input-pl)', paddingRight: 'var(--auth-input-pr)' }}
+            style={{ paddingLeft: '48px', paddingRight: '48px' }}
             className={[
               'w-full rounded-[var(--auth-radius)] border bg-[var(--auth-input-bg)]',
               'py-3 text-[16px] text-[var(--auth-text-primary)]',

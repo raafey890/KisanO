@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, RegisterFormData } from '../../validation/register.schema';
 import { useRegister } from '../useRegister';
 import { USER_ROLES } from '../../utils/roleHierarchy';
+import { getAuthErrorMessage } from '../../../../utils/errorCodes';
 
 export const useRegisterForm = (defaultRole: keyof typeof USER_ROLES = 'FARMER', options?: { onSuccess?: (data: RegisterFormData) => void; onError?: (err: Error) => void }) => {
   const { mutateAsync: register, isPending: isSubmitting, error } = useRegister();
@@ -23,11 +24,15 @@ export const useRegisterForm = (defaultRole: keyof typeof USER_ROLES = 'FARMER',
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      await register(data);
+      const { district, agreeTerms, ...rest } = data;
+      const payload = { ...rest, acceptTerms: agreeTerms };
+      await register(payload as any);
       options?.onSuccess?.(data);
     } catch (err: any) {
       console.error('Register form submission failed', err);
-      // Pass the backend message directly
+      if (err.code) {
+        err.message = getAuthErrorMessage(err.code, err.message);
+      }
       if (options?.onError) {
         options.onError(err);
       }

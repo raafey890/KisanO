@@ -40,3 +40,22 @@ export const ErrorCode = {
 } as const;
 
 export type ErrorCodeType = keyof typeof ErrorCode;
+
+export const AUTH_ERROR_MESSAGES: Record<string, string> = {
+  AUTH_INVALID_CREDENTIALS: 'Invalid email/phone or password. Please try again.',
+  AUTH_DUPLICATE_PHONE: 'An account with this phone number already exists.',
+  AUTH_DUPLICATE_EMAIL: 'An account with this email already exists.',
+  AUTH_ACCOUNT_LOCKED: 'Account temporarily locked due to too many failed attempts. Please try again in 15 minutes.',
+  AUTH_ACCOUNT_SUSPENDED: 'Your account has been suspended. Please contact support.',
+  AUTH_INVALID_OTP: 'The OTP you entered is incorrect. Please try again.',
+  AUTH_TOO_MANY_REQUESTS: 'Too many attempts. Please try again later.',
+  AUTH_TOKEN_EXPIRED: 'Your session has expired. Please sign in again.',
+  AUTH_TOKEN_INVALID: 'Invalid session. Please sign in again.',
+};
+
+export function getAuthErrorMessage(errorCode?: string, fallback?: string): string {
+  if (errorCode && AUTH_ERROR_MESSAGES[errorCode]) {
+    return AUTH_ERROR_MESSAGES[errorCode];
+  }
+  return fallback || 'Something went wrong. Please try again.';
+}

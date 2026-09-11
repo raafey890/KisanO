@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useWatch } from 'react-hook-form';
 import { Lock, ArrowRight, CheckCircle2, Circle } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
@@ -9,6 +9,9 @@ import { PasswordField, SubmitButton, FormError } from '../../features/auth/comp
 export default function ResetPasswordPage() {
   const { showSuccess, showError } = useToast();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const identifier = searchParams.get('identifier') || '';
+  const otp = searchParams.get('otp') || '';
 
   const {
     register,
@@ -18,6 +21,8 @@ export default function ResetPasswordPage() {
     apiError,
     formState: { errors, isValid },
   } = useResetPasswordForm({
+    identifier,
+    otp,
     onSuccess: () => {
       showSuccess('Your password has been reset successfully!');
       navigate('/auth/verify-success?mode=reset');

@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, LoginFormData } from '../../validation/login.schema';
 import { useLogin } from '../useLogin';
+import { getAuthErrorMessage } from '../../../../utils/errorCodes';
 
 export const useLoginForm = (options?: { onSuccess?: () => void; onError?: (err: Error) => void }) => {
   const { mutateAsync: login, isPending: isSubmitting, error } = useLogin();
@@ -21,6 +22,9 @@ export const useLoginForm = (options?: { onSuccess?: () => void; onError?: (err:
       options?.onSuccess?.();
     } catch (err: any) {
       console.error('Login form submission failed', err);
+      if (err.code) {
+        err.message = getAuthErrorMessage(err.code, err.message);
+      }
       if (options?.onError) {
         options.onError(err);
       }

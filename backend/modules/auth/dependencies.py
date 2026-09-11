@@ -40,7 +40,9 @@ async def get_current_user_and_session(credentials: HTTPAuthorizationCredentials
     return user, session_id
 
 async def get_current_user(data: tuple[Dict[str, Any], str] = Depends(get_current_user_and_session)) -> Dict[str, Any]:
-    return data[0]
+    user, session_id = data
+    user["session_id"] = session_id
+    return user
 
 def RequireRole(roles: List[str]) -> Callable:
     async def role_checker(user: Dict[str, Any] = Depends(get_current_user)) -> Dict[str, Any]:

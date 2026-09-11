@@ -61,8 +61,8 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
     formState: { errors },
   } = useRegisterForm(roleConfig.roleKey, {
     onSuccess: (data) => {
-      showSuccess(`OTP sent to +91 ${data.phone}. Please verify to complete registration.`);
-      navigate(`/auth/verify-otp?phone=${encodeURIComponent(data.phone)}&mode=register&role=${roleConfig.roleKey}`);
+      showSuccess('Account created successfully! Please sign in.');
+      navigate(roleConfig.loginLink);
     },
     onError: (err) => {
       showError(err?.message || 'Registration failed. Please check your information and try again.');
@@ -221,7 +221,7 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
           isLoading={isSubmitting}
           className={`${roleConfig.btnColor} ${roleConfig.shadow}`}
         >
-          <span>Proceed to Verification</span>
+          <span>Create Account</span>
           <ArrowRight className="w-4 h-4" />
         </SubmitButton>
       </form>

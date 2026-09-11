@@ -237,9 +237,12 @@ class AuthService:
         await otp_repository.store_otp(identifier, hashed_otp, expires_at)
         
         # MOCK DELIVERY (As requested: Print in terminal, do not integrate external provider yet)
-        print("\n======================================")
-        print(f"MOCK OTP DELIVERY FOR {identifier}: {otp}")
-        print("======================================\n")
+        if settings.ENVIRONMENT != 'production':
+            print(f"\n{'='*40}")
+            print(f"MOCK OTP DELIVERY FOR {identifier}: {otp}")
+            print(f"{'='*40}\n")
+        else:
+            logger.info(f"OTP requested for {identifier} (delivery via configured provider)")
         
         await login_history_repository.log_event(identifier, "OTP_REQUEST", ip, "Unknown", "Unknown", "Unknown", True)
 
@@ -263,8 +266,19 @@ class AuthService:
 
     @staticmethod
     async def reset_password(identifier: str, otp: str, new_password: str, ip: str) -> None:
-        # verify_otp invalidates the OTP on success
-        await AuthService.verify_otp(identifier, otp, ip)
+        otp_doc = await otp_repository.get_active_otp(identifier)
+        if not otp_doc:
+            raise AppException(message="The OTP you entered is invalid or has expired.", status_code=400, code=ErrorCode.AUTH_INVALID_OTP.value)
+            
+        if otp_doc["attempts"] >= 5:
+            await otp_repository.invalidate_otp(str(otp_doc["_id"]))
+            raise AppException(message="Maximum attempts reached. Please request a new OTP.", status_code=429, code=ErrorCode.AUTH_TOO_MANY_REQUESTS.value)
+            
+        if not verify_password(otp, otp_doc["hashedOtp"]):
+            await otp_repository.increment_attempts(str(otp_doc["_id"]))
+            raise AppException(message="The OTP you entered is incorrect.", status_code=400, code=ErrorCode.AUTH_INVALID_OTP.value)
+            
+        await otp_repository.invalidate_otp(str(otp_doc["_id"]))
         
         user = await user_repository.get_by_identifier(identifier)
         hashed_pw = get_password_hash(new_password)

@@ -58,7 +58,7 @@ export const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
             id={inputId}
             ref={ref}
             disabled={disabled}
-            style={{ paddingLeft: icon ? 'var(--auth-input-pl)' : '1rem' }}
+            style={{ paddingLeft: icon ? '48px' : '1rem', paddingRight: (error || isValid) ? '48px' : '1rem' }}
             className={[
               'w-full rounded-[var(--auth-radius)] border bg-[var(--auth-input-bg)]',
               'py-3 pr-4 text-[16px] text-[var(--auth-text-primary)]',
