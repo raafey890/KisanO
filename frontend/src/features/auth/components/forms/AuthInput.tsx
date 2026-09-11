@@ -48,7 +48,7 @@ export const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
           {icon && (
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute left-0 inset-y-0 w-12 flex items-center justify-center text-[var(--auth-text-muted)]"
+              className="pointer-events-none absolute left-0 inset-y-0 w-12 flex items-center justify-center text-[var(--auth-text-muted)] z-20"
             >
               {icon}
             </div>
@@ -61,7 +61,7 @@ export const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
             style={{ paddingLeft: icon ? '48px' : '1rem', paddingRight: (error || isValid) ? '48px' : '1rem' }}
             className={[
               'w-full rounded-[var(--auth-radius)] border bg-[var(--auth-input-bg)]',
-              'py-3 pr-4 text-[16px] text-[var(--auth-text-primary)]',
+              'py-3 pr-4 text-[16px] text-white caret-green-400 relative z-10',
               'placeholder:text-[var(--auth-text-muted)]',
               'outline-none transition-all duration-[var(--auth-duration)] ease-[var(--auth-ease)]',
               'focus:ring-2 auth-input-glow',
@@ -76,7 +76,7 @@ export const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
 
           {/* Right status icon */}
           {(error || isValid) && (
-            <div className="pointer-events-none absolute right-3 inset-y-0 flex items-center">
+            <div className="pointer-events-none absolute right-3 inset-y-0 flex items-center z-20">
               {error
                 ? <AlertCircle size={16} className="text-red-400" aria-hidden="true" />
                 : <CheckCircle2 size={16} className="text-green-400" aria-hidden="true" />

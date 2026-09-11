@@ -58,7 +58,7 @@ export const PasswordField = React.forwardRef<HTMLInputElement, PasswordFieldPro
           {/* Lock icon – left zone */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute left-0 inset-y-0 w-12 flex items-center justify-center text-[var(--auth-text-muted)]"
+            className="pointer-events-none absolute left-0 inset-y-0 w-12 flex items-center justify-center text-[var(--auth-text-muted)] z-20"
           >
             <Lock size={18} />
           </div>
@@ -71,7 +71,7 @@ export const PasswordField = React.forwardRef<HTMLInputElement, PasswordFieldPro
             style={{ paddingLeft: '48px', paddingRight: '48px' }}
             className={[
               'w-full rounded-[var(--auth-radius)] border bg-[var(--auth-input-bg)]',
-              'py-3 text-[16px] text-[var(--auth-text-primary)]',
+              'py-3 text-[16px] text-white caret-green-400 relative z-10',
               'placeholder:text-[var(--auth-text-muted)]',
               'outline-none transition-all duration-[var(--auth-duration)] ease-[var(--auth-ease)]',
               'focus:ring-2 auth-input-glow',
@@ -90,7 +90,7 @@ export const PasswordField = React.forwardRef<HTMLInputElement, PasswordFieldPro
             type="button"
             onClick={() => setShowPassword((v) => !v)}
             disabled={disabled}
-            className="absolute right-0 inset-y-0 w-12 flex items-center justify-center text-[var(--auth-text-muted)] hover:text-[var(--auth-text-secondary)] transition-colors disabled:opacity-50 auth-focus-ring rounded-r-[var(--auth-radius)]"
+            className="absolute z-20 right-0 inset-y-0 w-12 flex items-center justify-center text-[var(--auth-text-muted)] hover:text-[var(--auth-text-secondary)] transition-colors disabled:opacity-50 auth-focus-ring rounded-r-[var(--auth-radius)]"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
             tabIndex={-1}
           >
