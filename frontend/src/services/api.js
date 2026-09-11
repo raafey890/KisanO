@@ -57,6 +57,18 @@ api.interceptors.response.use(
       } else if (status === 403) {
         if (code === 'SERVER_ERROR') code = 'AUTH_FORBIDDEN';
         if (!error.response.data?.message) message = "You do not have permission to perform this action.";
+      } else if (status === 422) {
+        if (code === 'SERVER_ERROR') code = 'VALIDATION_ERROR';
+        // FastAPI returns validation errors in the 'detail' array
+        if (Array.isArray(error.response.data?.detail) && error.response.data.detail.length > 0) {
+          const firstError = error.response.data.detail[0];
+          const field = firstError.loc && firstError.loc.length > 1 ? firstError.loc[firstError.loc.length - 1] : '';
+          message = field ? `Validation error on ${field}: ${firstError.msg}` : firstError.msg;
+        } else if (error.response.data?.detail && typeof error.response.data.detail === 'string') {
+          message = error.response.data.detail;
+        } else if (!error.response.data?.message) {
+          message = "Invalid input data. Please check the fields and try again.";
+        }
       }
     } else if (error.request) {
       // The request was made but no response was received

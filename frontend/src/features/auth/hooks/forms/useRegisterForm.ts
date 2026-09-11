@@ -5,7 +5,7 @@ import { useRegister } from '../useRegister';
 import { USER_ROLES } from '../../utils/roleHierarchy';
 import { getAuthErrorMessage } from '../../../../utils/errorCodes';
 
-export const useRegisterForm = (defaultRole: keyof typeof USER_ROLES = 'FARMER', options?: { onSuccess?: (data: RegisterFormData) => void; onError?: (err: Error) => void }) => {
+export const useRegisterForm = (defaultRoleKey: keyof typeof USER_ROLES = 'FARMER', options?: { onSuccess?: (data: RegisterFormData) => void; onError?: (err: Error) => void }) => {
   const { mutateAsync: register, isPending: isSubmitting, error } = useRegister();
 
   const form = useForm<RegisterFormData>({
@@ -18,14 +18,17 @@ export const useRegisterForm = (defaultRole: keyof typeof USER_ROLES = 'FARMER',
       password: '',
       confirmPassword: '',
       agreeTerms: false,
-      role: defaultRole,
+      role: USER_ROLES[defaultRoleKey],
     },
   });
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      const { district, agreeTerms, ...rest } = data;
-      const payload = { ...rest, acceptTerms: agreeTerms };
+      const { district, agreeTerms, email, ...rest } = data;
+      const payload: any = { ...rest, acceptTerms: agreeTerms };
+      if (email && email.trim() !== '') {
+        payload.email = email.trim();
+      }
       await register(payload as any);
       options?.onSuccess?.(data);
     } catch (err: any) {
