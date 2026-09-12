@@ -83,11 +83,16 @@ class AuthService:
         user_id_str = str(user["_id"])
 
         # 2. Check Account Lockout
-        if user.get("lockoutUntil") and user["lockoutUntil"] > datetime.now(timezone.utc):
-            raise UnauthorizedException(message="Your account is temporarily locked due to too many failed attempts. Please try again later.", code=ErrorCode.AUTH_ACCOUNT_LOCKED.value)
+        lockout_until = user.get("lockoutUntil")
+        if lockout_until:
+            if lockout_until.tzinfo is None:
+                lockout_until = lockout_until.replace(tzinfo=timezone.utc)
+            if lockout_until > datetime.now(timezone.utc):
+                raise UnauthorizedException(message="Your account is temporarily locked due to too many failed attempts. Please try again later.", code=ErrorCode.AUTH_ACCOUNT_LOCKED.value)
 
         # 3. Verify password
-        if not verify_password(data.password, user.get("passwordHash")):
+        pwd_hash = user.get("passwordHash")
+        if not pwd_hash or not verify_password(data.password, pwd_hash):
             # Increment failed attempts
             attempts = user.get("failedLoginAttempts", 0) + 1
             update_data = {"failedLoginAttempts": attempts}
