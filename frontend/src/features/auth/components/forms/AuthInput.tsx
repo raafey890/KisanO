@@ -61,7 +61,7 @@ export const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
             style={{ paddingLeft: icon ? '48px' : '1rem', paddingRight: (error || isValid) ? '48px' : '1rem' }}
             className={[
               'w-full rounded-[var(--auth-radius)] border bg-[var(--auth-input-bg)]',
-              'py-3 pr-4 text-[16px] text-white caret-green-400 relative z-10',
+              'py-3 pr-4 text-[16px] text-[var(--auth-text-primary)] caret-green-400 relative z-10',
               'placeholder:text-[var(--auth-text-muted)]',
               'outline-none transition-all duration-[var(--auth-duration)] ease-[var(--auth-ease)]',
               'focus:ring-2 auth-input-glow',

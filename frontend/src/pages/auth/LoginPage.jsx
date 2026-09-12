@@ -105,13 +105,13 @@ export default function LoginPage({ initialRole = 'farmer' }) {
         {/* ── Card header ──────────────────────────────────────── */}
         <div className="mb-8">
           <h1
-            className="text-[36px] sm:text-[40px] font-black text-white leading-tight tracking-tight"
+            className="text-[36px] sm:text-[40px] font-black text-[var(--auth-text-primary)] leading-tight tracking-tight"
             style={{ lineHeight: '1.1' }}
           >
             Welcome Back!
           </h1>
           <p className="mt-2 text-[15px]" style={{ color: 'var(--auth-text-secondary)' }}>
-            Sign in to continue to your account.
+            Login to KisanO
           </p>
         </div>
 
@@ -201,7 +201,7 @@ export default function LoginPage({ initialRole = 'farmer' }) {
 
         {/* ── Secure footer ─────────────────────────────────────── */}
         <div
-          className="mt-8 pt-5 flex items-center justify-center gap-2 text-[13px]"
+          className="mt-8 pt-5 hidden md:flex items-center justify-center gap-2 text-[13px]"
           style={{ borderTop: '1px solid var(--auth-card-border)', color: 'var(--auth-text-muted)' }}
         >
           <Shield size={14} aria-hidden="true" />

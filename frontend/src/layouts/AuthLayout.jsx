@@ -189,7 +189,7 @@ export default function AuthLayout() {
 
   return (
     <div
-      className="min-h-screen flex text-white font-sans"
+      className="min-h-screen flex text-[var(--auth-text-primary)] font-sans"
       style={{ backgroundColor: 'var(--auth-bg)' }}
     >
       {/* ── Left branding panel (desktop only) ─────────────────── */}
@@ -201,8 +201,7 @@ export default function AuthLayout() {
       <div className="flex flex-col flex-1 min-h-screen overflow-y-auto">
         {/* Top bar */}
         <header
-          className="sticky top-0 z-20 flex items-center justify-between px-5 sm:px-8 py-4"
-          style={{ background: 'rgba(8,19,13,0.85)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+          className="sticky top-0 z-20 flex items-center justify-between px-5 sm:px-8 py-4 bg-[var(--auth-bg)]/85 backdrop-blur-md border-b border-[var(--auth-card-border)]"
         >
           {/* Mobile logo */}
           <Link to="/" className="flex items-center gap-2.5 lg:opacity-0 lg:pointer-events-none" aria-label="KisanO Home">
@@ -210,7 +209,7 @@ export default function AuthLayout() {
               style={{ background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)' }}>
               <Sprout size={16} className="text-green-400" />
             </div>
-            <span className="text-[18px] font-black tracking-tight">
+            <span className="text-[18px] font-black tracking-tight text-[var(--auth-text-primary)]">
               Kisan<span className="text-green-400">O</span>
             </span>
           </Link>

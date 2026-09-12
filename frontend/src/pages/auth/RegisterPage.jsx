@@ -97,11 +97,11 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
       </div>
 
       <div className="mb-8">
-        <h1 className="text-[36px] sm:text-[40px] font-black text-white leading-none tracking-tight">
+        <h1 className="text-[36px] sm:text-[40px] font-black text-[var(--auth-text-primary)] leading-none tracking-tight">
           Create Account
         </h1>
         <p className="mt-2 text-[15px]" style={{ color: 'var(--auth-text-secondary)' }}>
-          Join thousands of farmers &amp; equipment providers across Maharashtra.
+          Join farmers and equipment owners near you.
         </p>
       </div>
 
@@ -128,7 +128,7 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
           />
 
           <AuthInput
-            label="Email Address"
+            label="Email Address (Optional)"
             icon={<Mail className="h-5 w-5" />}
             placeholder="Optional email"
             error={errors.email}
@@ -137,9 +137,10 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
           />
         </div>
 
-        <div className="flex flex-col">
-          <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
-            District <span className="text-green-400">*</span>
+        {/* District (Hidden on Mobile) */}
+        <div className="hidden md:flex flex-col">
+          <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+            District
           </label>
           <div className="relative flex items-center w-full">
             <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none flex items-center justify-center z-10">
@@ -148,14 +149,14 @@ export default function RegisterPage({ initialRole = 'farmer' }) {
             <select
               disabled={isSubmitting}
               style={{ paddingLeft: '48px', paddingRight: '40px' }}
-              className={`w-full h-[50px] bg-gray-900/90 text-white text-sm font-medium rounded-xl border appearance-none ${
+              className={`w-full h-[50px] bg-[var(--auth-input-bg)] text-[var(--auth-text-primary)] text-sm font-medium rounded-xl border appearance-none ${
                 errors.district
-                  ? 'border-red-500/60 focus:border-red-500'
-                  : 'border-white/10 focus:border-[#4ADE80]'
-              } focus:outline-none focus:ring-1 focus:ring-[#4ADE80]/50 transition-colors`}
+                  ? 'border-red-500 focus:border-red-500'
+                  : 'border-[var(--auth-input-border)] focus:border-[#4ADE80]'
+              } focus:outline-none focus:ring-1 focus:ring-[#4ADE80]/50 transition-colors relative z-10`}
               {...register('district')}
             >
-              <option value="" disabled className="bg-gray-900 text-gray-500">
+              <option value="" disabled className="bg-[var(--auth-input-bg)] text-gray-500">
                 Select your district
               </option>
               {DISTRICTS.map((d) => (

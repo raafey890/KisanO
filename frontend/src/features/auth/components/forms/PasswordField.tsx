@@ -71,7 +71,7 @@ export const PasswordField = React.forwardRef<HTMLInputElement, PasswordFieldPro
             style={{ paddingLeft: '48px', paddingRight: '48px' }}
             className={[
               'w-full rounded-[var(--auth-radius)] border bg-[var(--auth-input-bg)]',
-              'py-3 text-[16px] text-white caret-green-400 relative z-10',
+              'py-3 pl-12 pr-12 text-[16px] text-[var(--auth-text-primary)] caret-green-400 relative z-10',
               'placeholder:text-[var(--auth-text-muted)]',
               'outline-none transition-all duration-[var(--auth-duration)] ease-[var(--auth-ease)]',
               'focus:ring-2 auth-input-glow',

@@ -20,7 +20,7 @@ export default function AppSidebar({ navItems, roleLabel, roleColor, roleBg }) {
     <motion.aside
       animate={{ width: collapsed ? 72 : 240 }}
       transition={{ type: 'spring', stiffness: 320, damping: 30 }}
-      className="relative flex flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0"
+      className="hidden md:flex relative flex-col h-screen sticky top-0 overflow-hidden flex-shrink-0"
       style={{ background: '#fff', borderRight: '1px solid #e4e4e7' }}
     >
       {/* Logo */}
