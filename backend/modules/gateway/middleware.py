@@ -21,6 +21,7 @@ class GatewayMiddleware(BaseHTTPMiddleware):
             
         except AppException as e:
             return JSONResponse(status_code=e.status_code, content={"success": False, "error": {"detail": e.detail}})
-        except Exception:
+        except Exception as e:
             # Catchall for unhandled gateway failures
+            logger.exception("Unhandled exception in GatewayMiddleware")
             return JSONResponse(status_code=500, content={"success": False, "error": {"detail": "Internal Gateway Error"}})
