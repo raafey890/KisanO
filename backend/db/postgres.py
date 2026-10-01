@@ -12,7 +12,18 @@ class PostgresDatabaseManager:
     async def connect(self):
         if not settings.DATABASE_URL:
             logger.warning("No DATABASE_URL provided. PostgreSQL will not connect.")
+            logger.info("DATABASE_URL present: no")
             return
+            
+        logger.info("DATABASE_URL present: yes")
+        
+        # Safely parse and log host
+        try:
+            from urllib.parse import urlparse
+            parsed = urlparse(settings.DATABASE_URL)
+            logger.info(f"Connecting to PostgreSQL host: {parsed.hostname}")
+        except Exception:
+            logger.info("Connecting to PostgreSQL (could not parse host)")
             
         # Ensure asyncpg is used
         db_url = settings.DATABASE_URL

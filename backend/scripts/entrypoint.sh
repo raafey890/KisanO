@@ -10,7 +10,7 @@ echo "[+] Starting KisanO Container Entrypoint..."
 if [ "$ENVIRONMENT" = "production" ]; then
     echo "[+] Validating Production Environment Variables..."
     missing_req=0
-    for var in SECRET_KEY MONGODB_URI; do
+    for var in SECRET_KEY DATABASE_URL; do
         if [ -z "$(eval echo \$$var)" ]; then
             echo "🔥 CRITICAL: Missing $var"
             missing_req=1
