@@ -13,6 +13,7 @@ from core.exceptions import (
     starlette_http_exception_handler
 )
 from db.mongodb import db_manager
+from db.postgres import postgres_manager
 from core.redis_client import redis_manager
 from middleware.cors import setup_cors
 from middleware.request_id import RequestIDMiddleware
@@ -31,13 +32,22 @@ async def lifespan(app: FastAPI):
     """Application Startup and Shutdown Events"""
     # Startup
     logger.info("Starting up KisanO Backend Application...")
-    await db_manager.connect()
+    await postgres_manager.connect()
     await redis_manager.connect()
+    
+    if settings.ENVIRONMENT != "production":
+        try:
+            await db_manager.connect()
+        except Exception as e:
+            logger.warning(f"MongoDB connection failed: {e}")
+
     yield
     # Shutdown
     logger.info("Shutting down KisanO Backend Application...")
     await redis_manager.disconnect()
-    await db_manager.disconnect()
+    await postgres_manager.disconnect()
+    if settings.ENVIRONMENT != "production":
+        await db_manager.disconnect()
 
 def create_app() -> FastAPI:
     """FastAPI Application Factory"""
@@ -112,9 +122,8 @@ def create_app() -> FastAPI:
 
     @app.get("/ready", tags=["System"])
     async def readiness_check():
-        # In a real app, this might ping the database to ensure it's fully connected
-        from db.mongodb import db_manager
-        if db_manager.db is None:
+        from db.postgres import postgres_manager
+        if postgres_manager.engine is None:
             from fastapi import HTTPException
             raise HTTPException(status_code=503, detail="Database not ready")
         return {"status": "ready"}

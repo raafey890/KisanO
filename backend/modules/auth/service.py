@@ -213,7 +213,7 @@ class AuthService:
     @staticmethod
     async def logout_all_devices(user_id: str, current_session_id: str, ip: str):
         await session_repository.invalidate_all_sessions(user_id)
-        await refresh_token_repository.collection.update_many({"userId": user_id}, {"$set": {"isRevoked": True}})
+        await refresh_token_repository.revoke_all_user_tokens(user_id)
         await login_history_repository.log_event(user_id, "LOGOUT_ALL", ip, "Unknown", "Unknown", "Unknown", True)
         
     @staticmethod

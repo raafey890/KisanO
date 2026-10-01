@@ -12,8 +12,9 @@ class Settings(BaseSettings):
     # CORS
     ALLOWED_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000", "https://kisan-o.vercel.app"]
 
-    # MongoDB Setup
-    MONGODB_URI: str
+    # Database Setup
+    MONGODB_URI: Optional[str] = None
+    DATABASE_URL: Optional[str] = None
     DATABASE_NAME: str = "kisano_db"
 
     # Redis Setup
@@ -98,7 +99,7 @@ def validate_production_environment():
     if settings.ENVIRONMENT == "production":
         import sys
         missing_required = []
-        required = ["SECRET_KEY", "MONGODB_URI"]
+        required = ["SECRET_KEY", "DATABASE_URL"]
         
         missing_optional = []
         optional = [
